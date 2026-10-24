@@ -5,6 +5,10 @@ Project state files carry their own `schema_version`. Schema changes ship with a
 
 ## [Unreleased]
 
+### Changed
+- New "Sunrise" gradient-orb logo for the website (favicon, touch icon, header logo) and the README. The plugin's
+  directory listing icon is unchanged.
+
 ## [0.2.0] - 2026-10-24
 
 Groundwork for Cowork and the Claude apps (web, desktop, mobile). Claude Code remains the fully tested host.

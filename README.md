@@ -1,4 +1,4 @@
-<p align="center"><img src=".claude-plugin/icon.png" width="96" alt="Raftly logo"></p>
+<p align="center"><img src="site/assets/icon-512.png" width="96" alt="Raftly logo"></p>
 
 <h1 align="center">Raftly</h1>
 
