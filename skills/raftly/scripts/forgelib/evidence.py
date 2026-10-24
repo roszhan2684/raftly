@@ -117,15 +117,15 @@ def ui_only_features(features: dict[str, dict], evidence: dict) -> list[str]:
 
     Only meaningful for products with a backend; callers decide whether to ask.
     """
-    linked = defaultdict(set)
+    linked: dict[str, frozenset[str]] = {}
     for link in evidence.get("links", []):
         for a, b in ((link["from"], link["to"]), (link["to"], link["from"])):
             k = kind_of_id(b)
             if k:
-                linked[a].add(k)
+                linked[a] = linked.get(a, frozenset()) | {k}
     out = []
     for fid in features:
-        kinds = linked.get(fid, set())
+        kinds = linked.get(fid, frozenset())
         if kinds & {"screen", "component"} and not kinds & {"api", "service", "table", "test", "job"}:
             out.append(fid)
     return out

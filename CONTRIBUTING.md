@@ -22,9 +22,9 @@ the project's terms, and that it contains no proprietary employer or client code
 
 ## Development
 
+Clone your fork, then from the repository folder:
+
 ```bash
-git clone <your fork> raftly
-cd raftly
 python3 -m unittest discover -s tests -t .      # unit + integration tests
 python3 scripts/check_release.py                # release checks (manifests, links, secrets, examples)
 python3 evals/grade.py --examples     # deterministic eval assertions on shipped examples

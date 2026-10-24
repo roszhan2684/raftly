@@ -57,17 +57,17 @@ claude plugin marketplace add roszhan2684/raftly
 claude plugin install raftly@raftly
 ```
 
-**Option 2: try it without installing.**
+**Option 2: try it without installing.** Clone or download
+[the repository](https://github.com/roszhan2684/raftly), then start Claude Code with the plugin folder:
 
 ```bash
-git clone https://github.com/roszhan2684/raftly.git
 claude --plugin-dir ./raftly
 ```
 
-**Option 3: personal skill (no plugin system).** Copy the self-contained skill folder into your personal skills directory:
+**Option 3: personal skill (no plugin system).** Clone or download [the repository](https://github.com/roszhan2684/raftly),
+then copy the self-contained skill folder into your personal skills directory:
 
 ```bash
-git clone https://github.com/roszhan2684/raftly.git
 mkdir -p ~/.claude/skills && cp -R raftly/skills/raftly ~/.claude/skills/raftly
 ```
 
