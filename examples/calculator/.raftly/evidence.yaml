@@ -1,0 +1,31 @@
+entities:
+  - id: SCR-main
+    name: Calculator screen (keypad + display)
+    path: null
+    status: PLANNED
+  - id: SCR-history
+    name: History drawer / panel
+    path: null
+    status: PLANNED
+  - id: CMP-engine
+    name: Calculation engine module
+    path: src/engine
+    status: PLANNED
+links:
+  - from: SCR-main
+    to: F002
+    relation: renders
+    at: "2026-10-24T09:00:00Z"
+  - from: SCR-history
+    to: F003
+    relation: renders
+    at: "2026-10-24T09:00:00Z"
+  - from: CMP-engine
+    to: F001
+    relation: implements
+    at: "2026-10-24T09:00:00Z"
+  - from: F001
+    to: R-001
+    relation: mitigates
+    at: "2026-10-24T09:00:00Z"
+records: []

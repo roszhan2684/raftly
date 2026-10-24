@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "risks.schema.json",
+  "title": "Risk register (.raftly/risks.yaml)",
+  "type": "object",
+  "required": [
+    "risks"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "category",
+          "statement",
+          "probability",
+          "impact",
+          "severity",
+          "mitigation",
+          "owner_role",
+          "status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^R-\\d{3,}$"
+          },
+          "category": {
+            "enum": [
+              "product",
+              "technical",
+              "security",
+              "privacy",
+              "compliance",
+              "legal",
+              "vendor",
+              "cost",
+              "scale",
+              "ux",
+              "operational",
+              "business"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "probability": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "impact": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "severity": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "mitigation": {
+            "type": "string"
+          },
+          "trigger": {
+            "type": "string"
+          },
+          "owner_role": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "OPEN",
+              "MITIGATING",
+              "ACCEPTED",
+              "CLOSED"
+            ]
+          },
+          "related": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

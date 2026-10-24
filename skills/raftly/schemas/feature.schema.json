@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "feature.schema.json",
+  "title": "Feature specification frontmatter (.raftly/features/Fxxx-*.md)",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "status",
+    "priority"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^F\\d{3,}$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "NOT_STARTED",
+        "PLANNED",
+        "IN_PROGRESS",
+        "PARTIAL",
+        "BLOCKED",
+        "IMPLEMENTED_UNVERIFIED",
+        "VERIFIED",
+        "COMPLETE",
+        "DROPPED"
+      ]
+    },
+    "priority": {
+      "enum": [
+        "MUST",
+        "SHOULD",
+        "COULD",
+        "WONT"
+      ]
+    },
+    "owner_role": {
+      "type": "string"
+    },
+    "node": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "depends_on": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "screens": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_status": {
+      "enum": [
+        "NONE",
+        "PARTIAL",
+        "SUFFICIENT"
+      ]
+    },
+    "updated_at": {
+      "type": "string"
+    }
+  }
+}

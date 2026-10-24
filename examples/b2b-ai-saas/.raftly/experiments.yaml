@@ -1,0 +1,10 @@
+experiments:
+  - id: EXP-001
+    hypothesis: Managers at design-partner teams act on AI coaching insights every week
+    success_threshold: "≥ 60% of managers in weeks 2–4"
+    failure_threshold: < 25% of managers
+    window: 4-week pilot with 5 design-partner teams
+    on_success: Open paid plans
+    on_failure: "Stop the manager-queue bet; interview for rep self-coaching repositioning"
+    status: PLANNED
+    metric: "Share of pilot managers who accept or share ≥ 3 insights per week"

@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "learning.schema.json",
+  "title": "Project learning (L1) frontmatter (.raftly/learnings/L-xxx-*.md)",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "outcome",
+    "kind",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^L-\\d{3,}$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "outcome": {
+      "enum": [
+        "REJECT",
+        "PROJECT_ONLY",
+        "CANDIDATE",
+        "CORE_PROPOSAL"
+      ]
+    },
+    "evidence_quality": {
+      "enum": [
+        "none",
+        "anecdotal",
+        "observed",
+        "reproduced",
+        "tested"
+      ]
+    },
+    "source_authority": {
+      "enum": [
+        "none",
+        "user",
+        "project",
+        "community",
+        "official_docs",
+        "standard"
+      ]
+    },
+    "repeat_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "cross_project": {
+      "type": "boolean"
+    },
+    "objective": {
+      "type": "boolean"
+    },
+    "contradicted": {
+      "type": "boolean"
+    },
+    "contains_private": {
+      "type": "boolean"
+    },
+    "kind": {
+      "enum": [
+        "preference",
+        "local_fact",
+        "implementation_finding",
+        "engineering_failure",
+        "pattern",
+        "outcome",
+        "override"
+      ]
+    },
+    "related": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "candidate": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "created_at": {
+      "type": "string"
+    }
+  }
+}

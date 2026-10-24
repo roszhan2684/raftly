@@ -1,0 +1,92 @@
+# Senior role registry. The Raftly Director routes each decision to the
+# senior-most relevant role. `reference` is loaded only when that role is active.
+# Decision records (ADR owner_role) and risks (owner_role) must use these ids.
+roles:
+  - id: director
+    title: Raftly Director
+    reference: role-router.md
+    owns: [orchestration, mode, stage, conflict-resolution, constitution, state]
+  - id: product-strategy
+    title: Head of Product Strategy
+    reference: product.md
+    owns: [problem-selection, icp, market, differentiation, validation, success-criteria]
+  - id: product-director
+    title: Director of Product
+    reference: product.md
+    owns: [requirements, mvp-scope, prioritization, user-stories, sequencing, acceptance-criteria, kill-criteria]
+  - id: ux-research
+    title: Principal UX Researcher
+    reference: ux-design.md
+    owns: [user-jobs, workflows, terminology, usability-assumptions, research-plan]
+  - id: design-director
+    title: Design Director / Staff Product Designer
+    reference: ux-design.md
+    owns: [information-architecture, interaction-model, screens, design-directions, accessibility, responsive]
+  - id: design-systems
+    title: Staff Design Systems Engineer
+    reference: ux-design.md
+    owns: [tokens, components, theming, oss-components]
+  - id: architect
+    title: Principal Software Architect
+    reference: architecture.md
+    owns: [system-boundaries, tenancy, data-ownership, integrations, type1-decisions, adrs, failure-modes]
+  - id: frontend
+    title: Staff Frontend Engineer
+    reference: frontend.md
+    owns: [client-architecture, rendering, state, forms, performance, ui-states]
+  - id: mobile
+    title: Staff Mobile Engineer
+    reference: mobile.md
+    owns: [native-ux, platform-differences, offline, app-lifecycle, distribution]
+  - id: backend
+    title: Staff Backend Engineer
+    reference: backend.md
+    owns: [api, domain, validation, transactions, idempotency, background-jobs, authorization]
+  - id: data
+    title: Principal Data Engineer / Database Architect
+    reference: data.md
+    owns: [schema, lifecycle, indexing, retention, migrations, backup-restore, analytics-data]
+  - id: ai-ml
+    title: Principal AI/ML Engineer
+    reference: ai.md
+    owns: [model-selection, evals, prompt-versioning, rag, fallback, ai-safety, ai-cost]
+  - id: security
+    title: Principal Security Engineer
+    reference: security.md
+    owns: [threat-model, authn, authz, secrets, attack-surface, dependency-risk, tenant-isolation]
+  - id: privacy
+    title: Privacy Engineering Lead
+    reference: privacy-compliance.md
+    owns: [personal-data, minimization, retention, export-deletion, logging, consent]
+  - id: compliance
+    title: Compliance Readiness Advisor
+    reference: privacy-compliance.md
+    owns: [obligations, readiness-checklists, professional-review-flags]
+  - id: platform
+    title: Staff Platform / DevOps Engineer
+    reference: platform-sre.md
+    owns: [ci-cd, environments, deployment, infrastructure, cost, rollback]
+  - id: sre
+    title: Principal SRE
+    reference: platform-sre.md
+    owns: [slos, monitoring, alerts, incidents, capacity, degradation]
+  - id: qa
+    title: Staff QA / Quality Engineer
+    reference: qa.md
+    owns: [test-strategy, regression, platform-matrix, definition-of-done, verification]
+  - id: gtm
+    title: Head of Product Marketing / GTM
+    reference: gtm-launch.md
+    owns: [positioning, launch, pricing-inputs, channels, onboarding, messaging]
+  - id: seo
+    title: Technical SEO Lead
+    reference: gtm-launch.md
+    owns: [crawlability, metadata, structured-data, web-performance, sitemap]
+  - id: launch-director
+    title: Director of Engineering / Launch Director
+    reference: production-gate.md
+    owns: [launch-sequencing, readiness-synthesis, rollback, operational-ownership, final-blockers]
+  - id: founder
+    title: Founder / Product Owner (human)
+    reference: decision-authority.md
+    owns: [business-judgment, overrides, risk-acceptance]

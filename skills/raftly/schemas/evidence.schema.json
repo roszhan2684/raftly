@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "evidence.schema.json",
+  "title": "Evidence graph (.raftly/evidence.yaml): intent -> implementation -> verification",
+  "type": "object",
+  "required": [
+    "entities",
+    "links",
+    "records"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^(SCR|CMP|API|SVC|TBL|TEST|MET|JOB|INT)-[A-Za-z0-9_.-]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "enum": [
+              "PLANNED",
+              "EXISTS",
+              "REMOVED"
+            ]
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "from",
+          "to",
+          "relation"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "relation": {
+            "enum": [
+              "justifies",
+              "implements",
+              "verifies",
+              "depends_on",
+              "measures",
+              "renders",
+              "persists",
+              "exposes",
+              "supersedes",
+              "mitigates",
+              "validates"
+            ]
+          },
+          "note": {
+            "type": "string"
+          },
+          "at": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "subject",
+          "kind",
+          "result",
+          "summary",
+          "at"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^EV-\\d{3,}$"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "test",
+              "e2e",
+              "manual",
+              "review",
+              "metric",
+              "audit",
+              "build",
+              "lint",
+              "research",
+              "doc"
+            ]
+          },
+          "result": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "INFO"
+            ]
+          },
+          "summary": {
+            "type": "string"
+          },
+          "ref": {
+            "type": "string"
+          },
+          "command": {
+            "type": "string"
+          },
+          "at": {
+            "type": "string"
+          },
+          "by": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

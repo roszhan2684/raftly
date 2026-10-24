@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "learning-candidate.schema.json",
+  "title": "Learning candidate (L2) frontmatter (.raftly/learning-candidates/LC-xxx-*.md)",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "outcome",
+    "domain_scope",
+    "confidence",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^LC-\\d{3,}$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "outcome": {
+      "enum": [
+        "CANDIDATE",
+        "CORE_PROPOSAL"
+      ]
+    },
+    "domain_scope": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "evidence_quality": {
+      "enum": [
+        "none",
+        "anecdotal",
+        "observed",
+        "reproduced",
+        "tested"
+      ]
+    },
+    "source_authority": {
+      "enum": [
+        "none",
+        "user",
+        "project",
+        "community",
+        "official_docs",
+        "standard"
+      ]
+    },
+    "repeat_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "cross_project": {
+      "type": "boolean"
+    },
+    "objective": {
+      "type": "boolean"
+    },
+    "contradicted": {
+      "type": "boolean"
+    },
+    "contains_private": {
+      "type": "boolean"
+    },
+    "kind": {
+      "enum": [
+        "preference",
+        "local_fact",
+        "implementation_finding",
+        "engineering_failure",
+        "pattern",
+        "outcome",
+        "override"
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "from_learnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "proposal": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "created_at": {
+      "type": "string"
+    }
+  }
+}

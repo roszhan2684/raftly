@@ -1,0 +1,390 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "state.schema.json",
+  "title": "Project state (state.yaml)",
+  "type": "object",
+  "required": [
+    "engine",
+    "project",
+    "blueprint",
+    "execution",
+    "production",
+    "documents",
+    "counts"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "engine": {
+      "type": "object",
+      "required": [
+        "version",
+        "schema_version"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+"
+        },
+        "schema_version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "project": {
+      "type": "object",
+      "required": [
+        "name",
+        "mode",
+        "stage",
+        "product_type",
+        "created_at",
+        "updated_at"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "slug": {
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "GREENFIELD",
+            "BUILD",
+            "REVIEW",
+            "RECOVERY",
+            "MIGRATION",
+            "SCALE",
+            "LAUNCH",
+            "OPERATE",
+            "HANDOFF",
+            "DOCTOR"
+          ]
+        },
+        "stage": {
+          "enum": [
+            "INTAKE",
+            "ASSESSMENT",
+            "RESEARCH",
+            "PRODUCT",
+            "DESIGN",
+            "ARCHITECTURE",
+            "PLANNING",
+            "BLUEPRINT_COMPLETE",
+            "BUILDING",
+            "VERIFYING",
+            "LAUNCH_READINESS",
+            "LAUNCHED",
+            "OPERATING"
+          ]
+        },
+        "product_type": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "profile": {
+          "$ref": "#/$defs/profile"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "blueprint": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "NOT_STARTED",
+            "IN_PROGRESS",
+            "COMPLETE"
+          ]
+        },
+        "product": {
+          "enum": [
+            "NOT_STARTED",
+            "IN_PROGRESS",
+            "COMPLETE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "design": {
+          "enum": [
+            "NOT_STARTED",
+            "IN_PROGRESS",
+            "COMPLETE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "architecture": {
+          "enum": [
+            "NOT_STARTED",
+            "IN_PROGRESS",
+            "COMPLETE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "data": {
+          "enum": [
+            "NOT_STARTED",
+            "IN_PROGRESS",
+            "COMPLETE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "security": {
+          "enum": [
+            "NOT_STARTED",
+            "IN_PROGRESS",
+            "COMPLETE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "build": {
+          "enum": [
+            "NOT_STARTED",
+            "IN_PROGRESS",
+            "COMPLETE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "completed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "open_founder_decisions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "current_node": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "next_nodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "last_prompt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "production": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "readiness": {
+          "enum": [
+            "NOT_READY",
+            "INSUFFICIENT_EVIDENCE",
+            "READY_WITH_WARNINGS",
+            "READY",
+            "UNVERIFIED"
+          ]
+        },
+        "last_gate_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "score": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "coverage": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "documents": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "enum": [
+              "CURRENT",
+              "STALE",
+              "DRAFT",
+              "NOT_APPLICABLE"
+            ]
+          },
+          "updated_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "learning": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "at",
+          "event"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "event": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Deterministic product profile. Drives which production-gate checks apply.",
+      "properties": {
+        "surfaces": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "web",
+              "ios",
+              "android",
+              "mobile",
+              "desktop",
+              "cli",
+              "api",
+              "library",
+              "extension"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "backend": {
+          "type": "boolean"
+        },
+        "accounts": {
+          "type": "boolean"
+        },
+        "personal_data": {
+          "type": "boolean"
+        },
+        "sensitive_data": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "phi",
+              "financial",
+              "payment_card",
+              "children",
+              "biometric",
+              "precise_location",
+              "government_id",
+              "credentials"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "payments": {
+          "type": "boolean"
+        },
+        "multi_tenant": {
+          "type": "boolean"
+        },
+        "ai": {
+          "type": "boolean"
+        },
+        "public_site": {
+          "type": "boolean"
+        },
+        "email": {
+          "type": "boolean"
+        },
+        "file_uploads": {
+          "type": "boolean"
+        },
+        "integrations": {
+          "type": "boolean"
+        },
+        "regulated": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "cost_mode": {
+          "enum": [
+            "BOOTSTRAP",
+            "FUNDED",
+            "ENTERPRISE"
+          ]
+        },
+        "analytics": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

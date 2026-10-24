@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "decision.schema.json",
+  "title": "Decision record (ADR) frontmatter (.raftly/decisions/ADR-xxx-*.md)",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "owner_role",
+    "date",
+    "status",
+    "decision_type",
+    "impact",
+    "reversibility",
+    "confidence"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^ADR-\\d{3,}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 3
+    },
+    "owner_role": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "PROPOSED",
+        "ACCEPTED",
+        "SUPERSEDED",
+        "REJECTED",
+        "DEPRECATED"
+      ]
+    },
+    "decision_type": {
+      "enum": [
+        "AUTO",
+        "RECOMMEND",
+        "FOUNDER"
+      ]
+    },
+    "impact": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "reversibility": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "type1": {
+      "type": "boolean",
+      "description": "Low reversibility or high impact: requires deeper research"
+    },
+    "confidence": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "category": {
+      "type": "string"
+    },
+    "affects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "superseded_by": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "revisit_trigger": {
+      "type": "string"
+    },
+    "override": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "forge_recommendation",
+        "chosen",
+        "reason"
+      ],
+      "properties": {
+        "forge_recommendation": {
+          "type": "string"
+        },
+        "chosen": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "by": {
+          "type": "string"
+        },
+        "at": {
+          "type": "string"
+        },
+        "consequences": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

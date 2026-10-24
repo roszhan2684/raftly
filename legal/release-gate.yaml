@@ -1,0 +1,25 @@
+# Hard release blockers (distribution/IP/legal handoff §27, §34).
+# `python3 scripts/check_release.py --release` fails until every item is resolved. Edit this file as decisions are made.
+legal_owner: "Roszhan Raj Meenakshi Sundhresan"   # individual; name as on the owner's GitHub profile (owner confirmed 2026-10-24)
+license:
+  model: open-source            # open-source | source-available | proprietary | dual
+  spdx: Apache-2.0             # chosen by the owner 2026-10-24 (growth-first path)
+  legal_review: false          # recommended before release; required only for source-available/custom/dual
+brand_clearance:
+  status: PENDING              # PENDING | CLEARED_BY_COUNSEL | RENAMED_AND_CLEARED | RISK_ACCEPTED_BY_OWNER
+  notes: "Renamed to Raftly (2026-10-24); preliminary screen only; RaftLabs is the nearest name; attorney clearance pending"
+third_party_review:
+  inventory_compiled: true     # THIRD_PARTY_NOTICES.md exists and lists everything
+  owner_reviewed: false
+contributor_policy: NO_EXTERNAL_CODE   # chosen 2026-10-24; revisit (DCO fits Apache-2.0) before opening contributions
+install_verified:              # tested against the current Claude Code release
+  plugin_validate: true        # `claude plugin validate --strict .` passed (Claude Code 2.1.310, 2026-10-24)
+  marketplace_install: false   # /plugin marketplace add + /plugin install from GitHub worked
+  manual_skill_copy: false     # copying skills/forge to ~/.claude/skills/forge worked
+  claude_code_version: 2.1.310
+  date: 2026-10-24
+  notes: "Local-marketplace install verified with an isolated CLAUDE_CONFIG_DIR. A live /raftly session was not run (no Claude credentials on the build machine)."
+
+# Owner decision recorded 2026-10-24: publish v0.1.0 publicly now (public GitHub repository, GitHub Pages site, GitHub release)
+# while attorney brand clearance and the remaining checks above are still open. Those stay listed as release blockers.
+release_override: "Owner chose to publish v0.1.0 publicly on 2026-10-24 before attorney clearance"

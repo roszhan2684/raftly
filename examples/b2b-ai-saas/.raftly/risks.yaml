@@ -1,0 +1,95 @@
+risks:
+  - id: R-001
+    category: legal
+    statement: Recordings contain third-party personal data and recording-consent laws differ by jurisdiction
+    probability: medium
+    impact: high
+    severity: high
+    mitigation: Consent attestation and policy notice (REQ-010), retention controls, DPA, legal review before launch
+    owner_role: compliance
+    status: OPEN
+    updated_at: 2026-10-24
+    trigger: "Customer or regulator complaint; expansion to new jurisdictions"
+    related:
+      - REQ-010
+      - ADR-012
+  - id: R-002
+    category: security
+    statement: Cross-tenant data exposure through a query, job, search or storage path
+    probability: medium
+    impact: high
+    severity: high
+    mitigation: Postgres row-level security + tenant-scoped repository, per-tenant storage prefixes, isolation tests on every data path (ADR-002)
+    owner_role: security
+    status: OPEN
+    updated_at: 2026-10-24
+    trigger: Any isolation test failure
+    related:
+      - F001
+      - ADR-002
+  - id: R-003
+    category: product
+    statement: Hallucinated or wrong insights erode manager trust
+    probability: medium
+    impact: high
+    severity: high
+    mitigation: Evidence quotes with timestamps, confidence thresholds, human review queue, eval gating (ADR-007, ADR-008)
+    owner_role: ai-ml
+    status: OPEN
+    updated_at: 2026-10-24
+    trigger: Dismiss rate above 40% in pilot
+    related:
+      - F004
+      - F005
+  - id: R-004
+    category: cost
+    statement: Transcription and LLM costs per audio hour erode margin
+    probability: medium
+    impact: high
+    severity: high
+    mitigation: Per-org audio allowance, metering, cost alerts, model selection by eval and cost
+    owner_role: platform
+    status: OPEN
+    updated_at: 2026-10-24
+    trigger: Cost per audio hour above budget in COST.md
+  - id: R-005
+    category: vendor
+    statement: Speech or LLM provider changes pricing, terms or model behaviour
+    probability: medium
+    impact: medium
+    severity: medium
+    mitigation: Provider abstraction, eval harness re-run on any model change, second provider evaluated
+    owner_role: ai-ml
+    status: OPEN
+    updated_at: 2026-10-24
+  - id: R-006
+    category: security
+    statement: Prompt injection through transcript content manipulates extraction output
+    probability: low
+    impact: medium
+    severity: low
+    mitigation: Transcripts treated as data, no tool access, schema-validated outputs, evidence must match transcript text
+    owner_role: security
+    status: OPEN
+    updated_at: 2026-10-24
+  - id: R-007
+    category: business
+    statement: Crowded conversation-intelligence market with well-funded incumbents
+    probability: high
+    impact: medium
+    severity: high
+    mitigation: "Mid-market focus, time-to-value under one day, coaching-first workflow; validate in EXP-001"
+    owner_role: product-strategy
+    status: OPEN
+    updated_at: 2026-10-24
+  - id: R-008
+    category: compliance
+    statement: EU customers bring GDPR obligations (DPA, subprocessors, transfers) and may require EU data residency
+    probability: medium
+    impact: medium
+    severity: medium
+    mitigation: DPA template, subprocessor list, region choice recorded as a founder decision when the first EU customer appears
+    owner_role: privacy
+    status: OPEN
+    updated_at: 2026-10-24
+    trigger: First EU customer in pipeline

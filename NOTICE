@@ -1,0 +1,22 @@
+Raftly (trademark clearance pending; see docs/BRAND_CLEARANCE.md)
+
+Copyright 2026 Roszhan Raj Meenakshi Sundhresan
+
+Licensed under the Apache License, Version 2.0 (see LICENSE). The license
+grants no rights to the trade names, trademarks, service marks or product
+names of the copyright holder (Apache-2.0, section 6).
+
+This repository contains no bundled third-party source code. Third-party
+components, tools and references are listed in THIRD_PARTY_NOTICES.md.
+
+"Raftly" and "/raftly" are the chosen names (renamed on 2026-10-24 from the
+earlier working name "ForgeAI"). No trademark registration exists for them,
+and clearance by a trademark attorney is still pending.
+
+Names of third-party products and companies that appear in the documentation
+and examples (for example Anthropic, Claude, Claude Code, Expo, React Native,
+Stripe, Zoom, PostgreSQL) belong to their respective owners. They are used only
+to identify those products. Their use does not imply endorsement or affiliation.
+
+How this software was authored, including the role of AI assistance, is
+recorded in docs/PROVENANCE.md.

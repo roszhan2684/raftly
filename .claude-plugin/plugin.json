@@ -1,0 +1,27 @@
+{
+  "name": "raftly",
+  "displayName": "Raftly",
+  "version": "0.1.0",
+  "description": "Idea to production with the judgment of a senior product and engineering organization. /raftly researches, decides, designs, architects, plans, verifies, remembers and prepares your product for production.",
+  "author": {
+    "name": "Roszhan Raj Meenakshi Sundhresan",
+    "url": "https://github.com/roszhan2684"
+  },
+  "homepage": "https://roszhan2684.github.io/raftly/",
+  "repository": "https://github.com/roszhan2684/raftly",
+  "license": "Apache-2.0",
+  "keywords": [
+    "product",
+    "architecture",
+    "planning",
+    "adr",
+    "production-readiness",
+    "blueprint",
+    "skills"
+  ],
+  "icon": "./.claude-plugin/icon.png",
+  "documentationUrl": "https://roszhan2684.github.io/raftly/docs.html",
+  "supportUrl": "https://github.com/roszhan2684/raftly/issues",
+  "privacyPolicyUrl": "https://roszhan2684.github.io/raftly/privacy.html",
+  "termsOfServiceUrl": "https://roszhan2684.github.io/raftly/terms.html"
+}

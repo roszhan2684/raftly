@@ -1,0 +1,175 @@
+entities:
+  - id: SCR-signin
+    name: Sign-in
+    path: null
+    status: PLANNED
+  - id: SCR-org-settings
+    name: Organization settings
+    path: null
+    status: PLANNED
+  - id: SCR-upload
+    name: Upload
+    path: null
+    status: PLANNED
+  - id: SCR-integrations
+    name: Integrations
+    path: null
+    status: PLANNED
+  - id: SCR-call-detail
+    name: Call detail
+    path: null
+    status: PLANNED
+  - id: SCR-queue
+    name: Coaching queue
+    path: null
+    status: PLANNED
+  - id: SCR-rep-feed
+    name: My coaching
+    path: null
+    status: PLANNED
+  - id: SCR-trends
+    name: Trends
+    path: null
+    status: PLANNED
+  - id: SCR-billing
+    name: Billing
+    path: null
+    status: PLANNED
+  - id: SCR-audit-log
+    name: Audit log
+    path: null
+    status: PLANNED
+  - id: SCR-notification-settings
+    name: Notification settings
+    path: null
+    status: PLANNED
+  - id: TEST-tenant-isolation
+    name: Cross-tenant isolation suite
+    path: null
+    status: PLANNED
+  - id: TEST-ai-eval
+    name: AI eval harness (golden dataset v1)
+    path: null
+    status: PLANNED
+  - id: TBL-calls
+    name: calls table
+    path: null
+    status: PLANNED
+  - id: TBL-insights
+    name: insights table
+    path: null
+    status: PLANNED
+  - id: API-webhooks-stripe
+    name: POST /api/webhooks/stripe
+    path: null
+    status: PLANNED
+  - id: API-webhooks-zoom
+    name: POST /api/webhooks/zoom
+    path: null
+    status: PLANNED
+  - id: MET-cost-per-audio-hour
+    name: AI + STT cost per audio hour
+    path: null
+    status: PLANNED
+  - id: MET-insights-actioned
+    name: Insights actioned per manager per week
+    path: null
+    status: PLANNED
+links:
+  - from: SCR-signin
+    to: F001
+    relation: renders
+    at: "2026-10-24T11:00:00Z"
+  - from: SCR-org-settings
+    to: F001
+    relation: renders
+    at: "2026-10-24T11:00:00Z"
+  - from: SCR-upload
+    to: F002
+    relation: renders
+    at: "2026-10-24T11:00:00Z"
+  - from: SCR-integrations
+    to: F002
+    relation: renders
+    at: "2026-10-24T11:00:00Z"
+  - from: SCR-call-detail
+    to: F003
+    relation: renders
+    at: "2026-10-24T11:00:00Z"
+  - from: SCR-call-detail
+    to: F004
+    relation: renders
+    at: "2026-10-24T11:00:00Z"
+  - from: SCR-queue
+    to: F005
+    relation: renders
+    at: "2026-10-24T11:00:00Z"
+  - from: SCR-rep-feed
+    to: F006
+    relation: renders
+    at: "2026-10-24T11:00:00Z"
+  - from: SCR-trends
+    to: F007
+    relation: renders
+    at: "2026-10-24T11:00:00Z"
+  - from: SCR-billing
+    to: F008
+    relation: renders
+    at: "2026-10-24T11:00:00Z"
+  - from: SCR-audit-log
+    to: F009
+    relation: renders
+    at: "2026-10-24T11:00:00Z"
+  - from: SCR-notification-settings
+    to: F010
+    relation: renders
+    at: "2026-10-24T11:00:00Z"
+  - from: TEST-tenant-isolation
+    to: F001
+    relation: verifies
+    at: "2026-10-24T11:00:00Z"
+  - from: TEST-ai-eval
+    to: F004
+    relation: verifies
+    at: "2026-10-24T11:00:00Z"
+  - from: TBL-calls
+    to: F002
+    relation: persists
+    at: "2026-10-24T11:00:00Z"
+  - from: TBL-insights
+    to: F004
+    relation: persists
+    at: "2026-10-24T11:00:00Z"
+  - from: API-webhooks-stripe
+    to: F008
+    relation: exposes
+    at: "2026-10-24T11:00:00Z"
+  - from: API-webhooks-zoom
+    to: F002
+    relation: exposes
+    at: "2026-10-24T11:00:00Z"
+  - from: MET-cost-per-audio-hour
+    to: A-005
+    relation: measures
+    at: "2026-10-24T11:00:00Z"
+  - from: MET-insights-actioned
+    to: A-001
+    relation: measures
+    at: "2026-10-24T11:00:00Z"
+  - from: F001
+    to: R-002
+    relation: mitigates
+    at: "2026-10-24T11:00:00Z"
+  - from: F004
+    to: R-003
+    relation: mitigates
+    at: "2026-10-24T11:00:00Z"
+  - from: F008
+    to: R-004
+    relation: mitigates
+    at: "2026-10-24T11:00:00Z"
+  - from: F002
+    to: R-001
+    relation: mitigates
+    at: "2026-10-24T11:00:00Z"
+records: []

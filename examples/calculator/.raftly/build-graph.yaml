@@ -1,0 +1,128 @@
+nodes:
+  - id: N001
+    name: Calculation engine
+    type: foundation
+    depends_on: []
+    status: PLANNED
+    features:
+      - F001
+    prompts:
+      - 001-calculation-engine.md
+    definition_of_done:
+      - Engine is pure TypeScript with no UI imports
+      - All semantics in ADR-006 covered by table-driven tests
+      - Property tests for precision pass
+    blockers: []
+    evidence: []
+    files: []
+    phase: 0
+  - id: N002
+    name: App shell and design tokens
+    type: foundation
+    depends_on: []
+    status: PLANNED
+    features:
+      - F005
+    prompts:
+      - 002-app-shell-and-design-tokens.md
+    definition_of_done:
+      - Expo app runs on iOS, Android and web
+      - Tokens implemented for light and dark
+      - Base layout responsive
+    blockers: []
+    evidence: []
+    files: []
+    phase: 0
+  - id: N003
+    name: Keypad and display
+    type: feature
+    depends_on:
+      - N001
+      - N002
+    status: PLANNED
+    features:
+      - F002
+    prompts:
+      - 003-keypad-and-display.md
+    definition_of_done:
+      - All keys work
+      - Live expression line and result
+      - Screen reader announcements
+      - Haptics respect settings
+    blockers: []
+    evidence: []
+    files: []
+    phase: 1
+  - id: N004
+    name: History
+    type: feature
+    depends_on:
+      - N003
+    status: PLANNED
+    features:
+      - F003
+    prompts:
+      - 004-history.md
+    definition_of_done:
+      - Last 100 entries persisted locally
+      - Reuse and clear work
+      - Empty state
+    blockers: []
+    evidence: []
+    files: []
+    phase: 2
+  - id: N005
+    name: Web keyboard and clipboard
+    type: feature
+    depends_on:
+      - N003
+    status: PLANNED
+    features:
+      - F004
+    prompts:
+      - 005-web-keyboard-and-clipboard.md
+    definition_of_done:
+      - Keyboard map complete
+      - Copy and paste work
+      - No browser shortcut conflicts
+    blockers: []
+    evidence: []
+    files: []
+    phase: 2
+  - id: N006
+    name: Offline, PWA and store builds
+    type: ops
+    depends_on:
+      - N003
+    status: PLANNED
+    features:
+      - F006
+    prompts:
+      - 006-offline-pwa-and-store-builds.md
+    definition_of_done:
+      - Web works offline after first load
+      - Signed iOS and Android builds
+      - Static web deploy with rollback
+    blockers: []
+    evidence: []
+    files: []
+    phase: 2
+  - id: N007
+    name: Launch readiness
+    type: launch
+    depends_on:
+      - N004
+      - N005
+      - N006
+    status: PLANNED
+    features: []
+    prompts:
+      - 007-launch-readiness.md
+    definition_of_done:
+      - Accessibility audit passed
+      - Platform matrix verified
+      - Privacy policy and store listings published
+    blockers: []
+    evidence: []
+    files: []
+    phase: 3

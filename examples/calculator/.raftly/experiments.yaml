@@ -1,0 +1,10 @@
+experiments:
+  - id: EXP-001
+    hypothesis: Beta users prefer Tally to their built-in calculator because results are exact and the expression is visible
+    success_threshold: "≥ 50% would switch and ≥ 40% still use it at 2 weeks"
+    failure_threshold: < 25% would switch
+    window: 2-week closed beta, 20 users
+    on_success: Proceed to public launch
+    on_failure: "Stop investing beyond V1; publish as a free web tool only"
+    status: PLANNED
+    metric: Share of 20 beta users who say they would switch (interview) and keep using it after 2 weeks (self-report)

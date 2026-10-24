@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "experiments.schema.json",
+  "title": "Experiments and kill criteria (.raftly/experiments.yaml)",
+  "type": "object",
+  "required": [
+    "experiments"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "experiments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "hypothesis",
+          "success_threshold",
+          "failure_threshold",
+          "window",
+          "on_success",
+          "on_failure",
+          "status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^EXP-\\d{3,}$"
+          },
+          "hypothesis": {
+            "type": "string"
+          },
+          "metric": {
+            "type": "string"
+          },
+          "success_threshold": {
+            "type": "string"
+          },
+          "failure_threshold": {
+            "type": "string"
+          },
+          "window": {
+            "type": "string"
+          },
+          "on_success": {
+            "type": "string"
+          },
+          "on_failure": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "PLANNED",
+              "RUNNING",
+              "SUCCEEDED",
+              "FAILED",
+              "INCONCLUSIVE",
+              "STOPPED"
+            ]
+          },
+          "related": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "result": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

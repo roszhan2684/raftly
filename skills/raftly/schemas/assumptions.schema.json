@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "assumptions.schema.json",
+  "title": "Assumption registry (.raftly/assumptions.yaml)",
+  "type": "object",
+  "required": [
+    "assumptions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "statement",
+          "confidence",
+          "impact_if_false",
+          "validation_method",
+          "state"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^A-\\d{3,}$"
+          },
+          "statement": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "impact_if_false": {
+            "type": "string"
+          },
+          "impact": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "validation_method": {
+            "type": "string"
+          },
+          "validation_gate": {
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "UNTESTED",
+              "SUPPORTED",
+              "INVALIDATED"
+            ]
+          },
+          "owner_role": {
+            "type": "string"
+          },
+          "related": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

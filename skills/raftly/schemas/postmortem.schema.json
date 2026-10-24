@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "postmortem.schema.json",
+  "title": "Incident postmortem frontmatter (.raftly/postmortems/PM-xxx-*.md)",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "severity",
+    "status",
+    "date"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^PM-\\d{3,}$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "severity": {
+      "enum": [
+        "SEV1",
+        "SEV2",
+        "SEV3",
+        "SEV4"
+      ]
+    },
+    "status": {
+      "enum": [
+        "DRAFT",
+        "REVIEWED",
+        "ACTIONS_OPEN",
+        "CLOSED"
+      ]
+    },
+    "date": {
+      "type": "string"
+    },
+    "affects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "learning": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

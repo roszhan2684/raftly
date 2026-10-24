@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Tests (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Unit and integration tests
+        run: python -m unittest discover -s tests -t . -v
+
+  checks:
+    name: Lint, schemas, release checks, smoke tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Lint (ruff)
+        run: |
+          python -m pip install --quiet ruff==0.6.9
+          ruff check scripts skills tests evals
+      - name: Byte-compile
+        run: python -m compileall -q scripts skills tests evals
+      - name: Release checks (manifests, SKILL.md frontmatter, reference links, schemas, secrets, local paths, examples)
+        run: python scripts/check_release.py
+      - name: Legal/IP release blockers (informational until the public release)
+        # Fails only with --release; shown on every run so open decisions stay visible.
+        continue-on-error: true
+        run: python scripts/check_release.py --release
+      - name: Deterministic evals on shipped examples
+        run: python evals/grade.py --examples
+      - name: Example projects validate (fails on broken graph IDs/references)
+        run: |
+          for ex in examples/calculator examples/b2b-ai-saas; do
+            python skills/raftly/scripts/engine.py validate --root "$ex" --strict
+            python skills/raftly/scripts/engine.py graph validate --root "$ex"
+          done
+      - name: Scaffold smoke test
+        run: |
+          tmp="$(mktemp -d)"
+          python skills/raftly/scripts/engine.py init --root "$tmp" --name "Smoke" --product-type test --profile 'surfaces=[web]' backend=false
+          python skills/raftly/scripts/engine.py records add requirement --root "$tmp" --statement "Smoke requirement" --priority MUST
+          python skills/raftly/scripts/engine.py graph add --root "$tmp" --name "Core" --type foundation
+          python skills/raftly/scripts/engine.py gate init --root "$tmp"
+          python skills/raftly/scripts/engine.py validate --root "$tmp"
+          python skills/raftly/scripts/engine.py context --root "$tmp"
+      - name: Render sample blueprint and deck
+        run: |
+          out="$(mktemp -d)"
+          python skills/raftly/scripts/engine.py blueprint --root examples/b2b-ai-saas --out "$out/blueprint.html"
+          python skills/raftly/scripts/engine.py deck --root examples/calculator --out "$out/deck.md"
+          test -s "$out/blueprint.html" && test -s "$out/deck.md"

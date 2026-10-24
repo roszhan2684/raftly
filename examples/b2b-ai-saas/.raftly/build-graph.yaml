@@ -1,0 +1,254 @@
+nodes:
+  - id: N001
+    name: Platform foundation
+    type: ops
+    depends_on: []
+    status: PLANNED
+    features: []
+    prompts:
+      - 001-platform-foundation.md
+    definition_of_done:
+      - Repo, CI, preview and staging environments
+      - OpenTelemetry and error tracking baseline
+      - Secrets per environment
+    blockers: []
+    evidence: []
+    files: []
+    phase: 0
+  - id: N002
+    name: Identity and organizations
+    type: foundation
+    depends_on:
+      - N001
+    status: PLANNED
+    features:
+      - F001
+    prompts:
+      - 002-identity-and-organizations.md
+    definition_of_done:
+      - Magic link and OIDC sign-in
+      - Organizations and invitations
+      - Session security
+    blockers: []
+    evidence: []
+    files: []
+    phase: 1
+  - id: N003
+    name: RBAC and tenant isolation
+    type: security
+    depends_on:
+      - N002
+    status: PLANNED
+    features: []
+    prompts:
+      - 003-rbac-and-tenant-isolation.md
+    definition_of_done:
+      - Row-level security on every tenant table
+      - Role policies server-side
+      - Cross-tenant isolation tests pass
+    blockers: []
+    evidence: []
+    files: []
+    phase: 2
+  - id: N004
+    name: Call ingestion and storage
+    type: feature
+    depends_on:
+      - N003
+    status: PLANNED
+    features:
+      - F002
+    prompts:
+      - 004-call-ingestion-and-storage.md
+    definition_of_done:
+      - Resumable upload and Zoom import
+      - Consent attestation stored
+      - Per-tenant encrypted storage
+    blockers: []
+    evidence: []
+    files: []
+    phase: 3
+  - id: N005
+    name: Transcription pipeline
+    type: feature
+    depends_on:
+      - N004
+    status: PLANNED
+    features:
+      - F003
+    prompts:
+      - 005-transcription-pipeline.md
+    definition_of_done:
+      - Provider chosen by spike
+      - Diarized transcript stored
+      - Retries and failure states
+    blockers: []
+    evidence: []
+    files: []
+    phase: 4
+  - id: N006
+    name: AI eval harness and golden dataset
+    type: quality
+    depends_on:
+      - N001
+    status: PLANNED
+    features: []
+    prompts:
+      - 006-ai-eval-harness.md
+    definition_of_done:
+      - Versioned labelled dataset
+      - Metrics computed in CI on a sample
+      - Threshold report
+    blockers: []
+    evidence: []
+    files: []
+    phase: 1
+  - id: N007
+    name: Insight extraction
+    type: feature
+    depends_on:
+      - N005
+      - N006
+    status: PLANNED
+    features:
+      - F004
+    prompts:
+      - 007-insight-extraction.md
+    definition_of_done:
+      - Objections, competitors, coaching moments with evidence quotes
+      - Thresholds met on eval set
+      - Cost per call metered
+    blockers: []
+    evidence: []
+    files: []
+    phase: 5
+  - id: N008
+    name: Manager review queue
+    type: feature
+    depends_on:
+      - N007
+    status: PLANNED
+    features:
+      - F005
+    prompts:
+      - 008-manager-review-queue.md
+    definition_of_done:
+      - Accept, dismiss, edit, note, share
+      - Queue states and filters
+      - Audit events
+    blockers: []
+    evidence: []
+    files: []
+    phase: 6
+  - id: N009
+    name: Rep coaching view
+    type: feature
+    depends_on:
+      - N008
+    status: PLANNED
+    features:
+      - F006
+    prompts:
+      - 009-rep-coaching-view.md
+    definition_of_done:
+      - Reps see own calls and shared coaching
+      - Visibility rules enforced server-side
+    blockers: []
+    evidence: []
+    files: []
+    phase: 7
+  - id: N010
+    name: Team trends
+    type: feature
+    depends_on:
+      - N007
+    status: PLANNED
+    features:
+      - F007
+    prompts:
+      - 010-team-trends.md
+    definition_of_done:
+      - Objection and competitor trends by team and rep
+      - Empty states
+      - Query performance budget
+    blockers: []
+    evidence: []
+    files: []
+    phase: 6
+  - id: N011
+    name: Billing and usage metering
+    type: feature
+    depends_on:
+      - N003
+    status: PLANNED
+    features:
+      - F008
+    prompts:
+      - 011-billing-and-usage-metering.md
+    definition_of_done:
+      - Trial, plans, seats
+      - Audio-hour metering and allowance
+      - Failed payment handling
+      - Webhooks idempotent
+    blockers: []
+    evidence: []
+    files: []
+    phase: 3
+  - id: N012
+    name: Data governance
+    type: security
+    depends_on:
+      - N004
+    status: PLANNED
+    features:
+      - F009
+    prompts:
+      - 012-data-governance.md
+    definition_of_done:
+      - Retention jobs
+      - Export and deletion
+      - Audit log
+      - Organization deletion
+    blockers: []
+    evidence: []
+    files: []
+    phase: 4
+  - id: N013
+    name: Notifications
+    type: feature
+    depends_on:
+      - N008
+    status: PLANNED
+    features:
+      - F010
+    prompts:
+      - 013-notifications.md
+    definition_of_done:
+      - Weekly digest and share notifications
+      - Unsubscribe and preferences
+      - Authenticated sending domain
+    blockers: []
+    evidence: []
+    files: []
+    phase: 7
+  - id: N014
+    name: Launch readiness
+    type: launch
+    depends_on:
+      - N009
+      - N010
+      - N011
+      - N012
+      - N013
+    status: PLANNED
+    features: []
+    prompts:
+      - 014-launch-readiness.md
+    definition_of_done:
+      - Gate evidence for all applicable checks
+      - Pilot complete (EXP-001)
+      - Legal review recorded
+    blockers: []
+    evidence: []
+    files: []
+    phase: 8

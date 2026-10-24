@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raftly docs · install and use</title>
+<meta name="description" content="How to install Raftly in Claude Code, run /raftly, and what it creates.">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="stylesheet" href="assets/site.css">
+<script>(function(){try{var t=localStorage.getItem("raftly-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav"><div class="wrap">
+  <a class="brand" href="./"><img src="assets/icon-512.png" alt="" width="30" height="30">Raftly</a>
+  <nav class="nav-links" aria-label="Primary">
+    <a class="hide-sm" href="./#how">How it works</a><a class="hide-sm" href="./#install">Install</a>
+    <a href="docs.html">Docs</a><a href="https://github.com/roszhan2684/raftly" rel="noopener">GitHub</a>
+    <button class="icon-btn" id="theme" type="button" aria-label="Toggle theme">☾</button>
+  </nav></div></header>
+<main id="main" class="doc">
+
+<h1>Raftly documentation</h1>
+<p>Raftly is a Claude Code plugin that acts as a senior product and engineering organization around your repository. This page covers installing it, using it, and what it does.</p>
+
+<h2 id="install">Install</h2>
+<h3>Option 1: plugin from the marketplace (recommended)</h3>
+<p>In Claude Code:</p>
+<pre class="code"><code>/plugin marketplace add roszhan2684/raftly
+/plugin install raftly@raftly</code><button class="copy" type="button" data-copy="/plugin marketplace add roszhan2684/raftly&#10;/plugin install raftly@raftly">Copy</button></pre>
+<p>Or from your terminal:</p>
+<pre class="code"><code>claude plugin marketplace add roszhan2684/raftly
+claude plugin install raftly@raftly</code><button class="copy" type="button" data-copy="claude plugin marketplace add roszhan2684/raftly&#10;claude plugin install raftly@raftly">Copy</button></pre>
+<h3>Option 2: try it without installing</h3>
+<pre class="code"><code>git clone https://github.com/roszhan2684/raftly.git
+claude --plugin-dir ./raftly</code><button class="copy" type="button" data-copy="git clone https://github.com/roszhan2684/raftly.git&#10;claude --plugin-dir ./raftly">Copy</button></pre>
+<h3>Option 3: personal skill (no plugin)</h3>
+<pre class="code"><code>git clone https://github.com/roszhan2684/raftly.git
+mkdir -p ~/.claude/skills
+cp -R raftly/skills/raftly ~/.claude/skills/raftly</code><button class="copy" type="button" data-copy="git clone https://github.com/roszhan2684/raftly.git&#10;mkdir -p ~/.claude/skills&#10;cp -R raftly/skills/raftly ~/.claude/skills/raftly">Copy</button></pre>
+<p class="note">Requirements: Claude Code and Python 3.9 or newer on your <code>PATH</code>. Raftly's scripts use only the Python standard library. There is no account, backend, API key or telemetry.</p>
+
+<h2 id="use">Use</h2>
+<p>Open Claude Code in any project folder and type a command. One installation works across all your repositories, and each project gets its own <code>.raftly/</code> folder.</p>
+<table>
+<thead><tr><th>You type</th><th>Raftly does</th></tr></thead>
+<tbody>
+<tr><td><code>/raftly I want to build …</code></td><td>Plans a new product: classify, research, product, design (2–3 directions), architecture, build graph, blueprint package.</td></tr>
+<tr><td><code>/raftly</code></td><td>In a repo with <code>.raftly/</code>: resumes where you left off and does the next recommended action.</td></tr>
+<tr><td><code>/raftly build next</code></td><td>Implements the next unblocked capability, runs your tests and records real evidence.</td></tr>
+<tr><td><code>/raftly review</code></td><td>Reviews code or architecture against requirements and decisions, and detects drift.</td></tr>
+<tr><td><code>/raftly launch</code></td><td>Runs the production gate and the "forgotten 20%" audit. Readiness comes from evidence only.</td></tr>
+<tr><td><code>/raftly doctor</code></td><td>Diagnoses project health, and says "no change" when nothing material is wrong.</td></tr>
+<tr><td><code>/raftly explain why PostgreSQL?</code></td><td>Answers from the recorded decisions and evidence.</td></tr>
+<tr><td><code>/raftly handoff</code> · <code>replay</code> · <code>postmortem</code></td><td>Onboarding document · project history · incident record.</td></tr>
+</tbody></table>
+<p>You can also just talk to it: "Use MongoDB instead of PostgreSQL" records a founder override, and "I hate rounded buttons" becomes a preference for this project only.</p>
+<p>If another plugin also defines <code>/raftly</code>, use the fully qualified name <code>/raftly:raftly</code>.</p>
+
+<h2 id="how">How it works</h2>
+<h3>Modes</h3>
+<p>Raftly infers what you need: <strong>greenfield</strong> (idea → blueprint), <strong>build</strong>, <strong>review</strong>, <strong>recovery</strong> (fix a half-built repo without rewriting it), <strong>migration</strong> (with rollback plans), <strong>scale</strong>, <strong>launch</strong>, <strong>operate</strong> (incidents, feedback), <strong>handoff</strong> and <strong>doctor</strong>.</p>
+<h3>Senior roles and decision authority</h3>
+<p>Every decision is routed to the senior-most relevant role: 22 roles, from Head of Product Strategy to Principal SRE. Decisions come in three levels:</p>
+<ul>
+<li><strong>Auto:</strong> routine, reversible choices. Made silently.</li>
+<li><strong>Recommend:</strong> important but reversible. Recorded as a decision record with reasoning and confidence, and work continues.</li>
+<li><strong>Founder:</strong> genuine business calls such as pricing or target customer. You're asked, batched into one round.</li>
+</ul>
+<h3>Evidence before "done"</h3>
+<p>Features move from planned to implemented, then verified, then complete. Raftly's scripts refuse to mark anything verified, complete or passing without a recorded test, review or measurement.</p>
+<h3>Proportionate production gate</h3>
+<p>45 launch checks and a 29-item "forgotten 20%" audit, each applied only when it fits your product's profile. A client-only calculator gets 16 applicable checks. A multi-tenant AI SaaS gets 42.</p>
+
+<h2 id="files">What it creates</h2>
+<table>
+<thead><tr><th>File</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td><code>.raftly/state.yaml</code></td><td>Mode, stage, blueprint status, progress, readiness, history</td></tr>
+<tr><td><code>.raftly/PRODUCT.md</code>, <code>DESIGN.md</code>, <code>ARCHITECTURE.md</code>, <code>BUILD.md</code>, <code>EXECUTIVE.md</code></td><td>The blueprint documents</td></tr>
+<tr><td><code>.raftly/decisions/</code></td><td>Decision records (options, evidence, confidence, revisit triggers)</td></tr>
+<tr><td><code>.raftly/features/</code> and <code>prompts/</code></td><td>Feature specs and one implementation prompt per capability</td></tr>
+<tr><td><code>.raftly/build-graph.yaml</code>, <code>evidence.yaml</code>, <code>gate.yaml</code></td><td>Dependency graph, evidence links and test results, production gate</td></tr>
+<tr><td><code>artifacts/blueprint.html</code>, <code>artifacts/deck.md</code></td><td>Visual blueprint and slide deck, rendered from <code>.raftly/</code></td></tr>
+</tbody></table>
+<p>Commit <code>.raftly/</code> with your project. It's plain Markdown and YAML.</p>
+
+<h2 id="update">Update and uninstall</h2>
+<pre class="code"><code>claude plugin update raftly@raftly
+claude plugin uninstall raftly@raftly</code><button class="copy" type="button" data-copy="claude plugin update raftly@raftly&#10;claude plugin uninstall raftly@raftly">Copy</button></pre>
+
+<h2 id="trouble">Troubleshooting</h2>
+<ul>
+<li><strong><code>/raftly</code> doesn't appear:</strong> run <code>/plugin</code> to check it is installed and enabled, then restart Claude Code.</li>
+<li><strong>Python errors:</strong> make sure <code>python3 --version</code> prints 3.9 or newer.</li>
+<li><strong>Name clash:</strong> use <code>/raftly:raftly</code>.</li>
+<li><strong>Older projects with a <code>.forge/</code> folder</strong> (the pre-release name): Raftly still reads them, and <code>/raftly</code> offers to migrate.</li>
+</ul>
+
+<h2 id="more">More</h2>
+<p>Source, examples and full reference: <a href="https://github.com/roszhan2684/raftly" rel="noopener">github.com/roszhan2684/raftly</a>. Report bugs or ideas in <a href="https://github.com/roszhan2684/raftly/issues" rel="noopener">GitHub issues</a>.</p>
+<p class="note">Raftly provides engineering and product readiness guidance. It does not replace professional legal, compliance, security, accessibility or regulatory review.</p>
+</main>
+<footer><div class="wrap">
+  <div class="legal"><strong style="color:var(--ink)">Raftly</strong> · © 2026 Roszhan Raj Meenakshi Sundhresan · <a href="https://github.com/roszhan2684/raftly/blob/main/LICENSE" rel="noopener">Apache-2.0</a><br>
+  Not affiliated with or endorsed by Anthropic. Claude and Claude Code are trademarks of Anthropic, PBC.</div>
+  <div><a href="docs.html">Docs</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="https://github.com/roszhan2684/raftly/issues" rel="noopener">Support</a></div>
+</div></footer>
+<script src="assets/site.js" defer></script>
+</body>
+</html>

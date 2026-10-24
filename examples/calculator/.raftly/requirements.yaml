@@ -1,0 +1,124 @@
+requirements:
+  - id: REQ-001
+    statement: "Evaluate +, −, ×, ÷ and parentheses with standard operator precedence"
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F001
+      - F002
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: "Core job; users expect 2 + 3 × 4 = 14"
+  - id: REQ-002
+    statement: Results are exact for decimal input (0.1 + 0.2 = 0.3) and displayed with up to 16 significant digits using round-half-even at display time only
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F001
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: "Correctness is the main differentiator; binary floats visibly fail"
+  - id: REQ-003
+    statement: "Edge cases behave predictably: divide by zero, repeated equals, percent, leading/trailing decimal point, very large/small results"
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F001
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: Predictable semantics prevent user errors
+  - id: REQ-004
+    statement: Works fully offline on web and mobile after first load or install
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F006
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: "Utility must work anywhere; no server exists"
+  - id: REQ-005
+    statement: "Accessible to WCAG 2.2 AA: screen readers announce input and results, all functions keyboard-operable on web, 44pt/48dp targets"
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F002
+      - F005
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: Accessibility is part of the product (Constitution 28)
+  - id: REQ-006
+    statement: "Local history of the last 100 calculations; tap to reuse a result or expression; clear history"
+    priority: SHOULD
+    status: ACTIVE
+    features:
+      - F003
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: "Reduces re-typing; differentiator vs default calculators"
+  - id: REQ-007
+    statement: "Copy the current result in one action; paste an expression on web"
+    priority: SHOULD
+    status: ACTIVE
+    features:
+      - F003
+      - F004
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: Results are usually used elsewhere
+  - id: REQ-008
+    statement: Full keyboard input on web (digits, operators, Enter, Backspace, Escape)
+    priority: SHOULD
+    status: ACTIVE
+    features:
+      - F004
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: Desktop users type faster than they click
+  - id: REQ-009
+    statement: Subtle haptic feedback on mobile key presses that respects system settings
+    priority: SHOULD
+    status: ACTIVE
+    features:
+      - F002
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: Tactile confirmation on touch screens
+  - id: REQ-010
+    statement: Light and dark themes that follow the system setting
+    priority: SHOULD
+    status: ACTIVE
+    features:
+      - F005
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: Comfort and platform convention
+  - id: REQ-011
+    statement: V1 excludes scientific functions, unit conversion, accounts, sync, ads and analytics
+    priority: WONT
+    status: ACTIVE
+    features: []
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: "Keep V1 focused; revisit with evidence (EXP-001)"

@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "build-graph.schema.json",
+  "title": "Build graph (.raftly/build-graph.yaml): capabilities in dependency order, not a calendar",
+  "type": "object",
+  "required": [
+    "nodes"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "type",
+          "depends_on",
+          "status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^N\\d{3,}$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "foundation",
+              "feature",
+              "security",
+              "data",
+              "ops",
+              "quality",
+              "design",
+              "integration",
+              "launch",
+              "migration",
+              "research"
+            ]
+          },
+          "phase": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^N\\d{3,}$"
+            },
+            "uniqueItems": true
+          },
+          "status": {
+            "enum": [
+              "NOT_STARTED",
+              "PLANNED",
+              "IN_PROGRESS",
+              "PARTIAL",
+              "BLOCKED",
+              "IMPLEMENTED_UNVERIFIED",
+              "VERIFIED",
+              "COMPLETE",
+              "DROPPED"
+            ]
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "prompts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "definition_of_done": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "blockers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

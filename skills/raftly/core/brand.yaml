@@ -1,0 +1,16 @@
+# Public brand identifiers in one place, so the brand can change with minimal technical impact.
+# STATUS: PROVISIONAL until a trademark attorney clears the name; see docs/BRAND_CLEARANCE.md.
+# Change the brand with scripts/rebrand.py (repo maintainers), not by hand-editing the manifests.
+status: PROVISIONAL
+display_name: Raftly          # human-facing product name (README, blueprint footer, deck)
+plugin_name: raftly           # .claude-plugin/plugin.json "name"; namespaces /<plugin_name>:<skill_command>
+marketplace_name: raftly      # .claude-plugin/marketplace.json "name"
+skill_command: raftly           # skills/<skill_command>/SKILL.md "name" → /raftly
+package_name: raftly          # reserved for future package registries (not published)
+repository_name: raftly       # GitHub repository name (OWNER/<repository_name>)
+artifact_brand: Raftly        # brand printed on generated artifacts (blueprint, proposals)
+short_name: Raftly              # short form used in prose ("Raftly Director", "what Raftly did")
+state_dir: .raftly              # per-project state directory created in user repositories
+legacy_state_dirs: [.forge]          # older state directory names that are still read and can be migrated
+# Brand-neutral internals (unchanged by a rebrand): the engine entry script (scripts/engine.py), the "engine" block in
+# state.yaml, the forgelib package and the role ids.

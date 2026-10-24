@@ -1,0 +1,176 @@
+requirements:
+  - id: REQ-001
+    statement: "Customer organizations are isolated tenants; users belong to an organization with Admin, Manager or Rep roles"
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F001
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: "Multi-tenant B2B; data isolation is non-negotiable"
+  - id: REQ-002
+    statement: Users sign in with email magic link or Google/Microsoft OIDC and join via invitation
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F001
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: Low-friction B2B onboarding without passwords
+  - id: REQ-003
+    statement: "Users upload call recordings (mp3, m4a, wav, mp4; up to 3 hours) or import Zoom cloud recordings"
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F002
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: Calls must get in with minimal effort
+  - id: REQ-004
+    statement: Calls are transcribed with speaker separation that distinguishes the rep from prospect speakers
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F003
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: Objections must be attributed to the prospect
+  - id: REQ-005
+    statement: The system detects objections, competitor mentions and coaching opportunities, each with a timestamped evidence quote and confidence
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F004
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: "Core job: find coaching moments without listening to every call"
+  - id: REQ-006
+    statement: "Managers review insights in a queue: accept, dismiss or edit, add a coaching note, and share with the rep"
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F005
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: "Human in the loop; trust in AI output"
+  - id: REQ-007
+    statement: Reps see only their own calls and coaching unless an Admin grants team visibility
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F001
+      - F006
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: Least privilege inside a tenant
+  - id: REQ-008
+    statement: Managers see objection and competitor trends over time by team and rep
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F007
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: Sales leaders buy the aggregate view
+  - id: REQ-009
+    statement: Paid plans with a 14-day trial, seat management and an audio-hours allowance enforced per organization
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F008
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: "Revenue; protects AI/transcription margin"
+  - id: REQ-010
+    statement: "Uploaders attest that recording consent was obtained; organizations can configure a consent policy notice"
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F002
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: Recording-consent laws vary by jurisdiction (R-001)
+  - id: REQ-011
+    statement: "Organizations control retention (default: audio 12 months, transcripts and insights until deletion), export their data and delete calls or the whole organization"
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F009
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: Privacy obligations and enterprise expectations
+  - id: REQ-012
+    statement: "Before launch, objection detection meets precision ≥ 0.85 and recall ≥ 0.80 on the versioned evaluation set"
+    priority: MUST
+    status: ACTIVE
+    features:
+      - F004
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: "AI quality is the product; thresholds agreed before launch"
+  - id: REQ-013
+    statement: "Managers receive a weekly coaching digest email; reps are notified when coaching is shared"
+    priority: SHOULD
+    status: ACTIVE
+    features:
+      - F010
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: Drives the weekly habit (A-001)
+  - id: REQ-014
+    statement: Admin and data-access actions are recorded in an audit log visible to Admins
+    priority: SHOULD
+    status: ACTIVE
+    features:
+      - F009
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: "Enterprise trust; security investigations"
+  - id: REQ-015
+    statement: Link calls to CRM deals (Salesforce, HubSpot) for context
+    priority: COULD
+    status: ACTIVE
+    features: []
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: Valuable but not needed to prove the core job (ADR-011)
+  - id: REQ-016
+    statement: V1 excludes real-time call assist, CRM write-back and training models on customer data
+    priority: WONT
+    status: ACTIVE
+    features: []
+    decisions: []
+    supersedes: []
+    superseded_by: null
+    created_at: 2026-10-24
+    rationale: "Focus; privacy; cost"

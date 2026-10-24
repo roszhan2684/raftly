@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+.ruff_cache/
+# claude plugin eval outputs
+evals/results/
+evals/cases/*/results/
+# scratch
+/tmp/
+*.tmp
+# copied in by the Pages workflow
+site/examples/

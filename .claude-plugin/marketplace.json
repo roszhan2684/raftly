@@ -1,0 +1,22 @@
+{
+  "name": "raftly",
+  "description": "Raftly: the /raftly product-building operating system for Claude Code.",
+  "owner": {
+    "name": "Roszhan Raj Meenakshi Sundhresan",
+    "url": "https://github.com/roszhan2684"
+  },
+  "plugins": [
+    {
+      "name": "raftly",
+      "source": "./",
+      "description": "Idea to production with the judgment of a senior product and engineering organization.",
+      "category": "productivity",
+      "tags": [
+        "product",
+        "architecture",
+        "planning",
+        "production-readiness"
+      ]
+    }
+  ]
+}

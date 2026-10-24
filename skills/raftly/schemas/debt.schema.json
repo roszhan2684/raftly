@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "debt.schema.json",
+  "title": "Technical debt item frontmatter (.raftly/debt/DEBT-xxx-*.md)",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "type",
+    "risk",
+    "status",
+    "owner_role"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^DEBT-\\d{3,}$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "type": {
+      "enum": [
+        "intentional_shortcut",
+        "temporary_workaround",
+        "accepted_debt",
+        "defect",
+        "architecture_violation"
+      ]
+    },
+    "risk": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "status": {
+      "enum": [
+        "OPEN",
+        "SCHEDULED",
+        "RESOLVED",
+        "WONT_FIX"
+      ]
+    },
+    "owner_role": {
+      "type": "string"
+    },
+    "introduced_by": {
+      "type": "string"
+    },
+    "fix_trigger": {
+      "type": "string"
+    },
+    "affects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "created_at": {
+      "type": "string"
+    }
+  }
+}

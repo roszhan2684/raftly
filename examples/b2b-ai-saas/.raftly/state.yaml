@@ -1,0 +1,148 @@
+# Project state. Canonical source of truth for mode, stage and progress.
+# Edit with scripts/state.py where possible; validate with scripts/validate_project.py.
+engine:
+  version: 0.1.0
+  schema_version: 1
+project:
+  name: SalesLens
+  slug: saleslens
+  mode: GREENFIELD
+  stage: BLUEPRINT_COMPLETE
+  product_type: b2b-ai-saas
+  profile:
+    surfaces:
+      - web
+    backend: true
+    accounts: true
+    personal_data: true
+    sensitive_data:
+      - credentials
+    payments: true
+    multi_tenant: true
+    ai: true
+    public_site: true
+    email: true
+    file_uploads: true
+    integrations: true
+    analytics: true
+    regulated:
+      - GDPR
+      - call-recording-consent
+    cost_mode: BOOTSTRAP
+  created_at: "2026-10-24T11:00:00Z"
+  updated_at: "2026-10-24T11:00:00Z"
+  summary: Build a B2B AI sales coaching platform that ingests sales calls and identifies objections, competitors, and coaching opportunities.
+blueprint:
+  status: COMPLETE
+  product: COMPLETE
+  design: COMPLETE
+  architecture: COMPLETE
+  data: COMPLETE
+  security: COMPLETE
+  build: COMPLETE
+  open_founder_decisions:
+    - "Pricing model: per-seat with an included audio-hour allowance (Raftly recommendation) or usage-based per audio hour"
+  completed_at: "2026-10-24T11:00:00Z"
+execution:
+  current_node: null
+  next_nodes:
+    - N001
+production:
+  readiness: INSUFFICIENT_EVIDENCE
+  last_gate_at: "2026-10-24T11:00:00Z"
+  score: null
+  coverage: 0.0
+documents:
+  PROJECT.md:
+    status: CURRENT
+    updated_at: "2026-10-24T11:00:00Z"
+  DECISIONS.md:
+    status: CURRENT
+    updated_at: "2026-10-24T11:00:00Z"
+  PRODUCT.md:
+    status: CURRENT
+    updated_at: "2026-10-24T11:00:00Z"
+  RESEARCH.md:
+    status: CURRENT
+    updated_at: "2026-10-24T11:00:00Z"
+  DESIGN.md:
+    status: CURRENT
+    updated_at: "2026-10-24T11:00:00Z"
+  DESIGN_SYSTEM.md:
+    status: CURRENT
+    updated_at: "2026-10-24T11:00:00Z"
+  ARCHITECTURE.md:
+    status: CURRENT
+    updated_at: "2026-10-24T11:00:00Z"
+  DATA_MODEL.md:
+    status: CURRENT
+    updated_at: "2026-10-24T11:00:00Z"
+  SECURITY.md:
+    status: CURRENT
+    updated_at: "2026-10-24T11:00:00Z"
+  PRIVACY.md:
+    status: CURRENT
+    updated_at: "2026-10-24T11:00:00Z"
+  COMPLIANCE_READINESS.md:
+    status: CURRENT
+    updated_at: "2026-10-24T11:00:00Z"
+  COST.md:
+    status: CURRENT
+    updated_at: "2026-10-24T11:00:00Z"
+  GTM.md:
+    status: CURRENT
+    updated_at: "2026-10-24T11:00:00Z"
+  BUILD.md:
+    status: CURRENT
+    updated_at: "2026-10-24T11:00:00Z"
+  EXECUTIVE.md:
+    status: CURRENT
+    updated_at: "2026-10-24T11:00:00Z"
+  LAUNCH.md:
+    status: CURRENT
+    updated_at: "2026-10-24T11:00:00Z"
+counts:
+  requirements: 16
+  features: 10
+  decisions: 12
+  risks: 8
+  assumptions: 6
+  debt: 0
+  nodes: 14
+  prompts: 14
+learning:
+  project_learnings: 0
+  candidates: 0
+history:
+  - at: "2026-10-24T11:00:00Z"
+    event: Project initialised in GREENFIELD mode
+  - at: "2026-10-24T11:00:00Z"
+    event: Stage INTAKE -> RESEARCH
+  - at: "2026-10-24T11:00:00Z"
+    event: "Founder decision required: Pricing model: per-seat with an included audio-hour allowance (Raftly recommendation) or usage-based per audio hour"
+  - at: "2026-10-24T11:00:00Z"
+    event: Stage RESEARCH -> PRODUCT
+  - at: "2026-10-24T11:00:00Z"
+    event: Stage PRODUCT -> DESIGN
+  - at: "2026-10-24T11:00:00Z"
+    event: Stage DESIGN -> ARCHITECTURE
+  - at: "2026-10-24T11:00:00Z"
+    event: Stage ARCHITECTURE -> PLANNING
+  - at: "2026-10-24T11:00:00Z"
+    event: Blueprint product -> COMPLETE
+  - at: "2026-10-24T11:00:00Z"
+    event: Blueprint design -> COMPLETE
+  - at: "2026-10-24T11:00:00Z"
+    event: Blueprint architecture -> COMPLETE
+  - at: "2026-10-24T11:00:00Z"
+    event: Blueprint data -> COMPLETE
+  - at: "2026-10-24T11:00:00Z"
+    event: Blueprint security -> COMPLETE
+  - at: "2026-10-24T11:00:00Z"
+    event: Blueprint build -> COMPLETE
+  - at: "2026-10-24T11:00:00Z"
+    event: "Production gate evaluated: INSUFFICIENT_EVIDENCE"
+  - at: "2026-10-24T11:00:00Z"
+    event: Stage PLANNING -> BLUEPRINT_COMPLETE
+  - at: "2026-10-24T11:00:00Z"
+    event: "Blueprint package generated: 16 documents, 14-node build graph, 14 prompts; pricing model left as an explicit founder decision"

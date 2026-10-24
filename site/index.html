@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raftly · Idea to production, with senior judgment</title>
+<meta name="description" content="Raftly is an open-source Claude Code plugin. Type /raftly and an idea becomes a researched, decided, buildable production blueprint, then a verified product.">
+<meta name="theme-color" content="#0b0f26">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta property="og:title" content="Raftly: idea to production with the judgment of a senior team">
+<meta property="og:description" content="One command. A researched, decided, buildable production blueprint that keeps guiding your repo through launch.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://roszhan2684.github.io/raftly/assets/icon-512.png">
+<link rel="stylesheet" href="assets/site.css">
+<script>
+  // set theme before paint to avoid a flash; storage may be unavailable
+  (function(){try{var t=localStorage.getItem("raftly-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="assets/icon-512.png" alt="" width="30" height="30">Raftly</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a class="hide-sm" href="#how">How it works</a>
+      <a class="hide-sm" href="#examples">Examples</a>
+      <a class="hide-sm" href="#install">Install</a>
+      <a href="docs.html">Docs</a>
+      <a href="https://github.com/roszhan2684/raftly" rel="noopener">GitHub</a>
+      <button class="icon-btn" id="theme" type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow"><span class="dot" aria-hidden="true"></span>Open-source Claude Code plugin · v0.1</span>
+        <h1 id="hero-title">Your senior product &amp; engineering team, <span class="accent">in one command.</span></h1>
+        <p class="lede">Type <strong>/raftly</strong> and an idea becomes a researched, decided, buildable production blueprint. Then Raftly keeps guiding your repository, building the next piece, verifying it against evidence, and telling you honestly whether you're ready to launch.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#install">Install Raftly</a>
+          <a class="btn btn-ghost" href="https://github.com/roszhan2684/raftly" rel="noopener">View on GitHub</a>
+        </div>
+        <div class="install-line">
+          <span>In Claude Code:</span>
+          <code>/plugin marketplace add roszhan2684/raftly</code>
+        </div>
+      </div>
+      <div class="term" role="region" aria-label="Example Raftly session">
+        <div class="term-bar"><i></i><i></i><i></i><span>claude · ~/tally</span>
+          <button class="term-replay" id="term-replay" type="button">replay</button></div>
+        <div class="term-body" id="term-body" aria-live="off"></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="not-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">Why Raftly</span>
+        <h2 id="not-title">Not a roadmap prompt. Not a code generator.</h2>
+        <p>Code generators write code. Roadmap prompts write plans. Neither remembers <em>why</em> a decision was made, stops you overbuilding, or tells you the truth about launch readiness. Raftly is the organization around the code.</p>
+      </div>
+      <div class="not-strip">
+        <div class="card reveal"><span class="tag no">week-by-week roadmap</span><span class="tag yes">dependency-ordered build graph</span>
+          <h3>Plans that can actually be built</h3><p>Capabilities in dependency order, each with a feature spec and a self-contained implementation prompt.</p></div>
+        <div class="card reveal"><span class="tag no">"looks done to me"</span><span class="tag yes">evidence-gated status</span>
+          <h3>"Done" means verified</h3><p>Nothing becomes VERIFIED, COMPLETE or PASS without a recorded test, review or measurement. The scripts enforce it.</p></div>
+        <div class="card reveal"><span class="tag no">forgets every session</span><span class="tag yes">persistent .raftly/ memory</span>
+          <h3>Remembers why</h3><p>Decisions, overrides, assumptions, risks and lessons live in your repo, as plain Markdown and YAML you can diff.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">How it works</span>
+        <h2 id="how-title">The judgment of a senior organization, behind one command</h2>
+        <p>Raftly routes every decision to the right senior role: product strategy, design, architecture, security, SRE and 17 more. It decides what it can, researches what it can't, and asks you only the genuine business questions.</p>
+      </div>
+      <div class="loop">
+        <div class="card step reveal"><h3>Orient</h3><p>Reads your repo and its <code>.raftly/</code> state. Works out the mode: greenfield, build, review, recovery, migration, launch.</p></div>
+        <div class="card step reveal"><h3>Research</h3><p>Checks what's current and uncertain against primary sources. Anything it couldn't verify is labelled <em>not verified</em>, never invented.</p></div>
+        <div class="card step reveal"><h3>Decide</h3><p>Routine choices are made silently. Important ones become recorded recommendations. Only business calls come to you, batched into one question.</p></div>
+        <div class="card step reveal"><h3>Record</h3><p>Every major decision becomes an ADR with options, confidence, consequences and a revisit trigger. Your overrides keep Raftly's original advice.</p></div>
+        <div class="card step reveal"><h3>Design</h3><p>2–3 genuinely different UI directions (different interaction models, not different colours), with a recommendation, full screen states and accessibility.</p></div>
+        <div class="card step reveal"><h3>Plan</h3><p>The simplest architecture that meets the actual requirements. Feature specs, a build graph and one prompt per capability.</p></div>
+        <div class="card step reveal"><h3>Build &amp; verify</h3><p><code>/raftly build next</code> implements the next unblocked node, runs your tests and records real evidence before anything is marked done.</p></div>
+        <div class="card step reveal"><h3>Launch honestly</h3><p><code>/raftly launch</code> runs a production gate fitted to <em>your</em> product. No evidence means no PASS. "Not applicable" is a valid answer.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="overbuild-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">Proportionate by design</span>
+        <h2 id="overbuild-title">It refuses to overbuild</h2>
+        <p>Same command, very different products. Raftly decides which production controls apply to your profile, so a calculator is never judged on missing Kubernetes.</p>
+      </div>
+      <div class="compare">
+        <article class="card reveal" aria-labelledby="cmp-a">
+          <h3 id="cmp-a">Tally: a calculator</h3>
+          <div class="prompt">/raftly I want to build a calculator mobile app and website.</div>
+          <div class="metric"><span>Launch checks that apply</span><div class="bar"><span style="width:36%"></span></div><b>16</b></div>
+          <div class="metric"><span>Build nodes</span><div class="bar"><span style="width:50%"></span></div><b>7</b></div>
+          <div class="metric"><span>Decisions recorded</span><div class="bar"><span style="width:66%"></span></div><b>8</b></div>
+          <div class="chips"><span class="chip">client-only</span><span class="chip">decimal maths</span><span class="chip">offline</span><span class="chip off">backend</span><span class="chip off">auth</span><span class="chip off">database</span><span class="chip off">Kubernetes</span></div>
+        </article>
+        <article class="card reveal" aria-labelledby="cmp-b">
+          <h3 id="cmp-b">SalesLens: B2B AI SaaS</h3>
+          <div class="prompt">/raftly Build a B2B AI sales coaching platform that ingests sales calls…</div>
+          <div class="metric"><span>Launch checks that apply</span><div class="bar"><span style="width:93%"></span></div><b>42</b></div>
+          <div class="metric"><span>Build nodes</span><div class="bar"><span style="width:100%"></span></div><b>14</b></div>
+          <div class="metric"><span>Decisions recorded</span><div class="bar"><span style="width:100%"></span></div><b>12</b></div>
+          <div class="chips"><span class="chip">multi-tenant</span><span class="chip">row-level security</span><span class="chip">AI eval gate</span><span class="chip">billing</span><span class="chip">consent</span><span class="chip">founder decision: pricing</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="graph-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">Build graph</span>
+        <h2 id="graph-title">Capabilities in dependency order, not a calendar</h2>
+        <p>Phases come from dependencies, so nothing starts until what it relies on is verified. This is the calculator's real graph.</p>
+      </div>
+      <div class="card graph-card reveal">
+        <svg viewBox="0 0 1020 270" role="img" aria-labelledby="graph-svg-title">
+          <title id="graph-svg-title">Calculator build graph: phase 0 calculation engine and app shell; phase 1 keypad and display; phase 2 history, web keyboard, offline and store builds; phase 3 launch readiness.</title>
+          <text class="g-phase" x="20" y="18">PHASE 0</text><text class="g-phase" x="280" y="18">PHASE 1</text>
+          <text class="g-phase" x="540" y="18">PHASE 2</text><text class="g-phase" x="800" y="18">PHASE 3</text>
+          <path class="g-edge" d="M220,111 C250,111 250,149 280,149"/><path class="g-edge" d="M220,187 C250,187 250,149 280,149"/>
+          <path class="g-edge" d="M480,149 C510,149 510,73 540,73"/><path class="g-edge" d="M480,149 C510,149 510,149 540,149"/><path class="g-edge" d="M480,149 C510,149 510,225 540,225"/>
+          <path class="g-edge" d="M740,73 C770,73 770,149 800,149"/><path class="g-edge" d="M740,149 C770,149 770,149 800,149"/><path class="g-edge" d="M740,225 C770,225 770,149 800,149"/>
+          <g class="g-node" tabindex="0"><rect x="20" y="84" width="200" height="54" rx="10"/><text class="nid" x="34" y="104">N001 · foundation</text><text x="34" y="124">Calculation engine</text></g>
+          <g class="g-node" tabindex="0"><rect x="20" y="160" width="200" height="54" rx="10"/><text class="nid" x="34" y="180">N002 · foundation</text><text x="34" y="200">App shell &amp; tokens</text></g>
+          <g class="g-node" tabindex="0"><rect x="280" y="122" width="200" height="54" rx="10"/><text class="nid" x="294" y="142">N003 · feature</text><text x="294" y="162">Keypad &amp; display</text></g>
+          <g class="g-node" tabindex="0"><rect x="540" y="46" width="200" height="54" rx="10"/><text class="nid" x="554" y="66">N004 · feature</text><text x="554" y="86">History</text></g>
+          <g class="g-node" tabindex="0"><rect x="540" y="122" width="200" height="54" rx="10"/><text class="nid" x="554" y="142">N005 · feature</text><text x="554" y="162">Web keyboard &amp; clipboard</text></g>
+          <g class="g-node" tabindex="0"><rect x="540" y="198" width="200" height="54" rx="10"/><text class="nid" x="554" y="218">N006 · ops</text><text x="554" y="238">Offline &amp; store builds</text></g>
+          <g class="g-node" tabindex="0"><rect x="800" y="122" width="200" height="54" rx="10"/><text class="nid" x="814" y="142">N007 · launch</text><text x="814" y="162">Launch readiness</text></g>
+        </svg>
+        <p class="graph-note">Each node has a Definition of Done and its own implementation prompt in <code>.raftly/prompts/</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="features-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">What's inside</span>
+        <h2 id="features-title">An operating system for building products with Claude</h2>
+      </div>
+      <div class="features">
+        <div class="card feature reveal"><div class="ico" aria-hidden="true">⌘</div><h3>22 senior roles</h3><p>From Head of Product Strategy to Principal SRE. Each decision is made by the discipline that should own it, and the reply says who decided.</p></div>
+        <div class="card feature reveal"><div class="ico" aria-hidden="true">✎</div><h3>Decision records &amp; overrides</h3><p>ADRs with confidence, reversibility and revisit triggers. Overrule Raftly and it records your call, the consequences, and moves on without re-arguing.</p></div>
+        <div class="card feature reveal"><div class="ico" aria-hidden="true">✓</div><h3>Evidence graph</h3><p>Requirement → feature → screen → API → table → test → metric. Ask "why does this exist?" or "which requirements have no tests?".</p></div>
+        <div class="card feature reveal"><div class="ico" aria-hidden="true">⛨</div><h3>Production gate</h3><p>45 launch checks plus the commonly forgotten 20% (password reset, failed payments, restore drills…), each applied only when it fits your product.</p></div>
+        <div class="card feature reveal"><div class="ico" aria-hidden="true">↺</div><h3>Requirement change engine</h3><p>Change a requirement and Raftly supersedes it with history kept, then shows the impact across features, decisions, data, tests and docs.</p></div>
+        <div class="card feature reveal"><div class="ico" aria-hidden="true">✦</div><h3>Learning firewall</h3><p>Learns from your project without poisoning itself. "I hate rounded buttons" stays your preference, never a global rule.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="creates-title">
+    <div class="wrap split">
+      <div class="reveal">
+        <span class="kicker">Outputs</span>
+        <h2 id="creates-title">Everything lives in your repo</h2>
+        <p style="color:var(--ink-2);font-size:18px">Plain Markdown and YAML you can review, diff and commit. No account, no backend, no lock-in.</p>
+        <ul class="list-check">
+          <li><b>Product, Design, Architecture, Build</b> documents, plus Security, Data, GTM and Compliance-readiness when relevant</li>
+          <li><b>A visual HTML blueprint</b> with the build graph, decision timeline, risks and readiness</li>
+          <li><b>A 12-slide deck</b> with speaker notes, or your host's native deck tool</li>
+          <li><b>Self-contained prompts</b>, one per capability, that any Claude session can run</li>
+        </ul>
+      </div>
+      <pre class="card tree reveal" aria-label="Files Raftly creates"><b>.raftly/</b>
+├── state.yaml           <em># mode, stage, progress, readiness</em>
+├── requirements.yaml    assumptions.yaml   risks.yaml
+├── build-graph.yaml     <em># dependency order</em>
+├── evidence.yaml        <em># intent → code → tests</em>
+├── gate.yaml            <em># production gate</em>
+├── PRODUCT.md  DESIGN.md  ARCHITECTURE.md  BUILD.md
+├── SECURITY.md  EXECUTIVE.md  DECISIONS.md  LAUNCH.md
+├── <b>decisions/</b>ADR-001-client-only-architecture.md
+├── <b>features/</b>F001-calculation-engine.md
+└── <b>prompts/</b>001-calculation-engine.md
+<b>artifacts/</b>
+├── blueprint.html
+└── deck.md</pre>
+    </div>
+  </section>
+
+  <section id="install" aria-labelledby="install-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">Install</span>
+        <h2 id="install-title">Two commands. Then <code style="font-family:var(--mono)">/raftly</code></h2>
+        <p>Raftly installs into Claude Code once and works in every repository you open.</p>
+      </div>
+      <div class="card reveal" style="padding:22px">
+        <div class="tabs" role="tablist" aria-label="Installation methods">
+          <button class="tab" role="tab" id="t1" aria-controls="p1" aria-selected="true">Plugin (recommended)</button>
+          <button class="tab" role="tab" id="t2" aria-controls="p2" aria-selected="false" tabindex="-1">From your shell</button>
+          <button class="tab" role="tab" id="t3" aria-controls="p3" aria-selected="false" tabindex="-1">Personal skill</button>
+        </div>
+        <div class="panel" role="tabpanel" id="p1" aria-labelledby="t1" tabindex="0">
+          <p>Inside Claude Code, add the marketplace and install the plugin:</p>
+          <pre class="code"><span class="c"># in Claude Code</span>
+/plugin marketplace add roszhan2684/raftly
+/plugin install raftly@raftly<button class="copy" type="button" data-copy="/plugin marketplace add roszhan2684/raftly&#10;/plugin install raftly@raftly">Copy</button></pre>
+          <p>Then open any project and run:</p>
+          <pre class="code">/raftly I want to build ...<button class="copy" type="button" data-copy="/raftly I want to build ">Copy</button></pre>
+        </div>
+        <div class="panel" role="tabpanel" id="p2" aria-labelledby="t2" tabindex="0" hidden>
+          <p>The same thing from your terminal:</p>
+          <pre class="code">claude plugin marketplace add roszhan2684/raftly
+claude plugin install raftly@raftly<button class="copy" type="button" data-copy="claude plugin marketplace add roszhan2684/raftly&#10;claude plugin install raftly@raftly">Copy</button></pre>
+          <p>Update later with <code>claude plugin update raftly@raftly</code>.</p>
+        </div>
+        <div class="panel" role="tabpanel" id="p3" aria-labelledby="t3" tabindex="0" hidden>
+          <p>No plugin system? Copy the self-contained skill folder into your personal skills directory:</p>
+          <pre class="code">git clone https://github.com/roszhan2684/raftly.git
+mkdir -p ~/.claude/skills
+cp -R raftly/skills/raftly ~/.claude/skills/raftly<button class="copy" type="button" data-copy="git clone https://github.com/roszhan2684/raftly.git&#10;mkdir -p ~/.claude/skills&#10;cp -R raftly/skills/raftly ~/.claude/skills/raftly">Copy</button></pre>
+          <p>The optional independent review agents only come with the plugin install.</p>
+        </div>
+        <p class="reqs">Requires Claude Code and Python 3.9+ (standard library only). If another tool already owns <code>/raftly</code>, use <code>/raftly:raftly</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="examples" aria-labelledby="examples-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">See the output</span>
+        <h2 id="examples-title">Two real blueprints, generated by Raftly</h2>
+        <p>Open the HTML blueprints exactly as Raftly renders them from <code>.raftly/</code> state.</p>
+      </div>
+      <div class="examples">
+        <a class="card example reveal" href="examples/calculator.html"><h3>Tally: calculator for mobile and web</h3>
+          <p>Client-only, exact decimal maths, three real design directions, calculator semantics specified, 29 server checks marked not applicable.</p><span class="more">Open blueprint →</span></a>
+        <a class="card example reveal" href="examples/b2b-ai-saas.html"><h3>SalesLens: B2B AI sales coaching</h3>
+          <p>Tenancy with row-level security, an AI eval harness gating launch, billing and metering, consent and compliance readiness, and an open pricing decision.</p><span class="more">Open blueprint →</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="faq-title">
+    <div class="wrap">
+      <div class="section-head reveal"><span class="kicker">FAQ</span><h2 id="faq-title">Questions</h2></div>
+      <div class="faq reveal">
+        <details><summary>Does Raftly send my code or plans anywhere?</summary><p>No. Raftly has no backend, no account and no telemetry. Everything it writes stays in your repository. Research uses whatever web tools your Claude session already has.</p></details>
+        <details><summary>Will it ask me a hundred questions?</summary><p>No. It decides routine things itself and records important recommendations. It only asks about genuine business decisions such as pricing or target customer, batched into a single round.</p></details>
+        <details><summary>Can I use it on an existing, half-built repo?</summary><p>Yes. Raftly inspects what exists, records it as <em>current</em>, initialises its state without touching your code, and builds a recovery plan. It never starts with a rewrite.</p></details>
+        <details><summary>What if I disagree with a recommendation?</summary><p>Tell it. It records your decision as a founder override, keeps its original recommendation and the consequences, and proceeds consistently with your choice.</p></details>
+        <details><summary>Does it certify my product as secure or compliant?</summary><p>No. Raftly provides engineering readiness analysis and evidence-based guidance. It flags items that need professional review and never claims certification.</p></details>
+        <details><summary>Is it free?</summary><p>Yes. Raftly is open source under the Apache License 2.0. You need Claude Code to run it.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="final-title" style="padding-top:24px">
+    <div class="wrap">
+      <div class="final reveal">
+        <h2 id="final-title">Have an idea? Type <span style="font-family:var(--mono)">/raftly</span>.</h2>
+        <p>Get a researched, decided, buildable blueprint, and a partner that keeps it honest all the way to launch.</p>
+        <div class="cta" style="justify-content:center">
+          <a class="btn btn-primary" href="#install">Install Raftly</a>
+          <a class="btn btn-ghost" href="docs.html">Read the docs</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="legal">
+      <strong style="color:var(--ink)">Raftly</strong> · © 2026 Roszhan Raj Meenakshi Sundhresan · <a href="https://github.com/roszhan2684/raftly/blob/main/LICENSE" rel="noopener">Apache-2.0</a><br>
+      Raftly is an independent project and is not affiliated with or endorsed by Anthropic. Claude and Claude Code are trademarks of Anthropic, PBC.
+      Raftly provides engineering readiness guidance, not legal, security or compliance certification.
+    </div>
+    <div><a href="docs.html">Docs</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="https://github.com/roszhan2684/raftly/issues" rel="noopener">Support</a></div>
+  </div>
+</footer>
+<script src="assets/site.js" defer></script>
+</body>
+</html>

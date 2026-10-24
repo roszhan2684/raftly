@@ -1,0 +1,9 @@
+# Tooling configuration only. Raftly has no runtime Python dependencies.
+[tool.ruff]
+line-length = 140
+target-version = "py39"
+extend-exclude = ["examples", "evals/cases"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B"]
+ignore = ["E501", "E731", "B905", "B008"]

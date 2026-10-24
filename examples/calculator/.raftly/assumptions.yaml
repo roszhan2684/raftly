@@ -1,0 +1,38 @@
+assumptions:
+  - id: A-001
+    statement: Users value exact decimal results and predictable semantics enough to choose Tally over the built-in calculator
+    confidence: 55
+    impact_if_false: "Product is undifferentiated; adoption depends on polish alone"
+    impact: high
+    validation_method: "Beta with 20 users: preference interviews + store review themes (EXP-001)"
+    state: UNTESTED
+    updated_at: 2026-10-24
+    validation_gate: Before public launch
+  - id: A-002
+    statement: One Expo + React Native Web codebase delivers native-feeling UI on iOS/Android and acceptable web performance
+    confidence: 65
+    impact_if_false: "Need separate web or native UI; build graph grows"
+    impact: high
+    validation_method: N003 prototype on two physical devices + Lighthouse run on web build
+    state: UNTESTED
+    updated_at: 2026-10-24
+    validation_gate: N003 VERIFIED
+    related:
+      - ADR-004
+      - N003
+  - id: A-003
+    statement: A local history of 100 entries covers typical reuse
+    confidence: 60
+    impact_if_false: "Increase limit or add search; low cost"
+    impact: low
+    validation_method: Beta feedback
+    state: UNTESTED
+    updated_at: 2026-10-24
+  - id: A-004
+    statement: Users do not need cross-device sync in V1
+    confidence: 70
+    impact_if_false: Sync requires a backend, accounts and privacy work (new Type-1 decision)
+    impact: medium
+    validation_method: Count sync requests in beta feedback and store reviews over 60 days
+    state: UNTESTED
+    updated_at: 2026-10-24

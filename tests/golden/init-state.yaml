@@ -1,0 +1,52 @@
+# Project state. Canonical source of truth for mode, stage and progress.
+# Edit with scripts/state.py where possible; validate with scripts/validate_project.py.
+engine:
+  version: 0.1.0
+  schema_version: 1
+project:
+  name: Golden
+  slug: golden
+  mode: GREENFIELD
+  stage: INTAKE
+  product_type: test
+  profile:
+    surfaces:
+      - web
+      - ios
+    backend: false
+  created_at: "2026-01-15T10:00:00Z"
+  updated_at: "2026-01-15T10:00:00Z"
+blueprint:
+  status: NOT_STARTED
+  product: NOT_STARTED
+  design: NOT_STARTED
+  architecture: NOT_STARTED
+  data: NOT_STARTED
+  security: NOT_STARTED
+  build: NOT_STARTED
+  open_founder_decisions: []
+execution:
+  current_node: null
+  next_nodes: []
+production:
+  readiness: UNVERIFIED
+  last_gate_at: null
+documents:
+  PROJECT.md:
+    status: CURRENT
+    updated_at: "2026-01-15T10:00:00Z"
+counts:
+  requirements: 0
+  features: 0
+  decisions: 0
+  risks: 0
+  assumptions: 0
+  debt: 0
+  nodes: 0
+  prompts: 0
+learning:
+  project_learnings: 0
+  candidates: 0
+history:
+  - at: "2026-01-15T10:00:00Z"
+    event: Project initialised in GREENFIELD mode

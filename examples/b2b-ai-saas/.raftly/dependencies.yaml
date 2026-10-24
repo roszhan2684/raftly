@@ -1,0 +1,112 @@
+cost_mode: BOOTSTRAP
+dependencies:
+  - name: next
+    version: null
+    purpose: Web app and API routes (TypeScript, one deployable)
+    license: MIT
+    kind: framework
+    chosen_by:
+      - ADR-001
+    status: ADOPTED
+    lock_in: LOW
+    last_review: 2026-10-24
+  - name: postgresql
+    version: null
+    purpose: Primary relational database with row-level security
+    license: PostgreSQL
+    kind: runtime
+    chosen_by:
+      - ADR-002
+    status: ADOPTED
+    lock_in: LOW
+    last_review: 2026-10-24
+  - name: drizzle-orm
+    version: null
+    purpose: Typed SQL and migrations
+    license: Apache-2.0
+    kind: library
+    chosen_by:
+      - ADR-002
+    status: ADOPTED
+    lock_in: LOW
+    last_review: 2026-10-24
+  - name: next-auth
+    version: null
+    purpose: Authentication (magic link, Google and Microsoft OIDC)
+    license: ISC
+    kind: library
+    chosen_by:
+      - ADR-003
+    status: ADOPTED
+    lock_in: LOW
+    last_review: 2026-10-24
+  - name: pg-boss
+    version: null
+    purpose: Postgres-backed job queue for ingestion, transcription and analysis jobs
+    license: MIT
+    kind: library
+    chosen_by:
+      - ADR-005
+    status: ADOPTED
+    lock_in: LOW
+    last_review: 2026-10-24
+  - name: S3-compatible object storage
+    version: null
+    purpose: Encrypted audio storage with lifecycle rules
+    license: proprietary service
+    kind: service
+    chosen_by:
+      - ADR-004
+    status: ADOPTED
+    lock_in: LOW
+    last_review: 2026-10-24
+  - name: Speech-to-text provider
+    version: null
+    purpose: Transcription with diarization (provider chosen by N005 spike)
+    license: UNVERIFIED
+    kind: service
+    chosen_by:
+      - ADR-006
+    status: PROPOSED
+    lock_in: MEDIUM
+    last_review: 2026-10-24
+  - name: Anthropic API
+    version: null
+    purpose: LLM extraction of objections, competitors and coaching moments
+    license: proprietary service
+    kind: service
+    chosen_by:
+      - ADR-007
+    status: ADOPTED
+    lock_in: MEDIUM
+    last_review: 2026-10-24
+  - name: stripe
+    version: null
+    purpose: Subscriptions, trials, seats and metered audio hours
+    license: proprietary service
+    kind: service
+    chosen_by:
+      - ADR-010
+    status: ADOPTED
+    lock_in: MEDIUM
+    last_review: 2026-10-24
+  - name: Transactional email provider
+    version: null
+    purpose: Magic links, invitations, digests (provider chosen in N013)
+    license: UNVERIFIED
+    kind: service
+    chosen_by:
+      - ADR-003
+    status: PROPOSED
+    lock_in: LOW
+    last_review: 2026-10-24
+  - name: opentelemetry
+    version: null
+    purpose: Traces and metrics instrumentation
+    license: Apache-2.0
+    kind: library
+    chosen_by:
+      - ADR-001
+    status: ADOPTED
+    lock_in: LOW
+    last_review: 2026-10-24

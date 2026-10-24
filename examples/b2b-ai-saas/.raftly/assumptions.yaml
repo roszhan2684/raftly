@@ -1,0 +1,67 @@
+assumptions:
+  - id: A-001
+    statement: "Sales managers at 10–100 rep teams will act on a weekly coaching queue"
+    confidence: 60
+    impact_if_false: "Core workflow fails; reposition toward rep self-coaching"
+    impact: high
+    validation_method: EXP-001 design-partner pilot
+    state: UNTESTED
+    updated_at: 2026-10-24
+    validation_gate: Before paid launch
+    related:
+      - F005
+      - EXP-001
+  - id: A-002
+    statement: Managed speech-to-text diarization is accurate enough to attribute objections to prospects
+    confidence: 55
+    impact_if_false: "Misattributed insights; need channel-separated audio or manual speaker labels"
+    impact: high
+    validation_method: "N005 spike: diarization error on 30 labelled calls"
+    state: UNTESTED
+    updated_at: 2026-10-24
+    validation_gate: N005 VERIFIED
+    related:
+      - F003
+      - ADR-006
+      - N005
+  - id: A-003
+    statement: "LLM extraction can reach objection precision ≥ 0.85 and recall ≥ 0.80"
+    confidence: 60
+    impact_if_false: "Insights untrustworthy; narrow scope or add human labelling"
+    impact: high
+    validation_method: N006 eval harness on the golden dataset
+    state: UNTESTED
+    updated_at: 2026-10-24
+    validation_gate: N007 VERIFIED
+    related:
+      - F004
+      - ADR-007
+      - ADR-008
+      - N007
+  - id: A-004
+    statement: Customers are willing to upload recordings or connect Zoom given consent attestation
+    confidence: 65
+    impact_if_false: Ingestion friction kills activation
+    impact: high
+    validation_method: "EXP-001 activation: ≥ 20 calls per team in week 1"
+    state: UNTESTED
+    updated_at: 2026-10-24
+  - id: A-005
+    statement: Transcription plus AI processing cost stays under 15% of per-seat revenue at expected usage
+    confidence: 50
+    impact_if_false: "Margin risk; pricing must become usage-based"
+    impact: high
+    validation_method: COST.md model with freshly researched prices + pilot metering data
+    state: UNTESTED
+    updated_at: 2026-10-24
+    related:
+      - F008
+      - ADR-010
+  - id: A-006
+    statement: "Mid-market sales teams (10–100 reps) without an enterprise conversation-intelligence tool are the ICP"
+    confidence: 65
+    impact_if_false: Repositioning and different GTM
+    impact: medium
+    validation_method: Pilot recruitment rate and discovery interviews
+    state: UNTESTED
+    updated_at: 2026-10-24

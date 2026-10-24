@@ -1,0 +1,33 @@
+# The "Forgotten 20%": production work teams routinely skip. Same grammar as
+# production-gate.yaml. Reported as its own audit (gate.py report --group forgotten-20)
+# and not double-counted in the production readiness score.
+checks:
+  - {id: G-F20-PASSWORD-RESET, category: accounts, severity: major, applies_when: accounts, title: "Password reset / account recovery"}
+  - {id: G-F20-VERIFICATION, category: accounts, severity: major, applies_when: accounts, title: "Email/identity verification"}
+  - {id: G-F20-ACCOUNT-DELETION, category: accounts, severity: major, applies_when: accounts, title: "Account and organization deletion"}
+  - {id: G-F20-DATA-EXPORT, category: privacy, severity: major, applies_when: personal_data, title: "User data export"}
+  - {id: G-F20-TRIAL-EXPIRY, category: billing, severity: major, applies_when: payments, title: "Trial expiry behaviour"}
+  - {id: G-F20-FAILED-PAYMENTS, category: billing, severity: major, applies_when: payments, title: "Failed payments / dunning"}
+  - {id: G-F20-WEBHOOK-IDEMPOTENCY, category: integrations, severity: major, applies_when: payments or integrations, title: "Webhook idempotency and replay protection"}
+  - {id: G-F20-RETRIES, category: reliability, severity: minor, applies_when: backend or integrations, title: "Retries with backoff for external calls"}
+  - {id: G-F20-LOADING, category: ui-states, severity: minor, applies_when: ui, title: "Loading states on every async view"}
+  - {id: G-F20-EMPTY, category: ui-states, severity: minor, applies_when: ui, title: "Empty states that explain the next action"}
+  - {id: G-F20-ERRORS, category: ui-states, severity: major, applies_when: ui, title: "Error states with recovery path"}
+  - {id: G-F20-EMAIL-AUTH, category: email, severity: major, applies_when: email, title: "Email authentication (SPF/DKIM/DMARC)"}
+  - {id: G-F20-CSP, category: security, severity: minor, applies_when: surface:web, title: "CSP and security headers"}
+  - {id: G-F20-RESTORE-DRILL, category: data, severity: major, applies_when: backend, title: "Backup restore drill"}
+  - {id: G-F20-RATE-LIMIT, category: security, severity: minor, applies_when: backend, title: "Rate limiting"}
+  - {id: G-F20-A11Y, category: accessibility, severity: major, applies_when: ui, title: "Keyboard, screen reader, contrast, reduced motion"}
+  - {id: G-F20-RESPONSIVE, category: ui, severity: minor, applies_when: surface:web, title: "Responsive behaviour at phone/tablet/desktop widths"}
+  - {id: G-F20-SUPPORT, category: support, severity: minor, applies_when: always, title: "Support contact"}
+  - {id: G-F20-HEALTH, category: ops, severity: minor, applies_when: backend, title: "Health check endpoint"}
+  - {id: G-F20-MIGRATIONS, category: data, severity: major, applies_when: backend, title: "Migrations rehearsed on production-like data"}
+  - {id: G-F20-STAGING, category: ops, severity: minor, applies_when: backend, title: "Staging environment"}
+  - {id: G-F20-ANALYTICS-FILTER, category: analytics, severity: minor, applies_when: analytics, title: "Analytics excludes internal/test traffic"}
+  - {id: G-F20-SECRETS, category: security, severity: major, applies_when: always, title: "Secrets inventory and rotation path"}
+  - {id: G-F20-AUDIT-LOG, category: security, severity: major, applies_when: multi_tenant or sensitive:any, title: "Audit log for admin and sensitive actions"}
+  - {id: G-F20-LEGAL-PAGES, category: legal, severity: major, applies_when: personal_data or accounts or surface:ios or surface:android or surface:mobile, title: "Privacy/legal pages linked in product"}
+  - {id: G-F20-OFFLINE, category: mobile, severity: minor, applies_when: surface:ios or surface:android or surface:mobile, title: "Offline / poor-network behaviour"}
+  - {id: G-F20-404-500, category: ui, severity: minor, applies_when: surface:web, title: "Custom 404/500 pages"}
+  - {id: G-F20-META-ICONS, category: brand, severity: minor, applies_when: public_site or surface:ios or surface:android or surface:mobile, title: "Favicons, app icons, social preview images"}
+  - {id: G-F20-TIME, category: data, severity: minor, applies_when: backend, title: "UTC storage and timezone-correct display"}

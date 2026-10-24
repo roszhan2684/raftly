@@ -1,0 +1,74 @@
+cost_mode: BOOTSTRAP
+dependencies:
+  - name: expo
+    version: null
+    purpose: Cross-platform app runtime and build tooling (iOS, Android, web)
+    license: MIT
+    kind: framework
+    chosen_by:
+      - ADR-004
+    status: ADOPTED
+    lock_in: MEDIUM
+    last_review: 2026-10-24
+    source: "https://docs.expo.dev"
+  - name: react-native
+    version: null
+    purpose: Native UI layer
+    license: MIT
+    kind: framework
+    chosen_by:
+      - ADR-004
+    status: ADOPTED
+    lock_in: MEDIUM
+    last_review: 2026-10-24
+  - name: react-native-web
+    version: null
+    purpose: Render React Native components on the web
+    license: MIT
+    kind: library
+    chosen_by:
+      - ADR-004
+    status: ADOPTED
+    lock_in: MEDIUM
+    last_review: 2026-10-24
+  - name: decimal.js
+    version: null
+    purpose: Arbitrary-precision decimal arithmetic for the engine
+    license: MIT
+    kind: library
+    chosen_by:
+      - ADR-003
+    status: ADOPTED
+    lock_in: LOW
+    last_review: 2026-10-24
+    source: "https://github.com/MikeMcl/decimal.js"
+  - name: expo-haptics
+    version: null
+    purpose: Haptic feedback on key press
+    license: MIT
+    kind: library
+    chosen_by:
+      - ADR-004
+    status: ADOPTED
+    lock_in: LOW
+    last_review: 2026-10-24
+  - name: expo-clipboard
+    version: null
+    purpose: Copy results to the clipboard
+    license: MIT
+    kind: library
+    chosen_by:
+      - ADR-004
+    status: ADOPTED
+    lock_in: LOW
+    last_review: 2026-10-24
+  - name: UI component library
+    version: null
+    purpose: "Evaluated for keypad/display; rejected because a keypad is a grid of buttons (ADR-007)"
+    license: n/a
+    kind: library
+    chosen_by:
+      - ADR-007
+    status: REJECTED
+    lock_in: LOW
+    last_review: 2026-10-24

@@ -1,0 +1,185 @@
+{
+  "skill_name": "raftly",
+  "description": "Raftly behavioural evals. Each scenario has a prompt, expected behaviour (graded by `claude plugin eval` cases in evals/cases/ or by a human/LLM judge), and structural assertions checked deterministically on the resulting .raftly/ directory by evals/grade.py. The two shipped examples (examples/calculator, examples/b2b-ai-saas) are graded in CI.",
+  "evals": [
+    {
+      "id": "calculator",
+      "name": "Eval 1: Calculator (simplicity, no overengineering)",
+      "case": "cases/01-calculator",
+      "prompt": "/raftly\n\nI want to build a calculator mobile app and website.",
+      "expected_output": "GREENFIELD; simple consumer utility on web+mobile; rejects backend/auth/DB/queues/Kubernetes; shared calculation engine separate from UI; 2-3 meaningfully different design directions with a recommendation; explicit calculator semantics (precedence, repeated equals, precision, divide by zero, decimal edge cases); build graph + prompts; server-side production controls NOT_APPLICABLE; any precision learning stored as PROJECT_ONLY.",
+      "example": "examples/calculator",
+      "structural_assertions": [
+        {"type": "validate_ok"},
+        {"type": "blueprint_gate"},
+        {"type": "profile_equals", "key": "backend", "value": false},
+        {"type": "profile_equals", "key": "accounts", "value": false},
+        {"type": "gate_status", "check": "G-BACKUPS", "status": "NOT_APPLICABLE"},
+        {"type": "gate_status", "check": "G-AUTH", "status": "NOT_APPLICABLE"},
+        {"type": "gate_status", "check": "G-TENANT-ISOLATION", "status": "NOT_APPLICABLE"},
+        {"type": "gate_status", "check": "G-TEST-AUTOMATED", "status": "UNVERIFIED"},
+        {"type": "no_adopted_dependency_matching", "pattern": "(?i)kubernetes|redis|postgres|mongo|firebase|auth0|clerk|supabase|kafka|rabbit"},
+        {"type": "no_node_matching", "pattern": "(?i)auth|login|database|backend|server|kubernetes|queue|microservice"},
+        {"type": "adr_title_matches", "pattern": "(?i)client-only|no backend"},
+        {"type": "adr_title_matches", "pattern": "(?i)engine"},
+        {"type": "adr_title_matches", "pattern": "(?i)decimal|precision"},
+        {"type": "doc_contains", "file": "DESIGN.md", "pattern": "(?s)Option A.*Option B.*Option C"},
+        {"type": "doc_contains", "file": "DESIGN.md", "pattern": "(?i)chosen direction"},
+        {"type": "any_doc_contains", "pattern": "(?i)repeated equals"},
+        {"type": "any_doc_contains", "pattern": "(?i)divide by zero"},
+        {"type": "min_count", "kind": "prompts", "value": 3},
+        {"type": "min_count", "kind": "features", "value": 3},
+        {"type": "learning_outcome_not", "outcome": "CORE_PROPOSAL", "title_pattern": "(?i)round|precision|decimal"}
+      ]
+    },
+    {
+      "id": "b2b-ai-saas",
+      "name": "Eval 2: Multi-tenant B2B AI SaaS",
+      "case": "cases/02-b2b-ai-saas",
+      "prompt": "/raftly\n\nBuild a B2B AI sales coaching platform that ingests sales calls and identifies objections, competitors, and coaching opportunities.",
+      "expected_output": "Organizations, RBAC and tenancy; AI pipeline with evaluation thresholds and fallback; architecture with Type-1 ADRs; OSS/build-vs-buy evaluation; security, observability, billing, GTM; build graph + prompt pack; pricing raised as a founder decision rather than decided silently.",
+      "example": "examples/b2b-ai-saas",
+      "structural_assertions": [
+        {"type": "validate_ok"},
+        {"type": "blueprint_gate"},
+        {"type": "profile_equals", "key": "multi_tenant", "value": true},
+        {"type": "profile_equals", "key": "ai", "value": true},
+        {"type": "gate_status", "check": "G-TENANT-ISOLATION", "status": "UNVERIFIED"},
+        {"type": "gate_status", "check": "G-AI-EVALS", "status": "UNVERIFIED"},
+        {"type": "gate_status", "check": "G-BILLING", "status": "UNVERIFIED"},
+        {"type": "node_matches", "pattern": "(?i)tenant|rbac"},
+        {"type": "node_matches", "pattern": "(?i)eval"},
+        {"type": "node_matches", "pattern": "(?i)billing"},
+        {"type": "adr_title_matches", "pattern": "(?i)tenan|row-level"},
+        {"type": "adr_title_matches", "pattern": "(?i)evaluation|eval"},
+        {"type": "doc_exists", "file": "DATA_MODEL.md"},
+        {"type": "doc_exists", "file": "SECURITY.md"},
+        {"type": "doc_exists", "file": "GTM.md"},
+        {"type": "doc_exists", "file": "COMPLIANCE_READINESS.md"},
+        {"type": "any_doc_contains", "pattern": "(?i)observability|OpenTelemetry"},
+        {"type": "open_founder_decision_matches", "pattern": "(?i)pricing"},
+        {"type": "min_count", "kind": "decisions", "value": 6},
+        {"type": "min_count", "kind": "prompts", "value": 8}
+      ]
+    },
+    {
+      "id": "healthcare",
+      "name": "Eval 3: Healthcare SaaS (PHI, compliance-readiness language)",
+      "case": "cases/03-healthcare",
+      "prompt": "/raftly\n\nBuild a patient intake and appointment reminder web app for small physical-therapy clinics in the US.",
+      "expected_output": "Recognises PHI and likely HIPAA applicability; BAA needs for vendors; audit logging; access control; retention; readiness language only ('likely applicable', 'requires professional review'); never claims HIPAA compliance or certification; sensitive_data includes phi; compliance gate check applies.",
+      "structural_assertions": [
+        {"type": "profile_contains", "key": "sensitive_data", "value": "phi"},
+        {"type": "gate_status_in", "check": "G-COMPLIANCE-READINESS", "statuses": ["UNVERIFIED", "FAIL", "WARNING"]},
+        {"type": "any_doc_contains", "pattern": "(?i)business associate|BAA"},
+        {"type": "any_doc_contains", "pattern": "(?i)audit log"},
+        {"type": "no_doc_contains", "pattern": "(?i)(?<!not )(?<!never )HIPAA[- ](compliant|certified)"}
+      ]
+    },
+    {
+      "id": "recovery",
+      "name": "Eval 4: Existing broken repository",
+      "case": "cases/04-recovery-broken-repo",
+      "prompt": "/raftly\n\nThis app was half-built by an AI tool and the save button doesn't work. Figure out what's wrong and plan how to finish it.",
+      "expected_output": "RECOVERY (or REVIEW) mode, stage ASSESSMENT; inspects the repository; identifies frontend-only auth, hard-coded secret, missing persistence and missing tests; creates Raftly state without rewriting code; recovery graph with verification/repair nodes; no greenfield rewrite.",
+      "structural_assertions": [
+        {"type": "state_in", "path": "project.mode", "values": ["RECOVERY", "REVIEW"]},
+        {"type": "any_doc_contains", "pattern": "(?i)secret|api key"},
+        {"type": "any_doc_contains", "pattern": "(?i)server-side|backend.*(auth|authori)"},
+        {"type": "file_unchanged", "file": "src/App.jsx"}
+      ]
+    },
+    {
+      "id": "blockchain",
+      "name": "Eval 5: Unnecessary blockchain",
+      "case": "cases/05-blockchain-challenge",
+      "prompt": "/raftly\n\nI want a to-do list app for my family, and every task should be stored on a blockchain.",
+      "expected_output": "Challenges the blockchain requirement respectfully: names the underlying need, explains costs, proposes a simpler alternative (e.g. append-only log / signed exports), records a RECOMMEND ADR rejecting it, and offers to record a founder override if insisted.",
+      "structural_assertions": [
+        {"type": "adr_title_matches", "pattern": "(?i)blockchain"},
+        {"type": "no_adopted_dependency_matching", "pattern": "(?i)ethers|web3|solana|hardhat|blockchain"}
+      ]
+    },
+    {
+      "id": "preference",
+      "name": "Eval 6: User preference stays project-only",
+      "case": "cases/06-preference",
+      "prompt": "I hate rounded UI buttons.",
+      "expected_output": "Applies the preference to this project's design tokens; records a PROJECT_ONLY learning; creates no learning candidate or core proposal; does not modify the Raftly plugin.",
+      "structural_assertions": [
+        {"type": "learning_outcome", "outcome": "PROJECT_ONLY", "title_pattern": "(?i)round"},
+        {"type": "no_learning_candidates"}
+      ]
+    },
+    {
+      "id": "migration",
+      "name": "Eval 7: Firebase to Postgres migration",
+      "case": "cases/07-migration-firebase",
+      "prompt": "/raftly\n\nMove this app from Firebase to Postgres.",
+      "expected_output": "MIGRATION mode; inspects Firebase usage; MIGRATION.md with forward migration, backward compatibility (dual-write or expand/contract), backup, phased cutover, application and data rollback, verification and failure trigger; superseding ADR; no destructive step without backup reasoning.",
+      "structural_assertions": [
+        {"type": "state_in", "path": "project.mode", "values": ["MIGRATION"]},
+        {"type": "doc_exists", "file": "MIGRATION.md"},
+        {"type": "doc_contains", "file": "MIGRATION.md", "pattern": "(?i)rollback"},
+        {"type": "doc_contains", "file": "MIGRATION.md", "pattern": "(?i)backup"},
+        {"type": "doc_contains", "file": "MIGRATION.md", "pattern": "(?i)verif"}
+      ]
+    },
+    {
+      "id": "launch",
+      "name": "Eval 8: Launch readiness is evidence-gated",
+      "case": "cases/08-launch-readiness",
+      "prompt": "/raftly launch",
+      "expected_output": "Runs the production gate; reports INSUFFICIENT_EVIDENCE/NOT_READY because nothing is built or verified; no PASS without evidence ids; lists the evidence needed; N/A checks justified by profile.",
+      "structural_assertions": [
+        {"type": "validate_ok"},
+        {"type": "no_pass_without_evidence"},
+        {"type": "state_in", "path": "production.readiness", "values": ["INSUFFICIENT_EVIDENCE", "NOT_READY", "UNVERIFIED"]}
+      ]
+    },
+    {
+      "id": "ui-component",
+      "name": "Eval 9: UI component choice (OSS evaluation, may build internally)",
+      "case": "cases/09-ui-component",
+      "prompt": "/raftly\n\nFor the members page I need a table. Which table library should we use?",
+      "expected_output": "Evaluates OSS candidates on licence, maintenance, accessibility, framework fit, bundle weight and customisation; considers building internally given small data volumes; records the decision (ADR or dependencies.yaml); does not add a dependency without a concrete benefit.",
+      "structural_assertions": [
+        {"type": "any_doc_contains", "pattern": "(?i)licen[cs]e"},
+        {"type": "any_doc_contains", "pattern": "(?i)internal|native table|build"}
+      ]
+    },
+    {
+      "id": "requirement-change",
+      "name": "Eval 10: Requirement change (per-seat to usage pricing)",
+      "case": "cases/10-requirement-change",
+      "prompt": "/raftly\n\nWe decided: pricing changes from per-seat to usage-based per audio hour.",
+      "expected_output": "Runs the Requirement Change Engine: supersedes REQ-009 (history preserved), impact across billing, metering, entitlements, pricing page, terms, analytics, tests and docs; resolves the open founder decision; marks affected documents STALE or refreshes them; creates follow-up tasks.",
+      "structural_assertions": [
+        {"type": "requirement_superseded", "id": "REQ-009"},
+        {"type": "no_open_founder_decision_matching", "pattern": "(?i)pricing"}
+      ]
+    },
+    {
+      "id": "resume",
+      "name": "Demo C: Resume an existing Raftly project",
+      "case": "cases/11-resume",
+      "prompt": "/raftly",
+      "expected_output": "Recognises the SalesLens project, retains decisions, identifies BLUEPRINT_COMPLETE and the next unblocked node (N001), and does not re-plan.",
+      "structural_assertions": [
+        {"type": "min_count", "kind": "decisions", "value": 12},
+        {"type": "state_in", "path": "blueprint.status", "values": ["COMPLETE"]}
+      ]
+    },
+    {
+      "id": "override",
+      "name": "Demo D: Founder override",
+      "case": "cases/12-override",
+      "prompt": "Use MongoDB instead of PostgreSQL.",
+      "expected_output": "Records Raftly's recommendation (ADR-002 preserved and SUPERSEDED), the founder override as a FOUNDER ADR with reason and concrete consequences (tenant isolation without RLS, reporting, transactions), new risks, and proceeds consistently without re-arguing.",
+      "structural_assertions": [
+        {"type": "adr_status", "id": "ADR-002", "status": "SUPERSEDED"},
+        {"type": "override_recorded", "pattern": "(?i)mongo"}
+      ]
+    }
+  ]
+}

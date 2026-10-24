@@ -1,0 +1,60 @@
+risks:
+  - id: R-001
+    category: technical
+    statement: Precision or rounding bugs produce wrong results
+    probability: medium
+    impact: high
+    severity: high
+    mitigation: Decimal arithmetic (ADR-003), display-only rounding, property-based and table-driven engine tests
+    owner_role: frontend
+    status: OPEN
+    updated_at: 2026-10-24
+    trigger: Any reported wrong result
+    related:
+      - REQ-002
+      - F001
+  - id: R-002
+    category: technical
+    statement: React Native Web bundle size or input latency degrades the web experience
+    probability: medium
+    impact: medium
+    severity: medium
+    mitigation: "Performance budget (initial JS ≤ 250 KB gzip target, INP < 200 ms), measure in N003"
+    owner_role: frontend
+    status: OPEN
+    updated_at: 2026-10-24
+    trigger: Budget exceeded in Lighthouse
+  - id: R-003
+    category: business
+    statement: "Crowded category: hard to stand out against free built-in calculators"
+    probability: high
+    impact: medium
+    severity: high
+    mitigation: "Differentiate on correctness, live expression line and history; kill criteria in EXP-001"
+    owner_role: product-strategy
+    status: OPEN
+    updated_at: 2026-10-24
+  - id: R-004
+    category: operational
+    statement: App store review may reject a calculator as low-value or duplicative in a saturated category
+    probability: medium
+    impact: high
+    severity: high
+    mitigation: "Ship clear differentiators (live expression, history, accessibility); re-verify current App Store and Google Play guidelines before submission"
+    owner_role: mobile
+    status: OPEN
+    updated_at: 2026-10-24
+    trigger: Rejection notice
+    related:
+      - F006
+      - N007
+  - id: R-005
+    category: ux
+    statement: Percent and repeated-equals semantics confuse users who expect different conventions
+    probability: medium
+    impact: low
+    severity: low
+    mitigation: Live expression line shows exactly what will be computed (ADR-006)
+    owner_role: design-director
+    status: OPEN
+    updated_at: 2026-10-24
