@@ -1,7 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc, getDocs } from 'firebase/firestore';
 
-const app = initializeApp({ projectId: process.env.FIREBASE_PROJECT_ID });
+// Fixture only: never executed. Uses a placeholder project id instead of reading the environment.
+const app = initializeApp({ projectId: 'demo-team-tasks' });
 export const db = getFirestore(app);
 
 export async function addTask(teamId, task) {

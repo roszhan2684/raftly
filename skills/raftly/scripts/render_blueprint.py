@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import html
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -314,10 +315,25 @@ def build(proj) -> str:
     chips = "".join([f'<span class="chip">{E(p["mode"])}</span>', f'<span class="chip">Stage: {E(p["stage"].replace("_", " "))}</span>',
                      f'<span class="chip">{E(p.get("product_type", ""))}</span>', f'<span class="chip mono">{E(brand_name())} {E(FORGE_VERSION)}</span>'])
     generated = now_iso()
-    theme_js = ("(function(){var b=document.getElementById('theme');if(!b)return;function set(t){document.documentElement.setAttribute('data-theme',t);"
-                "b.textContent=t==='dark'?'Light':'Dark';try{localStorage.setItem('blueprint-theme',t)}catch(e){}}var s=null;try{s=localStorage.getItem('blueprint-theme')}catch(e){}"
-                "if(s)set(s);else b.textContent=matchMedia('(prefers-color-scheme: dark)').matches?'Light':'Dark';"
-                "b.addEventListener('click',function(){var c=document.documentElement.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');set(c==='dark'?'light':'dark')})})();")
+    theme_js = """
+(function () {
+  var button = document.getElementById("theme");
+  if (!button) return;
+  var dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  function setTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    button.textContent = theme === "dark" ? "Light" : "Dark";
+    try { localStorage.setItem("blueprint-theme", theme); } catch (e) { /* storage unavailable */ }
+  }
+  var saved = null;
+  try { saved = localStorage.getItem("blueprint-theme"); } catch (e) { /* storage unavailable */ }
+  if (saved) { setTheme(saved); } else { button.textContent = dark ? "Light" : "Dark"; }
+  button.addEventListener("click", function () {
+    var current = document.documentElement.getAttribute("data-theme") || (dark ? "dark" : "light");
+    setTheme(current === "dark" ? "light" : "dark");
+  });
+})();
+"""
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -346,6 +362,15 @@ def build(proj) -> str:
 """
 
 
+BLOCK_END_RE = re.compile(r"(</(?:section|div|table|thead|tbody|tr|ol|ul|li|article|g|svg|h[1-6]|p|caption|pre|nav|header|footer)>)(?!\n)")
+
+
+def readable(page: str) -> str:
+    """Break lines after block-level closing tags so the output is easy to review (no 'minified' blobs)."""
+    page = BLOCK_END_RE.sub(r"\1\n", page)
+    return re.sub(r"(<path [^>]*/>|</title>|<text class=\"phase-label\"[^>]*>[^<]*</text>)(?!\n)", r"\1\n", page)
+
+
 def main(argv: list[str]) -> int:
     p = cli.parser("render_blueprint.py", "Render the static HTML blueprint")
     p.add_argument("--out", default=None, help="output path (default: <root>/artifacts/blueprint.html)")
@@ -355,7 +380,7 @@ def main(argv: list[str]) -> int:
     if not out.is_absolute():
         out = (Path.cwd() / out).resolve()
     assert_not_plugin_core(out)
-    page = build(proj)
+    page = readable(build(proj))
     atomic_write(out, page)
     cli.emit(args, {"written": str(out), "bytes": len(page.encode())}, lambda d: f"Blueprint written to {d['written']} ({d['bytes']:,} bytes)")
     return 0
