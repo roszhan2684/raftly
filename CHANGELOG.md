@@ -1,9 +1,24 @@
 # Changelog
 
-All notable changes to ForgeAI are documented here. The project follows [Semantic Versioning](https://semver.org/).
-Project state files carry their own `schema_version`. Schema changes ship with a migration in `skills/forge/scripts/migrate_schema.py`.
+All notable changes to Raftly are documented here. The project follows [Semantic Versioning](https://semver.org/).
+Project state files carry their own `schema_version`. Schema changes ship with a migration in `skills/raftly/scripts/migrate_schema.py`.
 
 ## [Unreleased]
+
+## [0.2.0] - 2026-10-24
+
+Groundwork for Cowork and the Claude apps (web, desktop, mobile). Claude Code remains the fully tested host.
+
+### Added
+- `raftly export` and `raftly import`: package a project's `.raftly/` and `artifacts/` as one zip and restore it,
+  so planning can continue across conversations in hosts with no lasting repository. Import accepts only Raftly
+  project files and refuses unsafe paths, links, oversized archives and overwriting without `--force`.
+- SKILL.md section "Where you are running": finds the skill folder when `${CLAUDE_SKILL_DIR}` isn't substituted,
+  picks the project folder per host, and exports a downloadable zip at the end of each turn in the Claude apps.
+
+### Changed
+- SKILL.md frontmatter follows the open Agent Skills format: trigger phrases moved into `description`,
+  `when_to_use` and `argument-hint` removed, `compatibility` added.
 
 ## [0.1.0] - 2026-10-24
 

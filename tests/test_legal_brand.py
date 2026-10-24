@@ -130,7 +130,7 @@ class Rebrand(unittest.TestCase):
         self.assertEqual(json.loads(check.stdout)["errors"], [])
         ctx = run(["skills/anvil/scripts/engine.py", "context", "--root", "examples/calculator"], self.repo)
         self.assertEqual(ctx.returncode, 0, ctx.stderr)
-        self.assertTrue(re.match(r"Anvil 0\.1\.0 context", ctx.stdout))
+        self.assertTrue(re.match(r"Anvil \d+\.\d+\.\d+ context", ctx.stdout))
         ci = (self.repo / ".github/workflows/ci.yml").read_text()
         self.assertNotIn("skills/raftly/", ci)
         self.assertIn("skills/anvil/scripts/engine.py", ci)

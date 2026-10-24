@@ -12,6 +12,7 @@
       gate       -> gate.py                learning -> learning.py
       blueprint  -> render_blueprint.py    deck     -> render_deck.py
       handoff    -> generate_handoff.py    migrate  -> migrate_schema.py
+      import, export -> bundle.py      (project as one zip, for hosts without a repository)
   engine.py version
 """
 
@@ -36,7 +37,7 @@ COMMANDS = {
     "init": "init_project", "inspect": "inspect_repo", "state": "state", "validate": "validate_project",
     "graph": "build_graph", "evidence": "evidence", "records": "records", "decisions": "decisions", "gate": "gate",
     "learning": "learning", "blueprint": "render_blueprint", "deck": "render_deck", "handoff": "generate_handoff",
-    "migrate": "migrate_schema",
+    "migrate": "migrate_schema", "export": "bundle", "import": "bundle",
 }
 
 
@@ -220,6 +221,8 @@ def main(argv: list[str]) -> int:
         print(f"{brand()['skill_command']}: unknown command {cmd!r}. Run engine.py --help.", file=sys.stderr)
         return 2
     module = importlib.import_module(COMMANDS[cmd])
+    if cmd in ("export", "import"):
+        rest = [cmd] + rest
     return module.main(rest) or 0
 
 

@@ -5,16 +5,19 @@ description: >-
   from idea to production. Use when the user invokes /raftly or asks Raftly to
   research a product, make product/design/architecture decisions, create a
   production blueprint, continue a Raftly project, audit production readiness,
-  explain past decisions, or determine what to build next.
-when_to_use: >-
-  "/raftly I want to build ...", "/raftly" in a repo with .raftly/, "/raftly build next",
-  "/raftly review", "/raftly launch", "/raftly doctor", "/raftly explain why X",
-  "/raftly handoff", "/raftly replay", "/raftly postmortem", "is this ready to launch?",
-  "what should I build next?", "migrate X to Y", "turn this idea into a product plan".
+  explain past decisions, or determine what to build next. Triggers: "/raftly I
+  want to build ...", "/raftly" in a project with .raftly/, "/raftly build next",
+  "review", "launch", "doctor", "explain why X", "handoff", "replay",
+  "postmortem", "is this ready to launch?", "what should I build next?",
+  "migrate X to Y", "turn this idea into a product plan", or an uploaded
+  *-raftly.zip project to continue.
 license: Apache-2.0
-argument-hint: "[idea or goal] | build next | review | launch | doctor | explain <question> | handoff | replay | postmortem"
+compatibility: >-
+  Needs Python 3.9+ and a shell (bundled scripts, standard library only).
+  Full support in Claude Code. In Cowork and the Claude apps it plans in a
+  working folder and hands back the project as a zip to upload next time.
 metadata:
-  version: 0.1.0
+  version: 0.2.0
   project: Raftly
 ---
 
@@ -31,6 +34,24 @@ User request: $ARGUMENTS
 Skill paths: scripts `${CLAUDE_SKILL_DIR}/scripts/`, references `${CLAUDE_SKILL_DIR}/references/`,
 templates `${CLAUDE_SKILL_DIR}/templates/`, constitution `${CLAUDE_SKILL_DIR}/core/CONSTITUTION.md`.
 Below, `raftly` means `python3 "${CLAUDE_SKILL_DIR}/scripts/engine.py"`. Run it from the project root.
+
+## 0. Where you are running
+
+- **Skill folder.** If the paths above still read literally `${CLAUDE_SKILL_DIR}` (not replaced by a
+  real path), the skill folder is the folder you read this SKILL.md from: use that absolute path
+  wherever `${CLAUDE_SKILL_DIR}` appears. If the request above still reads literally `$ARGUMENTS`,
+  the user's message is the request.
+- **Project folder.** In Claude Code it is the repository you are in. In Cowork it is the folder the
+  user shared with you. In a Claude app sandbox with no shared folder, create a working folder named
+  after the product and pass `--root <folder>` (or run from inside it). Never write inside the skill folder.
+- **No lasting repository (Claude apps).** Files in the sandbox are gone after the conversation. If the
+  user uploaded a `*-raftly.zip`, start with `raftly import <zip> --root <folder>`. At the end of every
+  turn that changed the project, run `raftly export --root <folder> --out <dir>`, where `<dir>` is the
+  folder this environment uses for files the user can download (for example `/mnt/user-data/outputs`
+  when it exists), and tell the user to upload that zip next time to continue. Also offer
+  `artifacts/blueprint.html` from the same place.
+- **Building and verifying code** (`build next`, `launch`) need the real repository and its tests.
+  Planning, decisions, blueprints and reviews work anywhere; for building, recommend Claude Code.
 
 ## 1. Every invocation: orient first
 
@@ -160,6 +181,7 @@ raftly gate {init, set, add, score, report} [--write]
 raftly learning {classify, record, propose, list}
 raftly blueprint             raftly deck [--kind launch]  raftly handoff
 raftly doctor                raftly validate [--blueprint-gate]                raftly migrate
+raftly export [--out DIR]    raftly import FILE.zip [--force]       (project as one zip; see section 0)
 ```
 
 Every command accepts `--json`. Run `raftly <cmd> --help` for flags. Field reference: [schemas.md](references/schemas.md).

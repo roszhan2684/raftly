@@ -39,3 +39,13 @@ Repository-maintenance tools (`scripts/check_release.py`, `scripts/rebrand.py`) 
 Note for other skill surfaces (claude.ai uploads, the Skills API): they accept only `name`, `description`, `license`,
 `compatibility`, `metadata` and `allowed-tools` in frontmatter. `when_to_use` and `argument-hint` are Claude Code fields. The
 skill targets Claude Code; trim those two fields if you package it for another surface.
+
+## Other Claude hosts (v0.2.0, not yet tested)
+
+| Host | What differs | How Raftly handles it |
+|---|---|---|
+| Cowork | `${CLAUDE_SKILL_DIR}` substitution not confirmed; the project is the folder the user shares | SKILL.md section 0 falls back to the folder the SKILL.md was read from; Raftly writes `.raftly/` into the shared folder |
+| Claude apps (web, desktop, mobile) | Skills run in the code-execution sandbox; no repository; files don't persist between conversations; `$ARGUMENTS` may not be substituted | Plans in a working folder passed with `--root`; `raftly export` writes `<project>-raftly.zip` to the downloads folder at the end of each turn; `raftly import` restores it next time |
+
+Building and verifying code (`build next`, `launch`) assume a real repository with tests, so the README recommends
+Claude Code for those. Mark these rows tested only after a live run in each host.

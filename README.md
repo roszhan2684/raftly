@@ -74,6 +74,17 @@ mkdir -p ~/.claude/skills && cp -R raftly/skills/raftly ~/.claude/skills/raftly
 You'll need Claude Code and Python 3.9+ on your `PATH` (the scripts use only the standard library). Update the plugin with
 `claude plugin update raftly@raftly`. If another plugin also defines `/raftly`, use the fully qualified `/raftly:raftly`.
 
+## Where it runs
+
+| Host | Status | How it works there |
+|---|---|---|
+| **Claude Code** (terminal, VS Code, JetBrains, desktop) | Supported and tested | Works in your repository: plans, builds, verifies and records evidence. |
+| **Cowork** | Early, not yet tested | Works in the folder you share with Claude. |
+| **Claude apps** (web, desktop, mobile) | Early, not yet tested | Plans in a temporary folder and gives you `<project>-raftly.zip` to download. Upload it in your next conversation to continue. Building and verifying code needs your real repository, so use Claude Code for that. |
+
+The zip holds only `.raftly/` and `artifacts/`. You can also make one yourself with `raftly export` and restore it with
+`raftly import`.
+
 ## Use
 
 | You type | Raftly does |
