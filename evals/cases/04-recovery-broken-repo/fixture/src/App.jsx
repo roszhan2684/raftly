@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 // TODO: hook up backend
-const API_KEY = 'sk-live-REPLACE-ME-0000000000';
+const API_KEY = 'DEMO-HARDCODED-VALUE-NOT-A-REAL-KEY'; // fixture: a hard-coded secret for Raftly to flag
 
 export default function App({ user }) {
   const [note, setNote] = useState('');

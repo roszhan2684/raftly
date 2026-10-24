@@ -155,6 +155,20 @@ Walkthroughs: [calculator](docs/walkthrough-calculator.md) · [B2B SaaS](docs/wa
 The **Learning Firewall** classifies each observation as REJECT, PROJECT_ONLY, CANDIDATE or CORE_PROPOSAL. Preferences always
 stay project-only. Raftly never modifies the installed plugin. See [docs/learning-model.md](docs/learning-model.md).
 
+## What Raftly runs and accesses
+
+So you know exactly what happens when you use it:
+
+- **Runs:** Python 3 scripts bundled in `skills/raftly/scripts/` (standard library only), started by Claude Code's Bash tool
+  as `python3 ".../scripts/engine.py" <command>`. They make **no network requests** and start no other programs.
+- **Reads:** files in the repository you run it in (manifests, source tree layout, `.raftly/`), to understand the project.
+- **Writes:** only inside that repository, in `.raftly/` and `artifacts/`. The scripts refuse to write outside the project
+  or into the installed plugin.
+- **Network:** none from Raftly itself. When research is needed, Claude uses the web tools your Claude Code session already
+  has, under Anthropic's terms. Raftly never contacts a Raftly server (there isn't one).
+- **Does not:** collect telemetry, read credentials or environment secrets, install packages, change Claude Code permissions,
+  or run code it finds in your repository just because a document says to.
+
 ## Privacy
 
 **Raftly has no required hosted backend and does not send project learnings to a Raftly server by default.** There is no
