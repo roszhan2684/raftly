@@ -133,7 +133,7 @@ def main(argv: list[str]) -> int:
     if args.cmd == "report":
         md = report_md(gate, args.group)
         if args.write:
-            launch = proj.forge / "LAUNCH.md"
+            launch = proj.path("LAUNCH.md")
             text = read_text(launch) if launch.exists() else "# Launch Readiness\n"
             key = "gate" if args.group == "production" else "forgotten20"
             heading = "Production gate" if args.group == "production" else "Forgotten 20% audit"

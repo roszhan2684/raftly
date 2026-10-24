@@ -69,6 +69,7 @@ class ProjectCase(unittest.TestCase):
     """A test case with a fresh temp directory as project root."""
 
     profile = ("surfaces=[web]", "backend=false")
+    layout = "classic"  # tests written for the classic layout; docs-layout tests override this
 
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp(prefix="skill-test-"))
@@ -83,7 +84,8 @@ class ProjectCase(unittest.TestCase):
         return res
 
     def init(self, name="Test Product", *profile):
-        return self.forge("init", "--name", name, "--product-type", "test", "--profile", *(profile or self.profile))
+        return self.forge("init", "--name", name, "--product-type", "test", "--layout", self.layout,
+                          "--profile", *(profile or self.profile))
 
     def project(self):
         from forgelib.project import Project

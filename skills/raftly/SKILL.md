@@ -17,7 +17,7 @@ compatibility: >-
   Full support in Claude Code. In Cowork and the Claude apps it plans in a
   working folder and hands back the project as a zip to upload next time.
 metadata:
-  version: 0.2.0
+  version: 0.3.0
   project: Raftly
 ---
 
@@ -41,15 +41,23 @@ Below, `raftly` means `python3 "${CLAUDE_SKILL_DIR}/scripts/engine.py"`. Run it 
   real path), the skill folder is the folder you read this SKILL.md from: use that absolute path
   wherever `${CLAUDE_SKILL_DIR}` appears. If the request above still reads literally `$ARGUMENTS`,
   the user's message is the request.
-- **Project folder.** In Claude Code it is the repository you are in. In Cowork it is the folder the
-  user shared with you. In a Claude app sandbox with no shared folder, create a working folder named
-  after the product and pass `--root <folder>` (or run from inside it). Never write inside the skill folder.
+- **Project folder.** In Claude Code it is the repository you are in. If `raftly context` reports
+  `Location: ... (not a project folder)` (a home, Desktop or Documents folder, or a folder of several
+  projects), don't write there: create a folder named after the product (`./<product-slug>`) and run
+  every command with `--root <product-slug>`. In Cowork it is the folder the user shared with you. In a
+  Claude app sandbox with no shared folder, create a working folder named after the product and pass
+  `--root <folder>`. Never write inside the skill folder.
+- **Where documents go.** A new project (a new or empty folder) gets the docs layout: every readable
+  document, decisions, features, prompts, the blueprint and the deck in `docs/`, and machine state in
+  `.raftly/`. An existing repository keeps everything in `.raftly/` and outputs in `artifacts/`. The
+  scripts choose this at `init` and route every path; `raftly context` prints `Documents: <dir>/`. Use
+  that folder whenever you read or write a document by hand.
 - **No lasting repository (Claude apps).** Files in the sandbox are gone after the conversation. If the
   user uploaded a `*-raftly.zip`, start with `raftly import <zip> --root <folder>`. At the end of every
   turn that changed the project, run `raftly export --root <folder> --out <dir>`, where `<dir>` is the
   folder this environment uses for files the user can download (for example `/mnt/user-data/outputs`
   when it exists), and tell the user to upload that zip next time to continue. Also offer
-  `artifacts/blueprint.html` from the same place.
+  `blueprint.html` (from the outputs folder) the same way.
 - **Building and verifying code** (`build next`, `launch`) need the real repository and its tests.
   Planning, decisions, blueprints and reviews work anywhere; for building, recommend Claude Code.
 
@@ -140,7 +148,7 @@ fast. A calculator needs minutes, not ceremonies.
 1. **Intake.** Classify the product type and profile (surfaces, backend?, accounts?, personal or sensitive
    data, payments, multi-tenant, AI, public site). Then `raftly init --name ... --product-type ... --profile k=v ...`.
    The profile drives which production checks apply.
-2. **Research**: [research-engine.md](references/research-engine.md). Summarise in `.raftly/RESEARCH.md`.
+2. **Research**: [research-engine.md](references/research-engine.md). Summarise in `RESEARCH.md` (in the documents folder).
 3. **Product** (strategy + product director): problem, ICP, jobs, MVP scope, exclusions, requirements
    (MUST/SHOULD/COULD/WONT), success metrics, kill criteria. Challenge unnecessary features.
    [product.md](references/product.md)
@@ -153,7 +161,10 @@ fast. A calculator needs minutes, not ceremonies.
 6. **Planning**: build graph (capabilities in dependency order, not weeks), feature specs, one implementation
    prompt per node, test strategy, production considerations (`raftly gate init`).
    [workflow.md](references/workflow.md) §Planning.
-7. **Blueprint gate.** Run `raftly validate --blueprint-gate`. When it passes: `raftly state stage BLUEPRINT_COMPLETE`,
+7. **Diagrams.** Draw the five product diagrams in `DIAGRAMS.md` (system architecture, user flow, screen
+   map, data model, critical-path sequence) as Mermaid, only from what the documents and ADRs say.
+   [diagrams.md](references/diagrams.md)
+8. **Blueprint gate.** Run `raftly validate --blueprint-gate`. When it passes: `raftly state stage BLUEPRINT_COMPLETE`,
    then generate the deliverable package ([documents.md](references/documents.md)), the blueprint artifact
    ([artifact-generation.md](references/artifact-generation.md)) and the deck
    ([presentation-generation.md](references/presentation-generation.md)).
@@ -247,6 +258,7 @@ that need professional review. See [skills/forge/examples/](examples/) for repor
 | `/raftly launch`, readiness, Forgotten 20% | [production-gate.md](references/production-gate.md) |
 | Writing the deliverable package | [documents.md](references/documents.md) |
 | Interactive/visual blueprint | [artifact-generation.md](references/artifact-generation.md) |
+| The five product diagrams (DIAGRAMS.md) | [diagrams.md](references/diagrams.md) |
 | Blueprint or launch deck | [presentation-generation.md](references/presentation-generation.md) |
 | `.raftly/` files, fields, IDs | [schemas.md](references/schemas.md) |
 

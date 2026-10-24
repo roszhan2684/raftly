@@ -1,11 +1,19 @@
-"""Access to a project's ``.raftly/`` directory."""
+"""Access to a project's ``.raftly/`` directory and, for new projects, its ``docs/`` folder.
+
+Two layouts:
+- classic: everything (machine state and readable documents) lives in ``.raftly/``;
+  build outputs go to ``artifacts/``. Used for existing repositories.
+- docs: machine state (YAML) stays in ``.raftly/``; every readable document and
+  document folder lives in ``docs/``, together with the build outputs. Used for
+  projects Raftly creates from scratch. Recorded as ``engine.docs_dir`` in state.yaml.
+"""
 
 from __future__ import annotations
 
 import datetime as _dt
 import os
 import re
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any, Iterable
 
 from . import FORGE_VERSION, SCHEMA_VERSION, model, yamlio
@@ -35,6 +43,22 @@ RECORD_DIRS = {
     "candidate": ("learning-candidates", "learning-candidate"),
     "postmortem": ("postmortems", "postmortem"),
 }
+
+# Document folders that move to docs/ in the docs layout. Project memory
+# (learnings/, learning-candidates/) stays with the machine state.
+DOC_DIRS = {"decisions", "features", "prompts", "research", "postmortems", "debt", "brand", "design"}
+DEFAULT_DOCS_DIR = "docs"
+
+
+def is_doc_path(relative: str) -> bool:
+    """True for a top-level Markdown document or anything inside a document folder."""
+    parts = PurePosixPath(str(relative).replace("\\", "/")).parts
+    if not parts:
+        return False
+    if len(parts) == 1:
+        return parts[0].lower().endswith(".md") or parts[0] in DOC_DIRS
+    return parts[0] in DOC_DIRS
+
 
 FRONTMATTER_RE = re.compile(r"\A---\n(.*?)\n---\n?", re.S)
 
@@ -79,6 +103,7 @@ class Project:
                     self.legacy_dir = self.root / legacy
                     self.forge = self.legacy_dir
                     break
+        self._docs_dir: str | None | bool = False  # False = not read yet
 
     # -- basics -------------------------------------------------------------
 
@@ -93,8 +118,37 @@ class Project:
             )
         return self
 
+    def docs_dir_name(self) -> str | None:
+        """``engine.docs_dir`` from state.yaml (docs layout), or None (classic layout)."""
+        if self._docs_dir is False:
+            name = None
+            state_file = self.forge / "state.yaml"
+            if state_file.exists():
+                try:
+                    name = ((yamlio.load_file(state_file) or {}).get("engine") or {}).get("docs_dir")
+                except yamlio.YAMLError:
+                    name = None
+            self._docs_dir = name or None
+        return self._docs_dir or None
+
+    def use_docs_dir(self, name: str | None) -> None:
+        """Set the layout before state.yaml exists (init)."""
+        self._docs_dir = name or None
+
+    @property
+    def docs(self) -> Path:
+        """Folder holding readable documents."""
+        name = self.docs_dir_name()
+        return resolve_inside(self.root, name) if name else self.forge
+
+    @property
+    def artifacts(self) -> Path:
+        """Folder for build outputs (blueprint.html, deck.md)."""
+        return self.docs if self.docs_dir_name() else self.root / "artifacts"
+
     def path(self, relative: str) -> Path:
-        return resolve_inside(self.forge, relative)
+        base = self.docs if is_doc_path(relative) else self.forge
+        return resolve_inside(base, relative)
 
     def write_text(self, relative: str, content: str) -> Path:
         p = self.path(relative)
@@ -176,7 +230,7 @@ class Project:
 
     def records(self, kind: str) -> list[tuple[Path, dict, str]]:
         directory, _ = RECORD_DIRS[kind]
-        d = self.forge / directory
+        d = self.path(directory)
         out = []
         if not d.is_dir():
             return out
@@ -243,7 +297,7 @@ class Project:
         return ids
 
     def prompts(self) -> list[Path]:
-        d = self.forge / "prompts"
+        d = self.path("prompts")
         return sorted(d.glob("[0-9][0-9][0-9]-*.md")) if d.is_dir() else []
 
 
@@ -251,10 +305,14 @@ STATE_HEADER = """Project state. Canonical source of truth for mode, stage and p
 Edit with scripts/state.py where possible; validate with scripts/validate_project.py."""
 
 
-def new_state(name: str, mode: str, product_type: str, profile: dict, stage: str = "INTAKE") -> dict:
+def new_state(name: str, mode: str, product_type: str, profile: dict, stage: str = "INTAKE",
+              docs_dir: str | None = None) -> dict:
     ts = now_iso()
+    engine = {"version": FORGE_VERSION, "schema_version": SCHEMA_VERSION}
+    if docs_dir:
+        engine["docs_dir"] = docs_dir
     return {
-        "engine": {"version": FORGE_VERSION, "schema_version": SCHEMA_VERSION},
+        "engine": engine,
         "project": {
             "name": name,
             "slug": slugify(name),

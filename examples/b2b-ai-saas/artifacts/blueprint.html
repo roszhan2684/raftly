@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SalesLens Blueprint</title>
 <meta name="description" content="Raftly product blueprint for SalesLens, rendered from .raftly state.">
-<meta name="generator" content="Raftly 0.1.0">
+<meta name="generator" content="Raftly 0.2.0">
 <style>/* Raftly static blueprint stylesheet. Inlined by scripts/render_blueprint.py.
    Brand override: .raftly/brand/tokens.json {"accent": "#hex", "accent_ink": "#hex", "font": "..."} */
 :root {
@@ -137,14 +137,14 @@ footer { max-width: 1160px; margin: 0 auto; padding: 0 16px 40px; color: var(--i
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="top"><div class="top-inner"><span class="brand">SalesLens<small>Blueprint</small></span>
-<nav class="sections" aria-label="Sections"><a href="#overview">Overview</a><a href="#product">Product</a><a href="#build">Build graph</a><a href="#features">Features</a><a href="#design">Design</a><a href="#architecture">Architecture</a><a href="#decisions">Decisions</a><a href="#risks">Risks &amp; assumptions</a><a href="#readiness">Security &amp; production readiness</a><a href="#launch">Launch</a></nav>
+<nav class="sections" aria-label="Sections"><a href="#overview">Overview</a><a href="#product">Product</a><a href="#build">Build graph</a><a href="#features">Features</a><a href="#design">Design</a><a href="#architecture">Architecture</a><a href="#diagrams">Diagrams</a><a href="#decisions">Decisions</a><a href="#risks">Risks &amp; assumptions</a><a href="#readiness">Security &amp; production readiness</a><a href="#launch">Launch</a></nav>
 <button class="theme-toggle" id="theme" type="button" aria-label="Toggle colour theme">Theme</button></div>
 </header>
 <main id="main">
 <div class="hero"><h1>SalesLens</h1>
 <p class="lede">An AI coaching assistant that ingests sales calls (upload or Zoom), transcribes them, and surfaces objections, competitor mentions and coaching moments, each with the exact quote and timestamp, in a manager review queue.</p>
-<div class="chips"><span class="chip">GREENFIELD</span><span class="chip">Stage: BLUEPRINT COMPLETE</span><span class="chip">b2b-ai-saas</span><span class="chip mono">Raftly 0.1.0</span></div>
-<p class="notice">Rendered 2026-10-24T11:00:00Z from <code>.raftly/</code>. This page is a view, not a source of truth: edit Raftly state and re-render.</p>
+<div class="chips"><span class="chip">GREENFIELD</span><span class="chip">Stage: BLUEPRINT COMPLETE</span><span class="chip">b2b-ai-saas</span><span class="chip mono">Raftly 0.2.0</span></div>
+<p class="notice">Rendered 2026-10-24T16:53:59Z from <code>.raftly/</code>. This page is a view, not a source of truth: edit Raftly state and re-render.</p>
 </div>
 <section class="card" id="overview" aria-labelledby="overview-h"><h2 id="overview-h">Overview</h2>
 <p class="sub">Where the product stands, derived from state.yaml, build-graph.yaml and gate.yaml.</p>
@@ -480,6 +480,151 @@ footer { max-width: 1160px; margin: 0 auto; padding: 0 16px 40px; color: var(--i
 </table>
 </div>
 </section>
+<section class="card" id="diagrams" aria-labelledby="diagrams-h"><h2 id="diagrams-h">Diagrams</h2>
+<p class="sub">Five product diagrams from DIAGRAMS.md. They render as pictures on GitHub and in Markdown viewers that support Mermaid.</p>
+<h3>System architecture</h3>
+<p>A TypeScript modular monolith (ADR-001): a <code>web</code> process and a <code>worker</code> process share the domain modules. PostgreSQL with row-level security holds all relational data and the job queue (ADR-002, ADR-005). Audio lives in object storage under per-tenant prefixes (ADR-004).</p>
+<details open><summary>Mermaid source (flowchart)</summary><pre><code>flowchart LR
+  browser([&quot;Browser: admins, managers, reps&quot;])
+  web[&quot;web: Next.js UI + API routes&quot;]
+  worker[&quot;worker: pg-boss consumers&quot;]
+  db[(&quot;PostgreSQL: RLS tenancy + job queue&quot;)]
+  obj[(&quot;Object storage: org/{id}/...&quot;)]
+  zoom[&quot;Zoom API + webhooks&quot;]:::ext
+  stripe[&quot;Stripe Billing&quot;]:::ext
+  stt[&quot;Speech-to-text: provider undecided&quot;]:::ext
+  llm[&quot;LLM API: Anthropic&quot;]:::ext
+  mail[&quot;Email: provider undecided&quot;]:::ext
+  browser --&gt;|HTTPS| web
+  browser --&gt;|presigned upload| obj
+  web --&gt;|&quot;reads, writes, enqueues&quot;| db
+  db --&gt;|jobs| worker
+  worker --&gt;|reads audio| obj
+  worker --&gt;|import recordings| zoom
+  worker --&gt;|TranscriptionProvider| stt
+  worker --&gt;|ExtractionProvider| llm
+  worker --&gt;|report usage| stripe
+  worker --&gt;|digests| mail
+  zoom -. verified webhooks .-&gt; web
+  stripe -. verified webhooks .-&gt; web
+  classDef ext stroke-dasharray: 5 5</code></pre>
+</details><h3>User flow</h3>
+<p>The manager triage flow from DESIGN.md, from a call arriving to a rep reading shared coaching, including the processing-failure branch.</p>
+<details open><summary>Mermaid source (flowchart)</summary><pre><code>flowchart TD
+  start([Call arrives]) --&gt; src{&quot;Source&quot;}
+  src --&gt;|upload| consent[&quot;Attest recording consent&quot;]
+  src --&gt;|Zoom import| consent
+  consent --&gt; process[&quot;Transcribe, then extract insights&quot;]
+  process --&gt;|ready| queue[&quot;Manager&#x27;s coaching queue&quot;]
+  process --&gt;|failed| failed[&quot;Call shows reason + retry&quot;]
+  failed --&gt; process
+  queue --&gt; review{&quot;Review insight with quote + audio&quot;}
+  review --&gt;|dismiss with reason| queue
+  review --&gt;|accept or edit| note[&quot;Add coaching note&quot;]
+  note --&gt; share[&quot;Share with the rep&quot;]
+  share --&gt; rep[&quot;Rep sees it in My coaching&quot;]
+  rep --&gt; reply([Rep replies or marks read])</code></pre>
+</details><h3>Screen map and navigation</h3>
+<p>Direction A, coaching queue first (ADR-009). Managers land on the queue; reps land on My coaching; settings screens are admin-only.</p>
+<details open><summary>Mermaid source (flowchart)</summary><pre><code>flowchart LR
+  signin[&quot;Sign in&quot;] --&gt; role{&quot;Role&quot;}
+  role --&gt;|manager| queue[&quot;Coaching queue (home)&quot;]
+  role --&gt;|rep| feed[&quot;My coaching&quot;]
+  role --&gt;|admin| queue
+  queue --&gt; callDetail[&quot;Call detail: audio, transcript, insights&quot;]
+  calls[&quot;Calls list&quot;] --&gt; callDetail
+  queue --&gt; calls
+  calls --&gt; upload[&quot;Upload + consent&quot;]
+  queue --&gt; trends[&quot;Trends&quot;]
+  trends --&gt;|drill into evidence| callDetail
+  feed --&gt; mycalls[&quot;My calls&quot;] --&gt; callDetail
+  queue --&gt; settings[&quot;Settings (admin)&quot;]
+  settings --&gt; integrations[&quot;Integrations: Zoom&quot;]
+  settings --&gt; billing[&quot;Billing&quot;]
+  settings --&gt; audit[&quot;Audit log&quot;]
+  settings --&gt; org[&quot;Org settings: retention, consent&quot;]</code></pre>
+</details><h3>Data model</h3>
+<p>Shared schema with <code>org_id</code> on every tenant table and RLS policies (ADR-002, DATA_MODEL.md). Billing and governance tables are summarised.</p>
+<details open><summary>Mermaid source (erDiagram)</summary><pre><code>erDiagram
+  ORGS ||--o{ MEMBERSHIPS : has
+  ORGS ||--o{ TEAMS : has
+  TEAMS ||--o{ TEAM_MEMBERS : has
+  ORGS ||--o{ CALLS : owns
+  CALLS ||--o| TRANSCRIPTS : has
+  TRANSCRIPTS ||--o{ TRANSCRIPT_SEGMENTS : has
+  CALLS ||--o{ INSIGHTS : yields
+  INSIGHTS ||--o{ INSIGHT_REVIEWS : reviewed_by
+  INSIGHTS ||--o{ COACHING_NOTES : shared_as
+  CALLS }o--|| CONSENT_ATTESTATIONS : requires
+  ORGS ||--o{ USAGE_EVENTS : meters
+  ORGS ||--o{ AUDIT_EVENTS : logs
+  ORGS {
+    uuid id PK
+    text name
+    int retention_audio_days
+    enum status
+  }
+  CALLS {
+    uuid id PK
+    uuid org_id FK
+    uuid rep_user_id FK
+    enum source
+    text storage_key
+    text content_hash
+    enum status
+    uuid consent_attestation_id FK
+  }
+  INSIGHTS {
+    uuid id PK
+    uuid org_id FK
+    uuid call_id FK
+    text type
+    text quote
+    float confidence
+    text prompt_version
+  }
+  COACHING_NOTES {
+    uuid id PK
+    uuid org_id FK
+    uuid insight_id FK
+    uuid author_id FK
+    timestamp shared_at
+    timestamp read_at
+  }</code></pre>
+</details><h3>Critical path sequence</h3>
+<p>Upload to insights: the path every customer depends on. Retries with backoff and a dead-letter queue for the speech provider; invalid AI output is discarded, not shown (ARCHITECTURE.md failure behaviour).</p>
+<details open><summary>Mermaid source (sequenceDiagram)</summary><pre><code>sequenceDiagram
+  actor M as Manager
+  participant W as web
+  participant S as Object storage
+  participant DB as PostgreSQL
+  participant K as worker
+  participant T as Speech-to-text
+  participant L as LLM
+  M-&gt;&gt;W: start upload + attest consent
+  W-&gt;&gt;DB: save call, attestation (org_id, RLS)
+  W--&gt;&gt;M: presigned upload URL
+  M-&gt;&gt;S: upload audio (resumable)
+  W-&gt;&gt;DB: enqueue transcribe job
+  K-&gt;&gt;DB: claim job
+  K-&gt;&gt;T: transcribe(audio)
+  alt provider down or timeout
+    T--&gt;&gt;K: error
+    K-&gt;&gt;DB: retry with backoff, dead-letter after 3
+    W--&gt;&gt;M: Transcribing... delayed
+  else transcript ready
+    T--&gt;&gt;K: segments
+    K-&gt;&gt;L: extract insights (structured output)
+    alt invalid output
+      L--&gt;&gt;K: fails schema
+      K-&gt;&gt;K: discard, retry, then fallback model
+    else valid
+      L--&gt;&gt;K: insights with quotes + timestamps
+      K-&gt;&gt;DB: save insights, usage event
+      W--&gt;&gt;M: queue updated, ready notification
+    end
+  end</code></pre>
+</details></section>
 <section class="card" id="decisions" aria-labelledby="decisions-h"><h2 id="decisions-h">Decisions</h2>
 <p class="sub">Chronological Decision Book. Overrides and superseded decisions stay visible.</p>
 <ol class="timeline"><li class=""><div class="t-head"><span class="mono">ADR-001</span><span class="t-title">Modular monolith in TypeScript: Next.js web/API plus a background worker</span><span class="status s-ok">ACCEPTED</span><span class="chip">Type-1</span></div>
@@ -679,7 +824,7 @@ footer { max-width: 1160px; margin: 0 auto; padding: 0 16px 40px; color: var(--i
 </div>
 </section>
 </main>
-<footer>Generated by Raftly 0.1.0 · render_blueprint.py · Statuses and scores are derived from recorded evidence only.
+<footer>Generated by Raftly 0.2.0 · render_blueprint.py · Statuses and scores are derived from recorded evidence only.
 Raftly provides engineering/product readiness analysis, not legal, compliance or security certification.</footer>
 <script>
 (function () {

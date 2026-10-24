@@ -85,7 +85,7 @@ def main(argv: list[str]) -> int:
         return 0
     if cmd == "next":
         ready = graph.unblocked(nodes, allow_unverified=args.allow_unverified)
-        prompts_dir = proj.forge / "prompts"
+        prompts_dir = proj.path("prompts")
         out = []
         for n in ready if args.all else ready[:1]:
             out.append({
@@ -165,7 +165,7 @@ def main(argv: list[str]) -> int:
         cli.emit(args, node, lambda d: f"{d['id']} -> {d['status']}")
         return 0
     if cmd == "render":
-        build = proj.forge / "BUILD.md"
+        build = proj.path("BUILD.md")
         text = read_text(build) if build.exists() else "# Product Build Document\n"
         text = docs.replace_section(text, "graph", render_section(nodes), heading="Build graph")
         proj.write_text("BUILD.md", text)

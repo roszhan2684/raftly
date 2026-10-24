@@ -5,14 +5,14 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from . import SCHEMA_VERSION, docs, graph, model, yamlio
+from . import SCHEMA_VERSION, diagrams, docs, graph, model, yamlio
 from . import evidence as ev
 from . import gate as gatelib
 from .fsutil import SKILL_ROOT, read_text
 from .project import RECORD_DIRS, REGISTRIES, ForgeError, Project, parse_frontmatter
 from .schema import validate_named
 
-CORE_DOCS = ["PRODUCT.md", "ARCHITECTURE.md", "DECISIONS.md", "BUILD.md", "EXECUTIVE.md"]
+CORE_DOCS = ["PRODUCT.md", "ARCHITECTURE.md", "DECISIONS.md", "BUILD.md", "EXECUTIVE.md", diagrams.DIAGRAMS_DOC]
 DESIGN_DOCS = ["DESIGN.md", "DESIGN_SYSTEM.md"]
 
 CERT_CLAIM_RE = re.compile(
@@ -45,7 +45,7 @@ def blueprint_gaps(project: Project) -> list[str]:
     if bp.get("data") not in ("NOT_APPLICABLE", None) and (state["project"].get("profile") or {}).get("backend"):
         required.append("DATA_MODEL.md")
     for d in required:
-        if not (project.forge / d).exists():
+        if not project.path(d).exists():
             gaps.append(f"missing document {d}")
     reqs = [r for r in project.registry("requirements.yaml") if r.get("status") == "ACTIVE"]
     musts = [r for r in reqs if r.get("priority") == "MUST"]
@@ -77,7 +77,13 @@ def blueprint_gaps(project: Project) -> list[str]:
             for pr in n.get("prompts", []):
                 if pr not in prompt_names:
                     gaps.append(f"{n['id']} references missing prompt {pr}")
-    build = project.forge / "BUILD.md"
+    dia = project.path(diagrams.DIAGRAMS_DOC)
+    if dia.exists():
+        dia_text = read_text(dia)
+        gaps.extend(diagrams.problems(dia_text))
+        if PLACEHOLDER_RE.search(dia_text):
+            gaps.append("DIAGRAMS.md still has template placeholders (TBD)")
+    build = project.path("BUILD.md")
     if build.exists() and not re.search(r"^#{2,3} .*test", read_text(build), re.I | re.M):
         gaps.append("BUILD.md has no test strategy section")
     if project.gate() is None:
@@ -123,7 +129,7 @@ def validate(project: Project) -> dict:
     # 3. markdown records
     records: dict[str, dict[str, tuple[Path, dict, str]]] = {k: {} for k in RECORD_DIRS}
     for kind, (directory, schema) in RECORD_DIRS.items():
-        d = project.forge / directory
+        d = project.path(directory)
         if not d.is_dir():
             continue
         for p in sorted(d.glob("*.md")):
@@ -241,8 +247,12 @@ def validate(project: Project) -> dict:
         if nn not in node_ids:
             errors.append(f"state.execution.next_nodes: {nn} not in build graph")
     for docname, meta in (state.get("documents") or {}).items():
-        if meta.get("status") != "NOT_APPLICABLE" and not (project.forge / docname).exists():
+        if meta.get("status") != "NOT_APPLICABLE" and not project.path(docname).exists():
             errors.append(f"state.documents lists {docname} but the file does not exist")
+
+    dia = project.path(diagrams.DIAGRAMS_DOC)
+    if dia.exists() and (state.get("blueprint") or {}).get("status") != "COMPLETE":
+        warnings += diagrams.problems(read_text(dia))
 
     # 5. graph
     errors += [f"build-graph: {p}" for p in graph.problems(nodes)]
@@ -290,8 +300,11 @@ def validate(project: Project) -> dict:
             errors.append(f"blueprint marked COMPLETE but: {g}")
 
     # 9. document language (rule 17) and placeholders (quality rules)
-    for p in sorted(project.forge.rglob("*.md")):
-        rel = p.relative_to(project.forge)
+    md_files = [(p, p.relative_to(project.forge)) for p in sorted(project.forge.rglob("*.md"))]
+    if project.docs != project.forge and project.docs.is_dir():
+        md_files += [(p, p.relative_to(project.docs)) for p in sorted(project.docs.rglob("*.md"))
+                     if p.name not in ("deck.md", "launch-deck.md")]
+    for p, rel in md_files:
         text = read_text(p)
         for m in CERT_CLAIM_RE.finditer(text):
             before = text[max(0, m.start() - 60): m.start()]

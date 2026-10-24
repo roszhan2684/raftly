@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tally Blueprint</title>
 <meta name="description" content="Raftly product blueprint for Tally, rendered from .raftly state.">
-<meta name="generator" content="Raftly 0.1.0">
+<meta name="generator" content="Raftly 0.2.0">
 <style>/* Raftly static blueprint stylesheet. Inlined by scripts/render_blueprint.py.
    Brand override: .raftly/brand/tokens.json {"accent": "#hex", "accent_ink": "#hex", "font": "..."} */
 :root {
@@ -137,14 +137,14 @@ footer { max-width: 1160px; margin: 0 auto; padding: 0 16px 40px; color: var(--i
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="top"><div class="top-inner"><span class="brand">Tally<small>Blueprint</small></span>
-<nav class="sections" aria-label="Sections"><a href="#overview">Overview</a><a href="#product">Product</a><a href="#build">Build graph</a><a href="#features">Features</a><a href="#design">Design</a><a href="#architecture">Architecture</a><a href="#decisions">Decisions</a><a href="#risks">Risks &amp; assumptions</a><a href="#readiness">Security &amp; production readiness</a><a href="#launch">Launch</a></nav>
+<nav class="sections" aria-label="Sections"><a href="#overview">Overview</a><a href="#product">Product</a><a href="#build">Build graph</a><a href="#features">Features</a><a href="#design">Design</a><a href="#architecture">Architecture</a><a href="#diagrams">Diagrams</a><a href="#decisions">Decisions</a><a href="#risks">Risks &amp; assumptions</a><a href="#readiness">Security &amp; production readiness</a><a href="#launch">Launch</a></nav>
 <button class="theme-toggle" id="theme" type="button" aria-label="Toggle colour theme">Theme</button></div>
 </header>
 <main id="main">
 <div class="hero"><h1>Tally</h1>
 <p class="lede">Tally is a calculator for iOS, Android and the web that shows exactly what it will compute and gets decimals right, with no backend and no data collection.</p>
-<div class="chips"><span class="chip">GREENFIELD</span><span class="chip">Stage: BLUEPRINT COMPLETE</span><span class="chip">consumer-utility</span><span class="chip mono">Raftly 0.1.0</span></div>
-<p class="notice">Rendered 2026-10-24T09:28:20Z from <code>.raftly/</code>. This page is a view, not a source of truth: edit Raftly state and re-render.</p>
+<div class="chips"><span class="chip">GREENFIELD</span><span class="chip">Stage: BLUEPRINT COMPLETE</span><span class="chip">consumer-utility</span><span class="chip mono">Raftly 0.2.0</span></div>
+<p class="notice">Rendered 2026-10-24T16:53:58Z from <code>.raftly/</code>. This page is a view, not a source of truth: edit Raftly state and re-render.</p>
 </div>
 <section class="card" id="overview" aria-labelledby="overview-h"><h2 id="overview-h">Overview</h2>
 <p class="sub">Where the product stands, derived from state.yaml, build-graph.yaml and gate.yaml.</p>
@@ -411,6 +411,99 @@ footer { max-width: 1160px; margin: 0 auto; padding: 0 16px 40px; color: var(--i
 </table>
 </div>
 </section>
+<section class="card" id="diagrams" aria-labelledby="diagrams-h"><h2 id="diagrams-h">Diagrams</h2>
+<p class="sub">Five product diagrams from DIAGRAMS.md. They render as pictures on GitHub and in Markdown viewers that support Mermaid.</p>
+<h3>System architecture</h3>
+<p>A client-only app (ADR-001): one Expo + React Native Web codebase (ADR-004) runs on the phone or in the browser. All maths happens in a pure TypeScript engine (ADR-002) with decimal.js (ADR-003). History stays on the device.</p>
+<details open><summary>Mermaid source (flowchart)</summary><pre><code>flowchart LR
+  user([User]) --&gt; ui
+  subgraph device[&quot;User&#x27;s device: iOS, Android or browser&quot;]
+    ui[&quot;UI layer: keypad, display, history drawer&quot;] --&gt;|tokens| engine[&quot;Engine: tokenizer, parser, evaluator&quot;]
+    engine --&gt;|EvalResult| ui
+    engine --- dec[(decimal.js)]
+    ui --&gt;|onEvaluated| hist[&quot;History store&quot;]
+    hist --&gt; storage[(&quot;On-device storage: AsyncStorage / localStorage&quot;)]
+  end
+  subgraph dist[&quot;Distribution only, no runtime calls&quot;]
+    stores[&quot;App Store / Google Play&quot;]
+    host[&quot;Static web host + service worker&quot;]
+  end
+  stores -. install .-&gt; device
+  host -. load once, then offline .-&gt; device</code></pre>
+</details><h3>User flow</h3>
+<p>The three key flows from DESIGN.md: calculate, reuse a result from history, copy. Errors stay inline, never in a dialog.</p>
+<details open><summary>Mermaid source (flowchart)</summary><pre><code>flowchart TD
+  open([Open Tally]) --&gt; type[&quot;Type or tap an expression&quot;]
+  type --&gt; preview[&quot;Live preview shows the provisional result&quot;]
+  preview --&gt; eq{&quot;Press =&quot;}
+  eq --&gt;|valid| result[&quot;Result shown large, saved to history&quot;]
+  eq --&gt;|divide by zero / overflow| err[&quot;Inline message: Can&#x27;t divide by zero&quot;]
+  err --&gt; type
+  result --&gt; next{&quot;Next?&quot;}
+  next --&gt;|keep calculating| type
+  next --&gt;|copy| copied[&quot;Copied toast&quot;]
+  next --&gt;|open history| history[&quot;History drawer&quot;]
+  history --&gt;|tap an entry| insert[&quot;Result inserted into the expression&quot;]
+  insert --&gt; type</code></pre>
+</details><h3>Screen map and navigation</h3>
+<p>One screen plus a history surface (DESIGN.md, ADR-005). History is a bottom sheet on phones and a side panel at 900 px and wider; the shortcuts dialog exists on the web only.</p>
+<details open><summary>Mermaid source (stateDiagram-v2)</summary><pre><code>stateDiagram-v2
+  [*] --&gt; Main
+  Main: SCR-main Calculator
+  History: SCR-history History
+  Shortcuts: Keyboard shortcuts (web)
+  Main --&gt; History: swipe up / history button / panel on wide screens
+  History --&gt; Main: tap an entry or Escape
+  Main --&gt; Shortcuts: press ?
+  Shortcuts --&gt; Main: Escape
+  History --&gt; History: confirm clear all (inline)</code></pre>
+</details><h3>Data model</h3>
+<p>No server and no personal data (blueprint data section: NOT_APPLICABLE). The only data is the engine state and up to 100 history entries on the device (F001, F003).</p>
+<details open><summary>Mermaid source (classDiagram)</summary><pre><code>classDiagram
+  class EngineState {
+    tokens: Token[]
+    lastOperation: op + operand
+    lastResult: exact decimal string
+  }
+  class HistoryEntry {
+    id: string
+    expression: string
+    resultExact: decimal string
+    createdAt: timestamp
+  }
+  class HistoryStore {
+    entries: max 100, newest first
+    add(entry)
+    clear()
+  }
+  EngineState ..&gt; HistoryEntry : evaluate() creates
+  HistoryStore &quot;1&quot; o-- &quot;0..100&quot; HistoryEntry</code></pre>
+</details><h3>Critical path sequence</h3>
+<p>Pressing <code>=</code>: the most important path in the product. Exact maths, display-only rounding, and an inline error instead of a crash (ARCHITECTURE.md failure behaviour, ADR-006).</p>
+<details open><summary>Mermaid source (sequenceDiagram)</summary><pre><code>sequenceDiagram
+  actor U as User
+  participant UI as UI layer
+  participant E as Engine
+  participant H as History store
+  participant S as Device storage
+  U-&gt;&gt;UI: press =
+  UI-&gt;&gt;E: evaluate(tokens, state)
+  E-&gt;&gt;E: tokenize, parse with precedence, compute with decimal.js
+  alt valid expression
+    E--&gt;&gt;UI: EvalResult value, display
+    UI--&gt;&gt;U: show result, announce it to screen readers
+    UI-&gt;&gt;H: add(expression, resultExact)
+    H-&gt;&gt;S: save
+    alt storage unavailable
+      S--&gt;&gt;H: error
+      H--&gt;&gt;UI: session-only history
+      UI--&gt;&gt;U: note: History won&#x27;t be saved
+    end
+  else divide by zero or overflow
+    E--&gt;&gt;UI: error value
+    UI--&gt;&gt;U: inline message, next key starts fresh
+  end</code></pre>
+</details></section>
 <section class="card" id="decisions" aria-labelledby="decisions-h"><h2 id="decisions-h">Decisions</h2>
 <p class="sub">Chronological Decision Book. Overrides and superseded decisions stay visible.</p>
 <ol class="timeline"><li class=""><div class="t-head"><span class="mono">ADR-001</span><span class="t-title">Client-only architecture: no backend, accounts or database</span><span class="status s-ok">ACCEPTED</span><span class="chip">Type-1</span></div>
@@ -591,7 +684,7 @@ footer { max-width: 1160px; margin: 0 auto; padding: 0 16px 40px; color: var(--i
 </div>
 </section>
 </main>
-<footer>Generated by Raftly 0.1.0 · render_blueprint.py · Statuses and scores are derived from recorded evidence only.
+<footer>Generated by Raftly 0.2.0 · render_blueprint.py · Statuses and scores are derived from recorded evidence only.
 Raftly provides engineering/product readiness analysis, not legal, compliance or security certification.</footer>
 <script>
 (function () {

@@ -7,7 +7,7 @@ Markdown (`---` slide separators, `<!-- notes -->` speaker notes) and also reads
 fine as plain Markdown or in Slidev/reveal-md. Content is derived from Raftly
 documents; anything missing is labelled, never invented.
 
-  render_deck.py [--root DIR] [--kind blueprint|launch] [--out artifacts/deck.md]
+  render_deck.py [--root DIR] [--kind blueprint|launch] [--out FILE]   (default: artifacts/deck.md, or docs/deck.md in the docs layout)
 """
 
 from __future__ import annotations
@@ -26,7 +26,7 @@ MISSING = "_Not yet defined in Raftly state — Raftly will not invent this._"
 
 
 def d(proj, name):
-    p = proj.forge / name
+    p = proj.path(name)
     return read_text(p) if p.exists() else ""
 
 
@@ -65,7 +65,7 @@ def deck(proj, kind: str) -> str:
     readiness = (f"**{sc['readiness']}** · evidence coverage {round((sc['coverage'] or 0) * 100)}%"
                  + (f" · score {round(sc['score'] * 100)}%" if sc and sc["score"] is not None else " · no score without evidence")) if sc else "Gate not evaluated yet."
     brand = {}
-    bpath = proj.forge / "brand" / "tokens.json"
+    bpath = proj.path("brand/tokens.json")
     if bpath.exists():
         try:
             brand = json.loads(read_text(bpath))
@@ -118,7 +118,7 @@ def main(argv: list[str]) -> int:
     p.add_argument("--out", default=None)
     args = p.parse_args(argv)
     proj = cli.project(args).require()
-    out = Path(args.out) if args.out else proj.root / "artifacts" / ("deck.md" if args.kind == "blueprint" else "launch-deck.md")
+    out = Path(args.out) if args.out else proj.artifacts / ("deck.md" if args.kind == "blueprint" else "launch-deck.md")
     if not out.is_absolute():
         out = (Path.cwd() / out).resolve()
     assert_not_plugin_core(out)

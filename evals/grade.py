@@ -31,7 +31,10 @@ from forgelib.project import Project  # noqa: E402
 
 
 def docs_text(proj: Project) -> dict[str, str]:
-    return {p.relative_to(proj.forge).as_posix(): read_text(p) for p in proj.forge.rglob("*.md")}
+    out = {p.relative_to(proj.forge).as_posix(): read_text(p) for p in proj.forge.rglob("*.md")}
+    if proj.docs != proj.forge and proj.docs.is_dir():  # docs layout: documents live in docs/
+        out.update({p.relative_to(proj.docs).as_posix(): read_text(p) for p in proj.docs.rglob("*.md")})
+    return out
 
 
 def dotted(data: dict, path: str):
@@ -88,15 +91,15 @@ def check(a: dict, proj: Project, fixture: Path | None) -> tuple[str, str]:
                and fm["override"].get("consequences") and not fm["override"]["consequences"].startswith("TBD")]
         return ok(bool(hit), f"override ADRs with consequences: {hit}")
     if t == "doc_exists":
-        return ok((proj.forge / a["file"]).exists(), a["file"])
+        return ok(proj.path(a["file"]).exists(), a["file"])
     if t == "doc_contains":
-        p = proj.forge / a["file"]
+        p = proj.path(a["file"])
         return ok(p.exists() and re.search(a["pattern"], read_text(p)) is not None, f"{a['file']} ~ {a['pattern']}")
     if t == "any_doc_contains":
         hit = [k for k, v in docs_text(proj).items() if re.search(a["pattern"], v)]
         return ok(bool(hit), f"found in {hit[:3]}")
-    if t == "no_doc_contains":
-        hit = [k for k, v in docs_text(proj).items() if re.search(a["pattern"], v)]
+    if t == "no_doc_contains":  # optional "file" limits the check to one document
+        hit = [k for k, v in docs_text(proj).items() if re.search(a["pattern"], v) and a.get("file", k) == k]
         return ok(not hit, f"found in {hit[:3]}" if hit else "none")
     if t == "min_count":
         n = {"prompts": len(proj.prompts()), "features": len(proj.records("feature")), "decisions": len(decisions),

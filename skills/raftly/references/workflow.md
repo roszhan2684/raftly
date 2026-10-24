@@ -64,7 +64,7 @@ Stop only for genuine FOUNDER decisions, and batch those.
 ### RESEARCH
 - List the open questions. Each one is *researchable* (current docs, licensing, competitors,
   regulations), *assumable* (record as an assumption with a validation method) or *founder-only*.
-- Research the researchable ones that are material (see research-engine.md). Write `.raftly/RESEARCH.md`
+- Research the researchable ones that are material (see research-engine.md). Write `RESEARCH.md`
   from `templates/docs/RESEARCH.md`. Put longer notes in `.raftly/research/<topic>.md`.
 - Record assumptions: `raftly records add assumption --statement ... --confidence 40 --impact high --impact-if-false ... --validation ...`.
 
@@ -74,7 +74,7 @@ Stop only for genuine FOUNDER decisions, and batch those.
 - Requirements: `raftly records add requirement --statement "..." --priority MUST --rationale "..."`.
   Write them as observable outcomes, not implementation.
 - Experiments with kill criteria: `raftly records add experiment ...` for the riskiest assumptions.
-- Write `.raftly/PRODUCT.md` (template). Then `raftly state blueprint product COMPLETE`.
+- Write `PRODUCT.md` (template). Then `raftly state blueprint product COMPLETE`.
 
 ### DESIGN
 - When the product has a UI, follow ux-design.md: IA, navigation, **2–3 genuinely different directions**

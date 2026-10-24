@@ -5,7 +5,22 @@ Project state files carry their own `schema_version`. Schema changes ship with a
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-24
+
+### Added
+- **Project folder and `docs/` layout for new projects.** If `/raftly` starts somewhere that isn't a project
+  (a home, Desktop or Documents folder, or a folder of several projects), `raftly context` says so and Raftly
+  creates a folder named after the product. A new project keeps every readable document, decisions,
+  features, prompts, the blueprint and the deck in `docs/`, with the YAML state in `.raftly/`
+  (`engine.docs_dir` in state.yaml). Existing repositories keep the classic `.raftly/` + `artifacts/` layout,
+  and Raftly never writes into an existing `docs/` folder. `init --layout auto|docs|classic` overrides.
+- **`DIAGRAMS.md`, the five product diagrams**, as Mermaid: system architecture, user flow, screen map and
+  navigation, data model, and the critical-path sequence. Template, guidance (`references/diagrams.md`),
+  validation of each diagram's presence and type, a Blueprint Completion Gate requirement, a Diagrams section
+  in `blueprint.html`, and complete diagrams in both shipped examples (all render with the Mermaid CLI).
+
 ### Changed
+- The eval grader reads documents from either layout; `no_doc_contains` can target one file.
 - New "Sunrise" gradient-orb logo for the website (favicon, touch icon, header logo) and the README. The plugin's
   directory listing icon is unchanged.
 

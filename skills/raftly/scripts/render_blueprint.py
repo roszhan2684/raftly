@@ -5,7 +5,7 @@ The blueprint is a *view* of canonical Raftly data, never a competing source of
 truth: every number and status is derived from .raftly files, and missing data is
 shown as an explicit empty state rather than invented.
 
-  render_blueprint.py [--root DIR] [--out artifacts/blueprint.html]
+  render_blueprint.py [--root DIR] [--out FILE]   (default: artifacts/blueprint.html, or docs/blueprint.html in the docs layout)
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from forgelib import FORGE_VERSION, cli, docs, graph, mdhtml, model  # noqa: E402
+from forgelib import FORGE_VERSION, cli, diagrams, docs, graph, mdhtml, model  # noqa: E402
 from forgelib.brand import name as brand_name  # noqa: E402
 from forgelib import gate as gatelib  # noqa: E402
 from forgelib.fsutil import SKILL_ROOT, assert_not_plugin_core, atomic_write, read_text  # noqa: E402
@@ -46,7 +46,7 @@ def chip(status: str) -> str:
 
 
 def doc(proj, name: str) -> str:
-    p = proj.forge / name
+    p = proj.path(name)
     return read_text(p) if p.exists() else ""
 
 
@@ -122,7 +122,7 @@ def build(proj) -> str:
             or p.get("summary") or "Blueprint in progress.")
 
     css = read_text(SKILL_ROOT / "assets" / "blueprint.css")
-    brand = proj.forge / "brand" / "tokens.json"
+    brand = proj.path("brand/tokens.json")
     if brand.exists():
         try:
             tokens = json.loads(read_text(brand))
@@ -247,6 +247,27 @@ def build(proj) -> str:
                  f'<tbody>{dep_rows}</tbody></table></div>') if dep_rows else ""
     add("architecture", "Architecture", "From ARCHITECTURE.md and dependencies.yaml.",
         ("".join(aparts) if aparts else empty("ARCHITECTURE.md not written yet.")) + dep_table)
+
+    # diagrams
+    dia_text = doc(proj, diagrams.DIAGRAMS_DOC)
+    dparts = []
+    if dia_text:
+        for d in diagrams.parse(dia_text):
+            if d["status"] == "missing":
+                dparts.append(f"<h3>{E(d['title'])}</h3>{empty('Not drawn yet.')}")
+                continue
+            intro = f"<p>{mdhtml.inline(d['intro'])}</p>" if d["intro"] else ""
+            if d["status"] == "not-applicable":
+                body = f"<p><strong>Not applicable:</strong> {mdhtml.inline(d['na_reason'])}</p>"
+            elif d["source"]:
+                body = (f"<details open><summary>Mermaid source ({E(d['type'] or 'diagram')})</summary>"
+                        f"<pre><code>{E(d['source'])}</code></pre></details>")
+            else:
+                body = empty("No diagram yet.")
+            dparts.append(f"<h3>{E(d['heading'] or d['title'])}</h3>{intro}{body}")
+    add("diagrams", "Diagrams", "Five product diagrams from DIAGRAMS.md. They render as pictures on GitHub and in "
+        "Markdown viewers that support Mermaid.",
+        "".join(dparts) if dparts else empty("DIAGRAMS.md not written yet."))
 
     # decisions timeline
     items = []
@@ -373,10 +394,10 @@ def readable(page: str) -> str:
 
 def main(argv: list[str]) -> int:
     p = cli.parser("render_blueprint.py", "Render the static HTML blueprint")
-    p.add_argument("--out", default=None, help="output path (default: <root>/artifacts/blueprint.html)")
+    p.add_argument("--out", default=None, help="output path (default: artifacts/blueprint.html, or docs/blueprint.html in the docs layout)")
     args = p.parse_args(argv)
     proj = cli.project(args).require()
-    out = Path(args.out) if args.out else proj.root / "artifacts" / "blueprint.html"
+    out = Path(args.out) if args.out else proj.artifacts / "blueprint.html"
     if not out.is_absolute():
         out = (Path.cwd() / out).resolve()
     assert_not_plugin_core(out)

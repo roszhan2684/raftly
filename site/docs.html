@@ -77,13 +77,14 @@ cp -R raftly/skills/raftly ~/.claude/skills/raftly</code><button class="copy" ty
 <thead><tr><th>File</th><th>Purpose</th></tr></thead>
 <tbody>
 <tr><td><code>.raftly/state.yaml</code></td><td>Mode, stage, blueprint status, progress, readiness, history</td></tr>
-<tr><td><code>.raftly/PRODUCT.md</code>, <code>DESIGN.md</code>, <code>ARCHITECTURE.md</code>, <code>BUILD.md</code>, <code>EXECUTIVE.md</code></td><td>The blueprint documents</td></tr>
-<tr><td><code>.raftly/decisions/</code></td><td>Decision records (options, evidence, confidence, revisit triggers)</td></tr>
-<tr><td><code>.raftly/features/</code> and <code>prompts/</code></td><td>Feature specs and one implementation prompt per capability</td></tr>
+<tr><td><code>docs/PRODUCT.md</code>, <code>DESIGN.md</code>, <code>ARCHITECTURE.md</code>, <code>BUILD.md</code>, <code>EXECUTIVE.md</code></td><td>The blueprint documents</td></tr>
+<tr><td><code>docs/DIAGRAMS.md</code></td><td>Five Mermaid diagrams: system architecture, user flow, screen map, data model, critical-path sequence</td></tr>
+<tr><td><code>docs/decisions/</code></td><td>Decision records (options, evidence, confidence, revisit triggers)</td></tr>
+<tr><td><code>docs/features/</code> and <code>docs/prompts/</code></td><td>Feature specs and one implementation prompt per capability</td></tr>
 <tr><td><code>.raftly/build-graph.yaml</code>, <code>evidence.yaml</code>, <code>gate.yaml</code></td><td>Dependency graph, evidence links and test results, production gate</td></tr>
-<tr><td><code>artifacts/blueprint.html</code>, <code>artifacts/deck.md</code></td><td>Visual blueprint and slide deck, rendered from <code>.raftly/</code></td></tr>
+<tr><td><code>docs/blueprint.html</code>, <code>docs/deck.md</code></td><td>Visual blueprint and slide deck, rendered from the project state</td></tr>
 </tbody></table>
-<p>Commit <code>.raftly/</code> with your project. It's plain Markdown and YAML.</p>
+<p>That's the layout for a new project: Raftly creates a folder named after the product if you start somewhere that isn't a project. In an existing repository, Raftly leaves your <code>docs/</code> alone and keeps its documents in <code>.raftly/</code>, with the blueprint and deck in <code>artifacts/</code>. Commit both folders with your project. It's plain Markdown and YAML.</p>
 
 <h2 id="update">Update and uninstall</h2>
 <pre class="code"><code>claude plugin update raftly@raftly

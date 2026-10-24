@@ -29,6 +29,11 @@
         "schema_version": {
           "type": "integer",
           "minimum": 1
+        },
+        "docs_dir": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "description": "docs layout: folder (relative to the project root) holding readable documents and build outputs"
         }
       }
     },

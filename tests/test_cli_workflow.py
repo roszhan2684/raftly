@@ -34,7 +34,7 @@ class InitAndState(ProjectCase):
         ctx = self.forge("context", "--json").json()
         self.assertEqual(ctx["repo"]["suggested_mode"], "REVIEW")
         self.assertIn("Do NOT rewrite", ctx["recommendation"])
-        self.forge("init", "--name", "Existing", "--mode", "RECOVERY")
+        self.forge("init", "--name", "Existing", "--mode", "RECOVERY", "--layout", "classic")
         self.assertEqual(self.project().state()["project"]["stage"], "ASSESSMENT")
         self.assertEqual(json.loads((self.tmp / "package.json").read_text()), {"dependencies": {"next": "15.0.0"}})
 

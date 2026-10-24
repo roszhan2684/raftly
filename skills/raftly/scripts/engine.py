@@ -41,8 +41,40 @@ COMMANDS = {
 }
 
 
+PROJECT_MARKERS = (".git", "package.json", "pyproject.toml", "go.mod", "Cargo.toml", "pom.xml", "Gemfile",
+                   "composer.json", "pubspec.yaml", ".raftly", ".forge")
+GENERAL_FOLDERS = {"Desktop", "Documents", "Downloads", "Projects", "projects", "Developer", "dev", "code", "src",
+                   "repos", "workspace", "Workspace", "GitHub", "git"}
+
+
+def location_hint(root: Path) -> str | None:
+    """Why this folder is not a project folder, or None if it may be one."""
+    root = root.resolve()
+    if any((root / m).exists() for m in PROJECT_MARKERS):
+        return None
+    home = Path.home().resolve()
+    if root == home:
+        return "your home folder"
+    if root == Path(root.anchor):
+        return "the filesystem root"
+    if root.parent == home and root.name in GENERAL_FOLDERS:
+        return f"your {root.name} folder"
+    try:
+        children = [c for c in root.iterdir() if c.is_dir() and not c.name.startswith(".")]
+    except OSError:
+        return None
+    projects = [c for c in children[:200] if any((c / m).exists() for m in PROJECT_MARKERS)]
+    if len(projects) >= 2:
+        return f"a folder holding {len(projects)} separate projects"
+    return None
+
+
 def recommend(ctx: dict) -> str:
     f = ctx["state"]
+    if not f["present"] and ctx["repo"].get("not_a_project"):
+        return (f"This is {ctx['repo']['not_a_project']}, not a project folder. Don't write here: create a new folder "
+                "named after the product (e.g. ./my-product) and run `init --root <folder>`; its documents go in "
+                "<folder>/docs/ and its state in <folder>/.raftly/.")
     if not f["present"]:
         mode = ctx["repo"]["suggested_mode"]
         if mode == "GREENFIELD":
@@ -71,10 +103,14 @@ def context(root: str | None) -> dict:
     import inspect_repo
 
     proj = Project(root)
-    repo = inspect_repo.inspect(proj.root, 20000)
+    hint = None if proj.exists else location_hint(proj.root)
+    # a home or workspace folder can be huge: don't walk it
+    repo = inspect_repo.inspect(proj.root, 300 if hint else 20000)
     out = {"forge_version": FORGE_VERSION, "repo": {k: repo[k] for k in (
         "root", "file_count", "code_files", "is_empty", "docs_only", "languages", "frameworks", "data", "services",
         "tests", "ci", "infra", "migrations", "boundaries", "signals", "suggested_mode")}, "state": {"present": False}}
+    if hint:
+        out["repo"]["not_a_project"] = hint
     if proj.exists:
         f = {"present": True}
         try:
@@ -93,6 +129,8 @@ def context(root: str | None) -> dict:
                 return out
             st = proj.state()
             f.update({"name": st["project"]["name"], "mode": st["project"]["mode"], "stage": st["project"]["stage"],
+                      "documents_dir": str(proj.docs.relative_to(proj.root)),
+                      "outputs_dir": str(proj.artifacts.relative_to(proj.root)),
                       "product_type": st["project"].get("product_type"), "profile": st["project"].get("profile", {}),
                       "blueprint_status": st["blueprint"]["status"],
                       "blueprint": {k: v for k, v in st["blueprint"].items() if k not in ("status", "completed_at")},
@@ -113,7 +151,7 @@ def context(root: str | None) -> dict:
                     f["next"] = {"id": n["id"], "name": n["name"], "status": n["status"],
                                  "action": "verify" if n["status"] == "IMPLEMENTED_UNVERIFIED" else "complete" if n["status"] == "VERIFIED" else (
                                      "continue" if n["status"] in ("IN_PROGRESS", "PARTIAL") else "start"),
-                                 "prompts": [str(proj.forge / "prompts" / p) for p in n.get("prompts", [])]}
+                                 "prompts": [str(proj.path("prompts") / p) for p in n.get("prompts", [])]}
                 f["blocked"] = [n["id"] for n in nodes if n["status"] == "BLOCKED"]
             gate = proj.gate()
             if gate:
@@ -140,6 +178,8 @@ def context_text(c: dict) -> str:
         lines.append(f"Tests: {', '.join(r['tests']) or 'none'} · CI: {len(r['ci'])} workflow(s)")
     for s in r["signals"]:
         lines.append(f"Signal: {s}")
+    if r.get("not_a_project"):
+        lines.append(f"Location: {r['not_a_project']} (not a project folder)")
     lines.append("")
     if not f["present"]:
         lines.append("Raftly state: none (.raftly/ absent)")
@@ -147,6 +187,7 @@ def context_text(c: dict) -> str:
         lines.append(f"Raftly state: schema v{f['schema_version']} needs migration")
     else:
         lines.append(f"Raftly project: {f.get('name')} · {f.get('mode')} · stage {f.get('stage')} · blueprint {f.get('blueprint_status')}")
+        lines.append(f"Documents: {f.get('documents_dir')}/ · outputs: {f.get('outputs_dir')}/")
         if f.get("blueprint"):
             lines.append("Blueprint sections: " + ", ".join(f"{k}={v}" for k, v in f["blueprint"].items() if k != "open_founder_decisions"))
         if f.get("progress"):

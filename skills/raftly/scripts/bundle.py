@@ -6,13 +6,12 @@ is cleared between conversations. Export at the end of a turn and give the user
 the zip; when they upload it again, import it and carry on.
 
   bundle.py export [--root DIR] [--out DIR]    write <out>/<project>-raftly.zip
-                                               with .raftly/ and artifacts/
+                                               with .raftly/ and artifacts/ (or docs/)
   bundle.py import <ZIP> [--root DIR] [--force]
-                                               restore .raftly/ and artifacts/
-                                               into the project folder
+                                               restore the project into the folder
 
-Import only accepts files under .raftly/ or artifacts/ (optionally inside one
-top-level folder). It refuses absolute paths, "..", links and oversized
+Import only accepts files under .raftly/, docs/ or artifacts/ (optionally inside
+one top-level folder). It refuses absolute paths, "..", links and oversized
 archives, and never overwrites an existing project unless --force is given.
 """
 
@@ -28,14 +27,20 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from forgelib import cli  # noqa: E402
 from forgelib.brand import brand  # noqa: E402
 from forgelib.fsutil import assert_not_plugin_core, resolve_inside, slugify  # noqa: E402
-from forgelib.project import ForgeError  # noqa: E402
+from forgelib.project import DEFAULT_DOCS_DIR, ForgeError  # noqa: E402
 
 MAX_FILES = 5000
 MAX_TOTAL_BYTES = 100 * 1024 * 1024
 
 
 def _top_dirs() -> tuple[str, ...]:
-    return (brand()["state_dir"], "artifacts")
+    """Folders an imported zip may contain; the state folder comes first."""
+    return (brand()["state_dir"], DEFAULT_DOCS_DIR, "artifacts")
+
+
+def _export_dirs(proj) -> list[str]:
+    docs = proj.docs_dir_name()
+    return [proj.forge.name, docs] if docs else [proj.forge.name, "artifacts"]
 
 
 def export(proj, out_dir: Path) -> dict:
@@ -44,7 +49,7 @@ def export(proj, out_dir: Path) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
     target = out_dir / f"{slugify(name) or 'project'}-raftly.zip"
     files = []
-    for top in _top_dirs():
+    for top in _export_dirs(proj):
         base = proj.root / top
         if not base.is_dir():
             continue

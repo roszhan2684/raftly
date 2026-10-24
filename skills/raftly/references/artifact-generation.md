@@ -4,7 +4,7 @@ A visual blueprint is a **view** of `.raftly/`, never a competing source of trut
 
 ## Always: the static fallback
 
-`raftly blueprint` renders `artifacts/blueprint.html`: one self-contained file (no network, no external
+`raftly blueprint` renders `blueprint.html` into the outputs folder (`artifacts/`, or `docs/` for a new project): one self-contained file (no network, no external
 fonts or scripts). It is responsive, light/dark, and accessible (landmarks, captions, status text never colour-only),
 and contains:
 overview (blueprint sections, build progress, readiness with no score without evidence) · product

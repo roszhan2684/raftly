@@ -82,7 +82,7 @@ You'll need Claude Code and Python 3.9+ on your `PATH` (the scripts use only the
 | **Cowork** | Early, not yet tested | Works in the folder you share with Claude. |
 | **Claude apps** (web, desktop, mobile) | Early, not yet tested | Plans in a temporary folder and gives you `<project>-raftly.zip` to download. Upload it in your next conversation to continue. Building and verifying code needs your real repository, so use Claude Code for that. |
 
-The zip holds only `.raftly/` and `artifacts/`. You can also make one yourself with `raftly export` and restore it with
+The zip holds only the project's `.raftly/` and `docs/` (or `artifacts/`) folders. You can also make one yourself with `raftly export` and restore it with
 `raftly import`.
 
 ## Use
@@ -126,23 +126,32 @@ The rules Raftly follows are in [`skills/raftly/core/CONSTITUTION.md`](skills/ra
 
 ## What Raftly creates in your project
 
+**A new project** (Raftly creates the folder if you start somewhere that isn't a project, such as your home
+or Desktop folder) keeps everything you read in `docs/` and Raftly's working state in a hidden `.raftly/`:
+
 ```text
-.raftly/
-├── state.yaml              mode, stage, blueprint status, execution, readiness, history
-├── requirements.yaml  assumptions.yaml  risks.yaml  dependencies.yaml  experiments.yaml
-├── build-graph.yaml        capabilities in dependency order (not a calendar)
-├── evidence.yaml           requirement → feature → screen/API/table → test → metric, plus test results
-├── gate.yaml               production gate + forgotten 20%
-├── PRODUCT.md DESIGN.md DESIGN_SYSTEM.md ARCHITECTURE.md DATA_MODEL.md SECURITY.md
-├── BUILD.md EXECUTIVE.md LAUNCH.md DECISIONS.md RESEARCH.md (+ GTM, PRIVACY, COMPLIANCE_READINESS, COST, MIGRATION, HANDOFF)
-├── decisions/ADR-xxx-*.md  features/Fxxx-*.md  prompts/NNN-*.md
-└── learnings/  learning-candidates/  debt/  postmortems/  research/  brand/
-artifacts/
-├── blueprint.html          visual blueprint (a view of .raftly/, never a source of truth)
-└── deck.md                 12-slide deck source with speaker notes
+my-product/
+├── docs/
+│   ├── PRODUCT.md  DESIGN.md  DESIGN_SYSTEM.md  ARCHITECTURE.md  DATA_MODEL.md  SECURITY.md
+│   ├── DIAGRAMS.md          five diagrams: architecture, user flow, screen map, data model, sequence
+│   ├── BUILD.md  EXECUTIVE.md  LAUNCH.md  DECISIONS.md  RESEARCH.md (+ GTM, PRIVACY, COST, ...)
+│   ├── decisions/ADR-xxx-*.md   features/Fxxx-*.md   prompts/NNN-*.md
+│   ├── blueprint.html       visual blueprint (a view of the state, never a source of truth)
+│   └── deck.md              12-slide deck source with speaker notes
+└── .raftly/
+    ├── state.yaml           mode, stage, blueprint status, execution, readiness, history
+    ├── requirements.yaml  assumptions.yaml  risks.yaml  dependencies.yaml  experiments.yaml
+    ├── build-graph.yaml     capabilities in dependency order (not a calendar)
+    ├── evidence.yaml        requirement → feature → screen/API/table → test → metric, plus test results
+    └── gate.yaml            production gate + forgotten 20%
 ```
 
-Only relevant files are created. Everything is plain Markdown and YAML: review it, diff it, commit it with your project.
+**An existing repository** keeps its own `docs/` untouched: Raftly puts its documents and state together
+in `.raftly/`, and the blueprint and deck in `artifacts/`.
+
+`DIAGRAMS.md` is Mermaid, so the diagrams render as pictures on GitHub and in Markdown viewers that support
+Mermaid. Only relevant files are created. Everything is plain Markdown and YAML: review it, diff it, commit
+it with your project.
 
 ## Examples
 

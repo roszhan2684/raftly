@@ -1,7 +1,7 @@
 # Project state. Canonical source of truth for mode, stage and progress.
 # Edit with scripts/state.py where possible; validate with scripts/validate_project.py.
 engine:
-  version: 0.2.0
+  version: 0.3.0
   schema_version: 1
 project:
   name: Golden

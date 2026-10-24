@@ -188,7 +188,7 @@ def main(argv: list[str]) -> int:
             st["blueprint"]["status"] = "IN_PROGRESS"
         proj.save_state(st, event=f"Blueprint {args.section} -> {args.status}")
     elif cmd == "doc":
-        if args.status != "NOT_APPLICABLE" and not (proj.forge / args.name).exists():
+        if args.status != "NOT_APPLICABLE" and not proj.path(args.name).exists():
             raise ForgeError(f".raftly/{args.name} does not exist")
         entry = {"status": args.status, "updated_at": now_iso()}
         if args.reason:

@@ -191,7 +191,7 @@ def main(argv: list[str]) -> int:
 
 
 def _refresh_book(proj):
-    book = proj.forge / "DECISIONS.md"
+    book = proj.path("DECISIONS.md")
     text = read_text(book) if book.exists() else (
         "# Decision Book\n\nMajor product, design and architecture decisions. Each row links to its ADR, "
         "which holds context, options, evidence, consequences and revisit triggers.\n")

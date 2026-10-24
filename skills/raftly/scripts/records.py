@@ -171,7 +171,7 @@ def change_requirement(proj, old_id: str, statement: str, priority: str | None, 
         stale.append("DATA_MODEL.md")
     st = proj.state()
     for d in stale:
-        if (proj.forge / d).exists():
+        if proj.path(d).exists():
             st.setdefault("documents", {})[d] = {"status": "STALE", "updated_at": now_iso(),
                                                  "reason": f"{old_id} superseded by {new_id}"}
     proj.save_state(st, event=f"Requirement change: {old_id} superseded by {new_id} ({reason})")
@@ -189,7 +189,7 @@ def change_requirement(proj, old_id: str, statement: str, priority: str | None, 
             "ops_metrics": by_prefix("MET-"),
             "integrations_billing": by_prefix("INT-"),
             "build_graph_nodes": affected_nodes,
-            "documents_marked_stale": [d for d in stale if (proj.forge / d).exists()],
+            "documents_marked_stale": [d for d in stale if proj.path(d).exists()],
         },
         "assess_manually": [
             "legal/compliance implications (pricing, terms, data processing)",

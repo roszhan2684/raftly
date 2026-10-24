@@ -5,6 +5,13 @@ Creates only what every project needs: state.yaml, the empty registries and a
 minimal PROJECT.md. Documents, ADRs, features and prompts are created later,
 only when relevant (Constitution: no meaningless empty documents).
 
+Layout (--layout):
+  auto     (default) docs layout for a new project (a missing or empty folder, or
+           one with no code and no existing docs/ folder); classic layout otherwise
+  docs     machine state in .raftly/, every readable document and the build
+           outputs in docs/
+  classic  everything in .raftly/, build outputs in artifacts/ (existing repositories)
+
 Examples:
   init_project.py --name "Calculator" --mode GREENFIELD --product-type consumer-utility \
       --profile surfaces=[web,ios,android] backend=false
@@ -19,7 +26,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from forgelib import cli, model  # noqa: E402
-from forgelib.project import STATE_HEADER, new_state, now_iso  # noqa: E402
+from forgelib.project import DEFAULT_DOCS_DIR, STATE_HEADER, new_state, now_iso  # noqa: E402
 
 PROJECT_MD = """# {name}
 
@@ -41,15 +48,29 @@ PROJECT_MD = """# {name}
 
 ## Where things live
 
-| What | File |
+| What | Where |
 |---|---|
-| Machine state | `state.yaml` |
-| Requirements | `requirements.yaml` |
-| Decisions (ADRs) | `decisions/` and `DECISIONS.md` |
-| Build graph | `build-graph.yaml` and `BUILD.md` |
-| Evidence | `evidence.yaml` |
-| Assumptions / risks | `assumptions.yaml`, `risks.yaml` |
+| Readable documents, decisions, features, prompts | `{docs}` |
+| Blueprint and deck | `{out}` |
+| Machine state, requirements, build graph, evidence | `{state}` (`state.yaml`, `requirements.yaml`, `build-graph.yaml`, `evidence.yaml`) |
+| Assumptions / risks | `{state}` (`assumptions.yaml`, `risks.yaml`) |
 """
+
+
+def choose_layout(root: Path, requested: str) -> str | None:
+    """Return the docs folder name for the docs layout, or None for classic."""
+    if requested == "docs":
+        return DEFAULT_DOCS_DIR
+    if requested == "classic":
+        return None
+    if not root.exists():
+        return DEFAULT_DOCS_DIR
+    docs = root / DEFAULT_DOCS_DIR
+    if docs.exists() and any(docs.iterdir()):
+        return None  # never mix Raftly documents into an existing docs/ folder
+    import inspect_repo
+
+    return DEFAULT_DOCS_DIR if inspect_repo.inspect(root, 2000)["code_files"] == 0 else None
 
 
 def main(argv: list[str]) -> int:
@@ -61,6 +82,8 @@ def main(argv: list[str]) -> int:
     p.add_argument("--summary", default="", help="one-paragraph idea or goal in the user's words")
     p.add_argument("--profile", nargs="*", default=[], metavar="KEY=VALUE",
                    help="profile flags, e.g. surfaces=[web,ios] backend=true personal_data=false")
+    p.add_argument("--layout", default="auto", choices=["auto", "docs", "classic"],
+                   help="where readable documents go (default auto: docs/ for a new project)")
     args = p.parse_args(argv)
     proj = cli.project(args)
 
@@ -73,7 +96,9 @@ def main(argv: list[str]) -> int:
 
     profile = cli.parse_kv(args.profile)
     stage = args.stage or ("INTAKE" if args.mode == "GREENFIELD" else "ASSESSMENT")
-    state = new_state(args.name, args.mode, args.product_type, profile, stage=stage)
+    docs_dir = choose_layout(proj.root, args.layout)
+    proj.use_docs_dir(docs_dir)
+    state = new_state(args.name, args.mode, args.product_type, profile, stage=stage, docs_dir=docs_dir)
     if args.summary:
         state["project"]["summary"] = args.summary
 
@@ -93,18 +118,23 @@ def main(argv: list[str]) -> int:
     if not (proj.forge / "evidence.yaml").exists():
         proj.save_evidence({"entities": [], "links": [], "records": []})
         created.append("evidence.yaml")
-    if not (proj.forge / "PROJECT.md").exists():
+    if not proj.path("PROJECT.md").exists():
         prof = "\n".join(f"- `{k}`: {v}" for k, v in profile.items()) or "- (not yet classified)"
+        state_dir = proj.forge.name + "/"
         proj.write_text("PROJECT.md", PROJECT_MD.format(
             name=args.name, mode=args.mode, stage=stage, product_type=args.product_type,
-            created=now_iso(), summary=args.summary or "_Not yet captured._", profile=prof))
+            created=now_iso(), summary=args.summary or "_Not yet captured._", profile=prof,
+            docs=(docs_dir + "/") if docs_dir else state_dir, out=(docs_dir + "/") if docs_dir else "artifacts/",
+            state=state_dir))
         created.append("PROJECT.md")
         state["documents"]["PROJECT.md"] = {"status": "CURRENT", "updated_at": now_iso()}
     proj.save_yaml("state.yaml", state, schema="state", header=STATE_HEADER)
     created.append("state.yaml")
-    cli.emit(args, {"created": True, "root": str(proj.root), "files": created, "mode": args.mode, "stage": stage},
-             lambda d: f"Initialised Raftly project '{args.name}' ({d['mode']}, stage {d['stage']}).\n"
-                       + "\n".join(f"  + .raftly/{f}" for f in d["files"]))
+    shown = [str(proj.path(f).relative_to(proj.root)) for f in created]
+    cli.emit(args, {"created": True, "root": str(proj.root), "files": created, "mode": args.mode, "stage": stage,
+                    "layout": "docs" if docs_dir else "classic", "docs_dir": str(proj.docs.relative_to(proj.root))},
+             lambda d: f"Initialised Raftly project '{args.name}' ({d['mode']}, stage {d['stage']}, {d['layout']} layout) "
+                       f"in {d['root']}.\n" + "\n".join(f"  + {f}" for f in shown))
     return 0
 
 

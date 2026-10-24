@@ -2,6 +2,12 @@
 
 JSON Schemas live in `${CLAUDE_SKILL_DIR}/schemas/`. `raftly validate` checks all of them plus cross-references.
 
+**Two layouts.** In an existing repository everything below lives in `.raftly/` (classic). In a project
+Raftly creates from scratch (`engine.docs_dir: docs` in state.yaml), the YAML files stay in `.raftly/`
+while every Markdown document and the folders `decisions/`, `features/`, `prompts/`, `research/`,
+`postmortems/`, `debt/`, `design/` and `brand/` live in `docs/`, together with `blueprint.html` and `deck.md`.
+The scripts route paths automatically; paths below are shown in the classic layout.
+
 ## Directory (create only what applies)
 
 ```text
@@ -16,7 +22,7 @@ JSON Schemas live in `${CLAUDE_SKILL_DIR}/schemas/`. `raftly validate` checks al
 ├── evidence.yaml         entities (SCR/API/TBL/TEST/...), links (relations), records (EV-xxx results)
 ├── gate.yaml             production + forgotten-20 checks with status/evidence
 ├── PROJECT.md EXECUTIVE.md PRODUCT.md RESEARCH.md DESIGN.md DESIGN_SYSTEM.md ARCHITECTURE.md
-├── DATA_MODEL.md SECURITY.md BUILD.md LAUNCH.md DECISIONS.md HANDOFF.md (+ GTM/PRIVACY/COMPLIANCE_READINESS/COST/MIGRATION)
+├── DATA_MODEL.md DIAGRAMS.md SECURITY.md BUILD.md LAUNCH.md DECISIONS.md HANDOFF.md (+ GTM/PRIVACY/COMPLIANCE_READINESS/COST/MIGRATION)
 ├── decisions/ADR-xxx-*.md        frontmatter: id,title,owner_role,date,status,decision_type,impact,reversibility,type1,confidence,affects,supersedes,superseded_by,evidence,revisit_trigger,override
 ├── features/Fxxx-*.md            frontmatter: id,name,status,priority,owner_role,node,requirements,decisions,depends_on,screens,evidence_status
 ├── prompts/NNN-*.md              self-contained implementation prompts

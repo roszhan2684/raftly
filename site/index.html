@@ -178,24 +178,26 @@
         <ul class="list-check">
           <li><b>Product, Design, Architecture, Build</b> documents, plus Security, Data, GTM and Compliance-readiness when relevant</li>
           <li><b>A visual HTML blueprint</b> with the build graph, decision timeline, risks and readiness</li>
+          <li><b>Five product diagrams</b>: architecture, user flow, screen map, data model and the critical-path sequence</li>
           <li><b>A 12-slide deck</b> with speaker notes, or your host's native deck tool</li>
           <li><b>Self-contained prompts</b>, one per capability, that any Claude session can run</li>
         </ul>
       </div>
-      <pre class="card tree reveal" aria-label="Files Raftly creates"><b>.raftly/</b>
-├── state.yaml           <em># mode, stage, progress, readiness</em>
-├── requirements.yaml    assumptions.yaml   risks.yaml
-├── build-graph.yaml     <em># dependency order</em>
-├── evidence.yaml        <em># intent → code → tests</em>
-├── gate.yaml            <em># production gate</em>
-├── PRODUCT.md  DESIGN.md  ARCHITECTURE.md  BUILD.md
-├── SECURITY.md  EXECUTIVE.md  DECISIONS.md  LAUNCH.md
-├── <b>decisions/</b>ADR-001-client-only-architecture.md
-├── <b>features/</b>F001-calculation-engine.md
-└── <b>prompts/</b>001-calculation-engine.md
-<b>artifacts/</b>
-├── blueprint.html
-└── deck.md</pre>
+      <pre class="card tree reveal" aria-label="Files Raftly creates in a new project"><b>my-product/</b>
+├── <b>docs/</b>
+│   ├── PRODUCT.md  DESIGN.md  ARCHITECTURE.md
+│   ├── DIAGRAMS.md       <em># 5 diagrams, Mermaid</em>
+│   ├── BUILD.md  SECURITY.md  DECISIONS.md
+│   ├── <b>decisions/</b>ADR-001-client-only.md
+│   ├── <b>features/</b>F001-calculation-engine.md
+│   ├── <b>prompts/</b>001-calculation-engine.md
+│   ├── blueprint.html
+│   └── deck.md
+└── <b>.raftly/</b>          <em># working state</em>
+    ├── state.yaml   requirements.yaml
+    ├── build-graph.yaml  <em># dependency order</em>
+    ├── evidence.yaml     <em># intent → code → tests</em>
+    └── gate.yaml         <em># production gate</em></pre>
     </div>
   </section>
 

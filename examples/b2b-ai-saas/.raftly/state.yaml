@@ -30,7 +30,7 @@ project:
       - call-recording-consent
     cost_mode: BOOTSTRAP
   created_at: "2026-10-24T11:00:00Z"
-  updated_at: "2026-10-24T11:00:00Z"
+  updated_at: "2026-10-24T16:53:59Z"
   summary: Build a B2B AI sales coaching platform that ingests sales calls and identifies objections, competitors, and coaching opportunities.
 blueprint:
   status: COMPLETE
@@ -101,6 +101,9 @@ documents:
   LAUNCH.md:
     status: CURRENT
     updated_at: "2026-10-24T11:00:00Z"
+  DIAGRAMS.md:
+    status: CURRENT
+    updated_at: "2026-10-24T16:53:59Z"
 counts:
   requirements: 16
   features: 10

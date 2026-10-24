@@ -44,7 +44,7 @@ Competitor research is for **expectations and gaps**, never for copying propriet
 
 ## Recording research
 
-- `.raftly/RESEARCH.md`: a concise summary table, one row per question: question · finding · source(s) ·
+- `RESEARCH.md`: a concise summary table, one row per question: question · finding · source(s) ·
   date checked · confidence · decision(s) it informs.
 - `.raftly/research/<topic>.md` for longer notes, with quotes trimmed to what matters.
 - Put the source URL or `research/<topic>.md` in the ADR's `evidence` list.

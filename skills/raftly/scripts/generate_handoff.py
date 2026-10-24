@@ -30,7 +30,7 @@ NEEDS = "_Needs input: Raftly could not derive this from recorded state._"
 def handoff(proj) -> str:
     st = proj.state()
     p = st["project"]
-    doc = lambda n: read_text(proj.forge / n) if (proj.forge / n).exists() else ""  # noqa: E731
+    doc = lambda n: read_text(proj.path(n)) if proj.path(n).exists() else ""  # noqa: E731
     executive, arch, launch = doc("EXECUTIVE.md"), doc("ARCHITECTURE.md"), doc("LAUNCH.md")
     purpose = docs.first_paragraph(docs.find_section(executive, "What", "Summary")) or p.get("summary") or NEEDS
     overview = docs.find_section(arch, "System overview", "Overview") or NEEDS
