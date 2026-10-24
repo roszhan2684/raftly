@@ -14,11 +14,11 @@ third_party_review:
 contributor_policy: NO_EXTERNAL_CODE   # chosen 2026-10-24; revisit (DCO fits Apache-2.0) before opening contributions
 install_verified:              # tested against the current Claude Code release
   plugin_validate: true        # `claude plugin validate --strict .` passed (Claude Code 2.1.310, 2026-10-24)
-  marketplace_install: false   # /plugin marketplace add + /plugin install from GitHub worked
+  marketplace_install: true    # verified 2026-10-24: claude plugin marketplace add roszhan2684/raftly + install (isolated config)
   manual_skill_copy: false     # copying skills/forge to ~/.claude/skills/forge worked
   claude_code_version: 2.1.310
   date: 2026-10-24
-  notes: "Local-marketplace install verified with an isolated CLAUDE_CONFIG_DIR. A live /raftly session was not run (no Claude credentials on the build machine)."
+  notes: "Local and GitHub marketplace installs verified with an isolated CLAUDE_CONFIG_DIR on Claude Code 2.1.310. manual_skill_copy and a live /raftly session not verified (no Claude credentials on the build machine): run them in your own Claude Code."
 
 # Owner decision recorded 2026-10-24: publish v0.1.0 publicly now (public GitHub repository, GitHub Pages site, GitHub release)
 # while attorney brand clearance and the remaining checks above are still open. Those stay listed as release blockers.
