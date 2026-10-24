@@ -77,7 +77,7 @@ The empty display shows `0`. No loading state (local compute).
 None (ADR-008).
 
 ## Security / privacy requirements
-None beyond F001 (no `eval`).
+None beyond F001 (input is never run as code).
 
 ## Accessibility requirements
 - Each key has an accessible label ("divide", "plus or minus", "percent") and role button.

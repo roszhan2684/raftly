@@ -80,7 +80,7 @@ Not applicable (synchronous, pure).
 None (ADR-008).
 
 ## Security / privacy requirements
-Never use `eval`/`Function` on input. The parser accepts only the token grammar. No data leaves the device.
+Never run input as code. The parser accepts only the token grammar. No data leaves the device.
 
 ## Accessibility requirements
 `format()` also returns a speakable form (e.g. "1.5 times 10 to the 17") for screen-reader announcements (used by F002).

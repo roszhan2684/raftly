@@ -8,7 +8,7 @@ Team/Enterprise Owner). These steps were prepared on 2026-10-24 from Anthropic's
 
 - [x] `claude plugin validate --strict .` passes (Claude Code 2.1.310)
 - [x] Plugin at the repository root, with `.claude-plugin/plugin.json` (name `raftly`, version, description, author, license)
-- [x] Square icon `.claude-plugin/icon.png` (1024 × 1024 PNG). **It becomes the listing icon only the first time you save or
+- [x] Square 1024 × 1024 icon in `.claude-plugin/` (set as `icon` in `plugin.json`). **It becomes the listing icon only the first time you save or
       submit, so be sure you like it.**
 - [x] `homepage`, `repository`, `documentationUrl`, `supportUrl`, `privacyPolicyUrl`, `termsOfServiceUrl` set to the GitHub Pages site
 - [x] README over 40 words, with a "What Raftly runs and accesses" disclosure for the security scan; LICENSE (Apache-2.0)

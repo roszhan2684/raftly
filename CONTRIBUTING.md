@@ -23,7 +23,8 @@ the project's terms, and that it contains no proprietary employer or client code
 ## Development
 
 ```bash
-git clone <your fork> raftly && cd raftly
+git clone <your fork> raftly
+cd raftly
 python3 -m unittest discover -s tests -t .      # unit + integration tests
 python3 scripts/check_release.py                # release checks (manifests, links, secrets, examples)
 python3 evals/grade.py --examples     # deterministic eval assertions on shipped examples
@@ -31,7 +32,7 @@ claude --plugin-dir .                           # try /raftly locally in Claude 
 claude plugin validate .                        # official manifest validation (if you have the CLI)
 ```
 
-Optional linting: `pip install ruff && ruff check scripts tests evals`.
+Optional linting, if you have ruff: `ruff check scripts tests evals`.
 
 ## Changing schemas
 

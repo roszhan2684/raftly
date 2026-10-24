@@ -16,8 +16,8 @@ generic checklist dump. **Never mark a product "secure."** Report evidence-backe
 ## Control areas (apply only what is relevant)
 
 authentication (managed provider or vetted library; MFA for admins; secure sessions/cookies) ·
-**server-side authorisation** on every operation · tenant isolation with tests · secrets (env/secret
-manager; never in the repo or client; rotation path) · transport TLS and encryption at rest ·
+**server-side authorisation** on every operation · tenant isolation with tests · secrets (deployment
+configuration or a secret manager; never in the repo or client; rotation path) · transport TLS and encryption at rest ·
 input validation · file-upload restrictions (type sniffing, size limits, malware scanning where
 warranted, isolated storage, signed URLs) · injection (parameterised queries, no shell interpolation) ·
 SSRF (allow-list outbound fetches of user-provided URLs) · XSS (escaping, CSP) · CSRF (same-site cookies,
@@ -30,7 +30,7 @@ leakage (ai.md).
 
 For apps with no backend (e.g. a calculator), most server controls are **NOT_APPLICABLE**. Mark them that
 way with the reason. What still applies: dependency hygiene, no secrets in the bundle, CSP and security
-headers for the web surface, safe handling of pasted input (no `eval` in an expression parser!), store
+headers for the web surface, safe handling of pasted input (an expression parser must never run input as code!), store
 privacy disclosures, and supply chain (build pipeline integrity).
 
 ## Severity and the Constitution

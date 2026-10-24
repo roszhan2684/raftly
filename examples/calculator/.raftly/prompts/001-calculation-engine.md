@@ -23,7 +23,7 @@ None. This is a foundation node.
 
 ## Architecture / design constraints
 - `src/engine/` (or `packages/engine/`), with **no** React/React Native imports (add a lint rule that enforces this).
-- No `eval`, `Function` or regex-based evaluation; a real parser over the token grammar.
+- Never run input as code, and no regex-based evaluation; a real parser over the token grammar.
 - decimal.js configured once in the engine (precision 34, rounding half-even). Rounding happens only in `format()`.
 - Pure functions; state passed in and returned.
 

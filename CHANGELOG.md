@@ -13,7 +13,7 @@ First public release, published at the owner's request while attorney brand clea
 ### Release
 - Repository: github.com/roszhan2684/raftly (also its own plugin marketplace: `/plugin marketplace add roszhan2684/raftly`).
 - Marketing and docs website on GitHub Pages (`site/`, deployed by `.github/workflows/pages.yml`), with privacy and terms pages.
-- Listing icon (`.claude-plugin/icon.png`) and directory metadata (homepage, repository, docs, support, privacy, terms URLs) in `plugin.json`.
+- Listing icon and directory metadata (homepage, repository, docs, support, privacy, terms URLs) in `plugin.json`.
 - `claude plugin validate --strict .` passes on Claude Code 2.1.310. A local-marketplace install was verified in an isolated config.
 - Copyright: Roszhan Raj Meenakshi Sundhresan. License: Apache-2.0.
 
@@ -50,5 +50,5 @@ clearance and contributor policy (`legal/release-gate.yaml`).
 - Document, record and deck templates.
 - Three optional independent review agents (security, quality, launch).
 - Examples: Calculator (client-only utility) and SalesLens (multi-tenant B2B AI SaaS), each with a full `.forge/` blueprint, rendered HTML blueprint and deck source.
-- Evals: `evals/evals.json` (12 scenarios), deterministic grader, and a native `claude plugin eval` suite with scaffolded fixtures.
+- Evals: `evals/evals.json` (12 scenarios), deterministic grader, and a native Claude Code plugin evaluation suite with scaffolded fixtures.
 - Unit and integration tests (`unittest`), GitHub Actions CI with no API keys.

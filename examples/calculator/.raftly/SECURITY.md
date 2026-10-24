@@ -9,7 +9,7 @@ N006/N007 and recorded in gate.yaml.
 ## Threat model
 | Asset | Actor | Entry point | Threat | Control | Status |
 |---|---|---|---|---|---|
-| Device integrity | malicious paste | paste / keyboard input | code injection via evaluation | tokenizer + parser only; no `eval`/`Function` (F001) | planned |
+| Device integrity | malicious paste | paste / keyboard input | code injection via evaluation | tokenizer + parser only; input is never run as code (F001) | planned |
 | Users of the website | network attacker / third-party script | web delivery | script injection, tampering | HTTPS + HSTS, strict CSP `default-src 'self'`, no third-party scripts | planned (N006) |
 | Build integrity | compromised dependency | npm supply chain | malicious package | lockfile, minimal dependencies, audit in CI | planned |
 | User trust | — | store listing | inaccurate privacy disclosure | "Data Not Collected" verified by a proxy check (no network calls) | planned (N006) |

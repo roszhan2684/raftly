@@ -1,6 +1,6 @@
 {
   "skill_name": "raftly",
-  "description": "Raftly behavioural evals. Each scenario has a prompt, expected behaviour (graded by `claude plugin eval` cases in evals/cases/ or by a human/LLM judge), and structural assertions checked deterministically on the resulting .raftly/ directory by evals/grade.py. The two shipped examples (examples/calculator, examples/b2b-ai-saas) are graded in CI.",
+  "description": "Raftly behavioural evals. Each scenario has a prompt, expected behaviour (graded by the Claude Code plugin evaluation cases in evals/cases/ or by a human/LLM judge), and structural assertions checked deterministically on the resulting .raftly/ directory by evals/grade.py. The two shipped examples (examples/calculator, examples/b2b-ai-saas) are graded in CI.",
   "evals": [
     {
       "id": "calculator",

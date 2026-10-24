@@ -6,18 +6,17 @@ Three layers:
 |---|---|---|---|
 | `evals.json` | Scenario catalogue: prompt, expected behaviour, deterministic structural assertions | — | yes (via the grader on the examples) |
 | `grade.py` | Deterministic grader for a `.raftly/` directory | free | yes: `python3 evals/grade.py --examples` |
-| `cases/` | Native [`claude plugin eval`](https://code.claude.com/docs/en/plugin-evals) suite: real `/raftly` runs graded by tool-use, file regex and LLM rubrics | model usage | no (needs Claude credentials) |
+| `cases/` | Native [Claude Code plugin evaluation](https://code.claude.com/docs/en/plugin-evals) suite: real `/raftly` runs graded by tool-use, file regex and LLM rubrics | model usage | no (needs Claude credentials) |
 
 ## Run the live suite
 
-```bash
-# from the repository root (the plugin root)
-claude plugin eval . --scaffold            # --scaffold seeds the existing-repo cases from their fixtures/examples
-claude plugin eval . --case 01-calculator  # one case
-```
+Use Claude Code's plugin evaluation runner ([docs](https://code.claude.com/docs/en/plugin-evals)) from the repository root, which is the plugin root:
+
+- pass `--scaffold` so the existing-repo cases are seeded from their fixtures and examples;
+- pass `--case 01-calculator` to run one case.
 
 The cases need write and Bash tools (they create `.raftly/` and run `engine.py`). Grant them as described in the
-plugin-eval docs ("Grant tools"). Each case also has a deterministic counterpart in `evals.json`. After a live run you can
+plugin evaluation docs ("Grant tools"). Each case also has a deterministic counterpart in `evals.json`. After a live run you can
 grade the produced workspace:
 
 ```bash
@@ -25,7 +24,7 @@ python3 evals/grade.py --scenario calculator --root <workspace>
 python3 evals/grade.py --scenario recovery --root <workspace> --fixture evals/cases/04-recovery-broken-repo/fixture
 ```
 
-`results/` directories written by `claude plugin eval` are gitignored.
+`results/` directories written by the runner are gitignored.
 
 ## Scenarios
 

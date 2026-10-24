@@ -16,7 +16,7 @@ Marketplace reference, Plugin evals).
 | Distribution | GitHub/plugin source | A repository with `.claude-plugin/marketplace.json` can list itself (`"source": "./"`) | The repo is both the plugin and a one-plugin marketplace: `/plugin marketplace add roszhan2684/raftly`, then `/plugin install raftly@raftly`. No `npx` installer is claimed. |
 | Plugin root `CLAUDE.md` | — | Not loaded as context; the validator warns | None shipped. |
 | Agents | optional | `agents/*.md` auto-discovered, namespaced `raftly:<name>` | Three independent review agents. Role routing stays in references (spec §48). |
-| Evals | `evals/evals.json` | `claude plugin eval` reads case directories (`prompt.md`, `graders/`, optional `case.yaml`) under `evals/`; the skill-creator format `evals/evals.json` is separate, and neither tool reads the other's files | Both shipped: `evals/evals.json` (catalogue + deterministic assertions) and `evals/cases/*` (native suite). |
+| Evals | `evals/evals.json` | Claude Code's plugin evaluation runner reads case directories (`prompt.md`, `graders/`, optional `case.yaml`) under `evals/`; the skill-creator format `evals/evals.json` is separate, and neither tool reads the other's files | Both shipped: `evals/evals.json` (catalogue + deterministic assertions) and `evals/cases/*` (native suite). |
 | Validation | — | `claude plugin validate .` is authoritative | Run it before release (docs/releasing.md). CI runs our own structural checks because the CLI needs credentials and installation. |
 
 Re-check these decisions when Claude Code's plugin format changes, and update this file and `scripts/check_release.py`.
@@ -32,7 +32,7 @@ engine), `core/` (constitution, roles, gate catalogs, brand), `schemas/` and `te
 | Plugin via marketplace: `/plugin marketplace add roszhan2684/raftly` → `/plugin install raftly@raftly` | documented by Claude Code; install tested with the Claude Code CLI (see docs/releasing.md) | includes the optional review agents |
 | Local plugin: `claude --plugin-dir <repo>` | documented; not yet tested here (CLI not installed in the build environment) | for development |
 | Manual personal skill: copy `skills/raftly` → `~/.claude/skills/raftly` | documented location; engine verified to run from a copied folder | no agents; command is the bare `/raftly` |
-| Skills CLI (`npx skills add ...`) | **not documented** by Claude Code; not tested | not mentioned in the README |
+| Third-party skills installer CLI | **not documented** by Claude Code; not tested | not mentioned in the README |
 
 Repository-maintenance tools (`scripts/check_release.py`, `scripts/rebrand.py`) stay outside the skill and are not installed.
 

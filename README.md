@@ -179,7 +179,7 @@ has. See the [privacy policy](https://roszhan2684.github.io/raftly/privacy.html)
 
 - Results depend on the model and on the tools available in your Claude session.
 - Evidence links are recorded explicitly. Automatic code tracing (AST topology, contract tracing) is planned for v0.2.
-- The behavioural evals (`claude plugin eval`) need Claude credentials and aren't run in CI. CI runs the deterministic tests and graders.
+- The behavioural evals (Claude Code's plugin evaluation runner, see [evals/README.md](evals/README.md)) need Claude credentials and aren't run in CI. CI runs the deterministic tests and graders.
 
 ## Disclaimer
 

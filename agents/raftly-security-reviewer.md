@@ -15,7 +15,7 @@ Inputs: the repository and its `.raftly/` directory. Start with `.raftly/state.y
 Review only what applies to this product's profile. A client-only app has no server authorization to review.
 Check, as relevant: server-side authorization on every protected operation; tenant isolation (including
 background jobs and search/retrieval); authentication and session handling; secrets in the repo, bundles or
-logs; input validation and injection (SQL, shell, template, `eval`); SSRF on user-supplied URLs; XSS and CSP;
+logs; input validation and injection (SQL, shell, template, input run as code); SSRF on user-supplied URLs; XSS and CSP;
 CSRF; file-upload handling; webhook signature verification and idempotency; rate limiting; dependency risk
 (lockfiles, known advisories if you can run an audit locally); AI prompt injection, data leakage and unsafe
 output rendering.

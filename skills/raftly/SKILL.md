@@ -144,17 +144,22 @@ microservices it does not need. Server-side controls for a client-only app are *
 
 ```
 raftly init --name N --mode M --product-type T --summary "..." --profile surfaces=[web,ios] backend=false
-raftly state show | stage S | mode M | blueprint <section> <status> | doc FILE.md CURRENT | event "..." | profile k=v
-raftly state founder-decision add|resolve "question"
-raftly records add requirement|assumption|risk|dependency|experiment ...     raftly records update <ID> k=v
-raftly records new feature|debt|prompt|postmortem ...                         raftly records feature-status F001 S
-raftly records change-requirement REQ-003 --statement "..." --reason "..."     (impact analysis)
-raftly decisions new|override|supersede|status|list|book ...
-raftly graph add|validate|phases|next|set-status|render
-raftly evidence record|entity|link|why|impact|for|untested|ui-only
-raftly gate init|set|add|score|report [--write]
-raftly learning classify|record|propose|list
-raftly blueprint | deck [--kind launch] | handoff | doctor | validate [--blueprint-gate] | migrate
+raftly state show            raftly state stage S         raftly state mode M
+raftly state blueprint <section> <status>                  raftly state doc FILE.md CURRENT
+raftly state event "..."     raftly state profile k=v
+raftly state founder-decision {add, resolve} "question"
+raftly records add {requirement, assumption, risk, dependency, experiment} ...
+raftly records update <ID> k=v
+raftly records new {feature, debt, prompt, postmortem} ...
+raftly records feature-status F001 S
+raftly records change-requirement REQ-003 --statement "..." --reason "..."   (impact analysis)
+raftly decisions {new, override, supersede, status, list, book} ...
+raftly graph {add, validate, phases, next, set-status, render}
+raftly evidence {record, entity, link, why, impact, for, untested, ui-only}
+raftly gate {init, set, add, score, report} [--write]
+raftly learning {classify, record, propose, list}
+raftly blueprint             raftly deck [--kind launch]  raftly handoff
+raftly doctor                raftly validate [--blueprint-gate]                raftly migrate
 ```
 
 Every command accepts `--json`. Run `raftly <cmd> --help` for flags. Field reference: [schemas.md](references/schemas.md).
