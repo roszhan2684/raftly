@@ -2,21 +2,21 @@
 """Read and update Raftly project state with validated transitions and atomic writes.
 
 Commands:
-  show                         summary of mode, stage, blueprint, progress, readiness
-  get <dotted.path>            print one value (e.g. project.mode)
-  set <dotted.path> <value>    set a value (YAML-parsed); schema-validated on save
-  mode <MODE> [--reason R]     change operating mode
-  stage <STAGE> [--override-reason R]
-                               change lifecycle stage. BLUEPRINT_COMPLETE requires the
-                               Blueprint Completion Gate; LAUNCHED requires gate readiness
-                               (READY / READY_WITH_WARNINGS) unless a founder override reason
-                               is given, which is recorded in history.
-  blueprint <section> <status> set a blueprint section (product/design/...); 'status' sets overall
-  doc <FILE.md> <status> [--reason R]   register a document as CURRENT/STALE/DRAFT/NOT_APPLICABLE
-  profile KEY=VALUE...         update the product profile (drives gate applicability)
-  event <text>                 append a history event (used by /raftly replay)
-  recount                      recompute counts from registries
-  founder-decision add|resolve <text>
+  raftly state show                         summary of mode, stage, blueprint, progress, readiness
+  raftly state get <dotted.path>            print one value (e.g. project.mode)
+  raftly state set <dotted.path> <value>    set a value (YAML-parsed); schema-validated on save
+  raftly state mode <MODE> [--reason R]     change operating mode
+  raftly state stage <STAGE> [--override-reason R]
+                                            change lifecycle stage. BLUEPRINT_COMPLETE requires the
+                                            Blueprint Completion Gate; LAUNCHED requires gate readiness
+                                            (READY / READY_WITH_WARNINGS) unless a founder override reason
+                                            is given, which is recorded in history.
+  raftly state blueprint <section> <status> set a blueprint section (product/design/...); 'status' sets overall
+  raftly state doc <FILE.md> <status> [--reason R]   register a document as CURRENT/STALE/DRAFT/NOT_APPLICABLE
+  raftly state profile KEY=VALUE...         update the product profile (drives gate applicability)
+  raftly state event <text>                 append a history event (used by /raftly replay)
+  raftly state recount                      recompute counts from registries
+  raftly state founder-decision add|resolve <text>
 """
 
 from __future__ import annotations

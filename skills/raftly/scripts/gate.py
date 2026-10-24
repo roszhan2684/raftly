@@ -2,14 +2,14 @@
 """Production gate and Forgotten-20% audit: evidence-gated launch readiness.
 
 Commands:
-  init                      instantiate checks for the project profile (re-run after profile
-                            changes; recorded statuses/evidence are preserved)
-  set <CHECK> <STATUS> [--evidence EV-001,EV-002] [--note N] [--na-reason "decision: ADR-004 ..."]
-                            PASS/WARNING require evidence ids; blocker N/A requires a decision
-  add --id G-CUSTOM-X --title T --category C --severity major   project-specific check
-  score [--group production|forgotten-20]
-  report [--group ...] [--write]   markdown report; --write updates the gate section of LAUNCH.md
-                                   and state.production
+  raftly gate init                      instantiate checks for the project profile (re-run after profile
+                                        changes; recorded statuses/evidence are preserved)
+  raftly gate set <CHECK> <STATUS> [--evidence EV-001,EV-002] [--note N] [--na-reason "decision: ADR-004 ..."]
+                                        PASS/WARNING require evidence ids; blocker N/A requires a decision
+  raftly gate add --id G-CUSTOM-X --title T --category C --severity major   project-specific check
+  raftly gate score [--group production|forgotten-20]
+  raftly gate report [--group ...] [--write]   markdown report; --write updates the gate section of LAUNCH.md
+                                               and state.production
 """
 
 from __future__ import annotations
